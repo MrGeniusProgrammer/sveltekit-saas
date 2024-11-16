@@ -18,5 +18,5 @@ export {
 	Footer,
 	Header,
 	Root,
-	Title
+	Title,
 };

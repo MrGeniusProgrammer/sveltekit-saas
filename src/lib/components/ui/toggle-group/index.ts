@@ -6,5 +6,5 @@ export {
 	Root,
 	//
 	Root as ToggleGroup,
-	Item as ToggleGroupItem
+	Item as ToggleGroupItem,
 };

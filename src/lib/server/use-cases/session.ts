@@ -3,12 +3,15 @@ import type { UserId } from '@/entities/user';
 import { createCodeError } from '@/helpers/error';
 import { O, pipe, TE } from '@/packages/fp-ts';
 import { sha256 } from '@oslojs/crypto/sha2';
-import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
+import {
+	encodeBase32LowerCaseNoPadding,
+	encodeHexLowerCase,
+} from '@oslojs/encoding';
 import {
 	deleteSessionById,
 	getUserSessionById,
 	createSession as primitiveCreateSession,
-	updateSessionById
+	updateSessionById,
 } from '../data-access/session';
 
 export const generateSessionToken = () => {
@@ -22,8 +25,12 @@ interface GetSessionIdFromSessionTokenParams {
 	sessionToken: string;
 }
 
-export const getSessionIdFromSessionToken = (params: GetSessionIdFromSessionTokenParams) => {
-	return encodeHexLowerCase(sha256(new TextEncoder().encode(params.sessionToken)));
+export const getSessionIdFromSessionToken = (
+	params: GetSessionIdFromSessionTokenParams,
+) => {
+	return encodeHexLowerCase(
+		sha256(new TextEncoder().encode(params.sessionToken)),
+	);
 };
 
 interface GenerateSessionTokenParams {
@@ -31,7 +38,9 @@ interface GenerateSessionTokenParams {
 }
 
 export const generateSessionId = (params: GenerateSessionTokenParams) => {
-	return encodeHexLowerCase(sha256(new TextEncoder().encode(params.sessionToken)));
+	return encodeHexLowerCase(
+		sha256(new TextEncoder().encode(params.sessionToken)),
+	);
 };
 
 interface CreateSessionParams {
@@ -44,8 +53,8 @@ export const createSession = (params: CreateSessionParams) =>
 		primitiveCreateSession({
 			id: generateSessionId(params),
 			userId: params.userId,
-			expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
-		})
+			expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+		}),
 	);
 
 interface ValidateSessionTokenParams {
@@ -61,38 +70,54 @@ export const validateSessionToken = (params: ValidateSessionTokenParams) =>
 				optionalUserSession,
 				O.foldW(
 					() =>
-						TE.left(createCodeError({ code: 'session-not-found', message: 'Session not found' })),
-					(userSession) => TE.right(userSession)
-				)
-			)
+						TE.left(
+							createCodeError({
+								code: 'session-not-found',
+								message: 'Session not found',
+							}),
+						),
+					(userSession) => TE.right(userSession),
+				),
+			),
 		),
 		TE.chainW((userSession) => {
 			if (Date.now() >= userSession.session.expiresAt.getTime()) {
 				return pipe(
 					invalidateSession({
-						sessionId: userSession.session.id
+						sessionId: userSession.session.id,
 					}),
 					TE.chainW(() =>
-						TE.left(createCodeError({ code: 'session-expired', message: 'Session expired' }))
-					)
+						TE.left(
+							createCodeError({
+								code: 'session-expired',
+								message: 'Session expired',
+							}),
+						),
+					),
 				);
 			}
 
 			return TE.right(userSession);
 		}),
 		TE.chainW((userSession) => {
-			if (Date.now() >= userSession.session.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15) {
+			if (
+				Date.now() >=
+				userSession.session.expiresAt.getTime() -
+					1000 * 60 * 60 * 24 * 15
+			) {
 				return pipe(
 					updateSessionById({
 						id: userSession.session.id,
-						expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+						expiresAt: new Date(
+							Date.now() + 1000 * 60 * 60 * 24 * 30,
+						),
 					}),
-					TE.map(() => userSession)
+					TE.map(() => userSession),
 				);
 			}
 
 			return TE.right(userSession);
-		})
+		}),
 	);
 
 interface InvalidateSessionParams {

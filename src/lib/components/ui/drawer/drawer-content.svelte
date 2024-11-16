@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { cn } from '@/utils.js';
 	import { Drawer as DrawerPrimitive } from 'vaul-svelte';
 	import DrawerOverlay from './drawer-overlay.svelte';
-	import { cn } from '@/utils.js';
 
 	let {
 		ref = $bindable(null),
@@ -17,7 +17,7 @@
 		bind:ref
 		class={cn(
 			'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background',
-			className
+			className,
 		)}
 		{...restProps}
 	>

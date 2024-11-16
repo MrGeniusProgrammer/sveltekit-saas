@@ -19,10 +19,10 @@ export const t = initTRPC.context<Context>().create({
 			...shape,
 			data: {
 				...shape.data,
-				cause
-			}
+				cause,
+			},
 		};
-	}
+	},
 });
 
 export const router = t.router;

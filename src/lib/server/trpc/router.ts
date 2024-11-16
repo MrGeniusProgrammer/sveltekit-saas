@@ -3,7 +3,7 @@ import { auth } from './routes/auth';
 import { createCallerFactory, router as primitiveRouter } from './trpc';
 
 export const router = primitiveRouter({
-	auth
+	auth,
 });
 
 export const createCaller = createCallerFactory(router);

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
 	import { buttonVariants } from '@/components/ui/button/index.js';
 	import { cn } from '@/utils.js';
+	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
 
 	let {
 		ref = $bindable(null),
@@ -29,7 +29,7 @@
 		'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50',
 		// Unavailable
 		'data-[unavailable]:text-destructive-foreground data-[unavailable]:line-through',
-		className
+		className,
 	)}
 	{...restProps}
 />

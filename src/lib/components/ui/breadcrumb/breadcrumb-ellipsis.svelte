@@ -1,14 +1,16 @@
 <script lang="ts">
-	import DotsHorizontal from 'svelte-radix/DotsHorizontal.svelte';
-	import type { WithElementRef, WithoutChildren } from 'bits-ui';
-	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '@/utils.js';
+	import type { WithElementRef, WithoutChildren } from 'bits-ui';
+	import DotsHorizontal from 'svelte-radix/DotsHorizontal.svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
 	let {
 		ref = $bindable(null),
 		class: className,
 		...restProps
-	}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLSpanElement>>> = $props();
+	}: WithoutChildren<
+		WithElementRef<HTMLAttributes<HTMLSpanElement>>
+	> = $props();
 </script>
 
 <span

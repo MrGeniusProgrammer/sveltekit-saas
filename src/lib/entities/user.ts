@@ -22,6 +22,6 @@ export const User = z.object({
 	email: UserEmail,
 	image: UserImage,
 	credits: UserCredits,
-	createdAt: CreatedAt
+	createdAt: CreatedAt,
 });
 export type User = typeof User._output;

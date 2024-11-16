@@ -1,4 +1,11 @@
-import { E, pipe, RTE, TE, type Either, type ReaderTaskEither } from '@/packages/fp-ts';
+import {
+	E,
+	pipe,
+	RTE,
+	TE,
+	type Either,
+	type ReaderTaskEither,
+} from '@/packages/fp-ts';
 import type { TaskEither } from 'fp-ts/lib/TaskEither';
 
 export const effectTaskEitherBoth =
@@ -11,7 +18,7 @@ export const effectTaskEither =
 	<E>(fa: TaskEither<E, A>): TaskEither<E, A> =>
 		pipe(
 			fa,
-			TE.tap((value) => TE.fromIO(() => fn(value)))
+			TE.tap((value) => TE.fromIO(() => fn(value))),
 		);
 
 export const effectTaskEitherError =
@@ -19,20 +26,24 @@ export const effectTaskEitherError =
 	<A>(fa: TaskEither<E, A>): TaskEither<E, A> =>
 		pipe(
 			fa,
-			TE.tapError((value) => TE.fromIO(() => fn(value)))
+			TE.tapError((value) => TE.fromIO(() => fn(value))),
 		);
 
 export const effectReaderTaskEitherBoth =
 	<E, A>(onError: (e: E) => void, onSucces: (a: A) => void) =>
 	<R>(fa: ReaderTaskEither<R, E, A>): ReaderTaskEither<R, E, A> =>
-		pipe(fa, effectReaderTaskEitherError(onError), effectReaderTaskEither(onSucces));
+		pipe(
+			fa,
+			effectReaderTaskEitherError(onError),
+			effectReaderTaskEither(onSucces),
+		);
 
 export const effectReaderTaskEither =
 	<A>(fn: (a: A) => void) =>
 	<E, R>(fa: ReaderTaskEither<R, E, A>): ReaderTaskEither<R, E, A> =>
 		pipe(
 			fa,
-			RTE.tap((value) => RTE.fromIO(() => fn(value)))
+			RTE.tap((value) => RTE.fromIO(() => fn(value))),
 		);
 
 export const effectReaderTaskEitherError =
@@ -40,7 +51,7 @@ export const effectReaderTaskEitherError =
 	<A, R>(fa: ReaderTaskEither<R, E, A>): ReaderTaskEither<R, E, A> =>
 		pipe(
 			fa,
-			RTE.tapError((value) => RTE.fromIO(() => fn(value)))
+			RTE.tapError((value) => RTE.fromIO(() => fn(value))),
 		);
 
 export const effectEitherBoth =
@@ -56,7 +67,7 @@ export const effectEither =
 			E.map((value) => {
 				fn(value);
 				return value;
-			})
+			}),
 		);
 
 export const effectEitherError =
@@ -67,5 +78,5 @@ export const effectEitherError =
 			E.mapLeft((value) => {
 				fn(value);
 				return value;
-			})
+			}),
 		);

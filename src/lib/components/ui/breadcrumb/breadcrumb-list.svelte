@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { cn } from '@/utils.js';
 	import type { WithElementRef } from 'bits-ui';
 	import type { HTMLOlAttributes } from 'svelte/elements';
-	import { cn } from '@/utils.js';
 
 	let {
 		ref = $bindable(null),
@@ -15,7 +15,7 @@
 	bind:this={ref}
 	class={cn(
 		'flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5',
-		className
+		className,
 	)}
 	{...restProps}
 >

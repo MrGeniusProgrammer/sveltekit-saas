@@ -1,5 +1,10 @@
 <script lang="ts" module>
-	import type { CellContext, ColumnDefTemplate, HeaderContext } from '@tanstack/table-core';
+	import type {
+		CellContext,
+		ColumnDefTemplate,
+		HeaderContext,
+	} from '@tanstack/table-core';
+
 	type TData = unknown;
 	type TValue = unknown;
 	type TContext = unknown;
@@ -11,7 +16,7 @@
 >
 	import {
 		RenderComponentConfig,
-		RenderSnippetConfig
+		RenderSnippetConfig,
 	} from '@/components/ui/data-table/render-helpers.js';
 
 	type Props = {

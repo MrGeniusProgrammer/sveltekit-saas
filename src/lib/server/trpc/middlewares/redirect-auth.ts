@@ -10,6 +10,6 @@ export const redirectAuthMiddleware = authMiddleware.use((opts) => {
 	const { user, session, ...ctxWihtoutAuth } = opts.ctx;
 
 	return opts.next({
-		ctx: ctxWihtoutAuth
+		ctx: ctxWihtoutAuth,
 	});
 });

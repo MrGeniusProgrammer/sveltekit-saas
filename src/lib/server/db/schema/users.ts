@@ -11,8 +11,8 @@ export const users = pgTable('users', {
 	image: text(),
 	createdAt: timestamp({
 		withTimezone: true,
-		mode: 'date'
+		mode: 'date',
 	})
 		.notNull()
-		.defaultNow()
+		.defaultNow(),
 });

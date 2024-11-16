@@ -5,5 +5,5 @@ export const createDataAcessError = <D>(error: unknown, details?: D) =>
 		code: 'data-acces-failed',
 		message: 'Error while executing queries to the Database',
 		cause: error,
-		details: details
+		details: details,
 	});

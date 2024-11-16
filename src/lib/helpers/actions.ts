@@ -19,12 +19,20 @@ export const formAction =
 				TE.fromIO(() => {
 					context.logger.info('Form successfully posted');
 					if (!form.valid) {
-						context.logger.info(form.errors, 'Form Validation Errors');
+						context.logger.info(
+							form.errors,
+							'Form Validation Errors',
+						);
 					} else {
-						context.logger.setBindings({ formId: form.id, formData: form.data });
+						context.logger.setBindings({
+							formId: form.id,
+							formData: form.data,
+						});
 						context.logger.info('Form validated');
 					}
-				})
+				}),
 			),
-			TE.chainFirstW(({ form }) => (!form.valid ? TE.left(fail(400, { form })) : TE.right(null)))
+			TE.chainFirstW(({ form }) =>
+				!form.valid ? TE.left(fail(400, { form })) : TE.right(null),
+			),
 		);

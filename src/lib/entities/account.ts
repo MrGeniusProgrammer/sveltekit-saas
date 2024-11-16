@@ -40,6 +40,6 @@ export const Account = z.object({
 	scope: AccountScope,
 	idToken: AccountIdToken,
 	sessionState: AccountSessionState,
-	createdAt: CreatedAt
+	createdAt: CreatedAt,
 });
 export type Account = typeof Account._output;

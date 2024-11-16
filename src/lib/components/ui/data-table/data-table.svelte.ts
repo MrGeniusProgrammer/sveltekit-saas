@@ -1,9 +1,9 @@
 import {
+	createTable,
 	type RowData,
 	type TableOptions,
 	type TableOptionsResolved,
 	type TableState,
-	createTable
 } from '@tanstack/table-core';
 
 /**
@@ -32,7 +32,9 @@ import {
  * </table>
  * ```
  */
-export function createSvelteTable<TData extends RowData>(options: TableOptions<TData>) {
+export function createSvelteTable<TData extends RowData>(
+	options: TableOptions<TData>,
+) {
 	const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
 		{
 			state: {},
@@ -40,12 +42,12 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 			renderFallbackValue: null,
 			mergeOptions: (
 				defaultOptions: TableOptions<TData>,
-				options: Partial<TableOptions<TData>>
+				options: Partial<TableOptions<TData>>,
 			) => {
 				return mergeObjects(defaultOptions, options);
-			}
+			},
 		},
-		options
+		options,
 	);
 
 	const table = createTable(resolvedOptions);
@@ -62,7 +64,7 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 					else state = mergeObjects(state, updater);
 
 					options.onStateChange?.(updater);
-				}
+				},
 			});
 		});
 	}
@@ -82,12 +84,16 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
  */
 export function mergeObjects<T>(source: T): T;
 export function mergeObjects<T, U>(source: T, source1: U): T & U;
-export function mergeObjects<T, U, V>(source: T, source1: U, source2: V): T & U & V;
+export function mergeObjects<T, U, V>(
+	source: T,
+	source1: U,
+	source2: V,
+): T & U & V;
 export function mergeObjects<T, U, V, W>(
 	source: T,
 	source1: U,
 	source2: V,
-	source3: W
+	source3: W,
 ): T & U & V & W;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mergeObjects(...sources: any): any {
@@ -108,7 +114,7 @@ export function mergeObjects(...sources: any): any {
 							const v = (s || {})[key];
 							if (v !== undefined) return v;
 						}
-					}
+					},
 				});
 			}
 		}

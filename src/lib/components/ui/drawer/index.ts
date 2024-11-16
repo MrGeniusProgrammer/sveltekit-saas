@@ -1,5 +1,4 @@
 import { Drawer as DrawerPrimitive } from 'vaul-svelte';
-
 import Content from './drawer-content.svelte';
 import Description from './drawer-description.svelte';
 import Footer from './drawer-footer.svelte';
@@ -36,5 +35,5 @@ export {
 	Portal,
 	Root,
 	Title,
-	Trigger
+	Trigger,
 };

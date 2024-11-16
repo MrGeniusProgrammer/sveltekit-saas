@@ -8,6 +8,6 @@ export const sessions = pgTable('sessions', {
 		.references(() => users.id, { onDelete: 'cascade' }),
 	expiresAt: timestamp({
 		withTimezone: true,
-		mode: 'date'
-	}).notNull()
+		mode: 'date',
+	}).notNull(),
 });

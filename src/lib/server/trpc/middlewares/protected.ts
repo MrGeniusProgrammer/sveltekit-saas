@@ -11,7 +11,7 @@ export const protectedMiddleware = authMiddleware.use((opts) => {
 		ctx: {
 			...opts.ctx,
 			user: opts.ctx.user.value,
-			session: opts.ctx.session.value
-		}
+			session: opts.ctx.session.value,
+		},
 	});
 });

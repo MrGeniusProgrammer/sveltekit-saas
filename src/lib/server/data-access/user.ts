@@ -4,7 +4,7 @@ import {
 	type UserEmail,
 	type UserId,
 	type UserImage,
-	type UserName
+	type UserName,
 } from '@/entities/user';
 import { zodValidate } from '@/helpers/schema';
 import { O, pipe, TE } from '@/packages/fp-ts';
@@ -24,8 +24,11 @@ interface CreateUserParams {
 
 export const createUser = (params: CreateUserParams) =>
 	pipe(
-		TE.tryCatch(() => db.insert(users).values(params).returning(), createDataAcessError),
-		TE.chainEitherKW((data) => zodValidate(User, data[0]))
+		TE.tryCatch(
+			() => db.insert(users).values(params).returning(),
+			createDataAcessError,
+		),
+		TE.chainEitherKW((data) => zodValidate(User, data[0])),
 	);
 
 interface GetUserByEmailParams {
@@ -35,17 +38,21 @@ interface GetUserByEmailParams {
 export const getUserByEmail = (params: GetUserByEmailParams) =>
 	pipe(
 		TE.tryCatch(
-			() => db.selectDistinct().from(users).where(eq(users.email, params.email)),
-			createDataAcessError
+			() =>
+				db
+					.selectDistinct()
+					.from(users)
+					.where(eq(users.email, params.email)),
+			createDataAcessError,
 		),
 		TE.chainEitherKW((users) => zodValidate(z.array(User), users)),
-		TE.map((users) => O.fromNullable(users[0]))
+		TE.map((users) => O.fromNullable(users[0])),
 	);
 
 export const getAllUsers = () =>
 	pipe(
 		TE.tryCatch(() => db.select().from(users), createDataAcessError),
-		TE.chainEitherKW((users) => zodValidate(z.array(User), users))
+		TE.chainEitherKW((users) => zodValidate(z.array(User), users)),
 	);
 
 interface GetUserByIdParams {
@@ -54,9 +61,12 @@ interface GetUserByIdParams {
 
 export const getUserById = (params: GetUserByIdParams) =>
 	pipe(
-		TE.tryCatch(() => db.select().from(users).where(eq(users.id, params.id)), createDataAcessError),
+		TE.tryCatch(
+			() => db.select().from(users).where(eq(users.id, params.id)),
+			createDataAcessError,
+		),
 		TE.chainEitherKW((users) => zodValidate(z.array(User), users)),
-		TE.map((users) => O.fromNullable(users[0]))
+		TE.map((users) => O.fromNullable(users[0])),
 	);
 
 interface UpdateUserParams {
@@ -70,8 +80,13 @@ interface UpdateUserParams {
 export const updateUser = (params: UpdateUserParams) =>
 	pipe(
 		TE.tryCatch(
-			() => db.update(users).set(params).where(eq(users.id, params.id)).returning(),
-			createDataAcessError
+			() =>
+				db
+					.update(users)
+					.set(params)
+					.where(eq(users.id, params.id))
+					.returning(),
+			createDataAcessError,
 		),
-		TE.chainEitherKW((users) => zodValidate(User, users[0]))
+		TE.chainEitherKW((users) => zodValidate(User, users[0])),
 	);

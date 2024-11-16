@@ -5,7 +5,7 @@ export const authMiddleware = baseMiddleware.use((opts) => {
 		ctx: {
 			...opts.ctx,
 			user: opts.ctx.event.locals.user,
-			session: opts.ctx.event.locals.session
-		}
+			session: opts.ctx.event.locals.session,
+		},
 	});
 });

@@ -9,7 +9,7 @@ export const createDataAcessError = <D>(error: unknown, details?: D) =>
 		code: 'data-acces-failed',
 		message: 'Error while executing queries to the Database',
 		cause: error,
-		details: details
+		details: details,
 	});
 
 export const createDataAccessLogger = (logger: pino.Logger, name: string) =>
@@ -21,9 +21,17 @@ export const logDataAccessQuery =
 		pipe(
 			a,
 			effectTaskEitherBoth(
-				(value) => logger.fatal(value, getLogErrorMessage('Database query execution')),
-				(value) => logger.info(value, getLogSuccessMessage('Database query execution'))
-			)
+				(value) =>
+					logger.fatal(
+						value,
+						getLogErrorMessage('Database query execution'),
+					),
+				(value) =>
+					logger.info(
+						value,
+						getLogSuccessMessage('Database query execution'),
+					),
+			),
 		);
 
 export const logDataAccessSchema =
@@ -33,8 +41,18 @@ export const logDataAccessSchema =
 			a,
 			effectEitherBoth(
 				(value) =>
-					logger.fatal(value, getLogErrorMessage('Entity validate agains database result')),
+					logger.fatal(
+						value,
+						getLogErrorMessage(
+							'Entity validate agains database result',
+						),
+					),
 				(value) =>
-					logger.info(value, getLogSuccessMessage('Entity validate agains database result'))
-			)
+					logger.info(
+						value,
+						getLogSuccessMessage(
+							'Entity validate agains database result',
+						),
+					),
+			),
 		);

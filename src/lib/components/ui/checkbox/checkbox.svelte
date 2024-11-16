@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { Checkbox as CheckboxPrimitive, type WithoutChildrenOrChild } from 'bits-ui';
+	import { cn } from '@/utils.js';
+	import {
+		Checkbox as CheckboxPrimitive,
+		type WithoutChildrenOrChild,
+	} from 'bits-ui';
 	import Check from 'svelte-radix/Check.svelte';
 	import Minus from 'svelte-radix/Minus.svelte';
-	import { cn } from '@/utils.js';
 
 	let {
 		ref = $bindable(null),
@@ -16,7 +19,7 @@
 <CheckboxPrimitive.Root
 	class={cn(
 		'peer box-content size-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[disabled=true]:cursor-not-allowed data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[disabled=true]:opacity-50',
-		className
+		className,
 	)}
 	bind:checked
 	bind:ref

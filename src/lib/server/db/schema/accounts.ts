@@ -1,4 +1,10 @@
-import { integer, pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+	integer,
+	pgTable,
+	primaryKey,
+	text,
+	timestamp,
+} from 'drizzle-orm/pg-core';
 import { users } from './users';
 
 export const accounts = pgTable(
@@ -16,7 +22,7 @@ export const accounts = pgTable(
 		scope: text(),
 		idToken: text(),
 		sessionState: text(),
-		createdAt: timestamp({ mode: 'date', withTimezone: true }).defaultNow()
+		createdAt: timestamp({ mode: 'date', withTimezone: true }).defaultNow(),
 	},
-	(table) => [primaryKey({ columns: [table.provider, table.providerId] })]
+	(table) => [primaryKey({ columns: [table.provider, table.providerId] })],
 );

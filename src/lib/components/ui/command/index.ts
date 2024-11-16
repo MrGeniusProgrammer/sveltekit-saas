@@ -1,5 +1,4 @@
 import { Command as CommandPrimitive } from 'bits-ui';
-
 import Dialog from './command-dialog.svelte';
 import Empty from './command-empty.svelte';
 import Group from './command-group.svelte';
@@ -36,5 +35,5 @@ export {
 	Loading,
 	Root,
 	Separator,
-	Shortcut
+	Shortcut,
 };

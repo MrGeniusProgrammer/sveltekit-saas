@@ -6,5 +6,5 @@ export {
 	//,
 	Root as ScrollArea,
 	Scrollbar as ScrollAreaScrollbar,
-	Scrollbar
+	Scrollbar,
 };

@@ -1,4 +1,8 @@
-import { Session, type SessionExpiresAt, type SessionId } from '@/entities/session';
+import {
+	Session,
+	type SessionExpiresAt,
+	type SessionId,
+} from '@/entities/session';
 import { User, type UserId } from '@/entities/user';
 import { zodValidate } from '@/helpers/schema';
 import { O, pipe, TE } from '@/packages/fp-ts';
@@ -16,9 +20,12 @@ interface CreateSessionParams {
 
 export const createSession = (params: CreateSessionParams) =>
 	pipe(
-		TE.tryCatch(() => db.insert(sessions).values(params).returning(), createDataAcessError),
+		TE.tryCatch(
+			() => db.insert(sessions).values(params).returning(),
+			createDataAcessError,
+		),
 		TE.map((value) => value[0]),
-		TE.chainEitherKW((data) => zodValidate(Session, data))
+		TE.chainEitherKW((data) => zodValidate(Session, data)),
 	);
 
 interface GetUserSessionByIdParams {
@@ -34,12 +41,15 @@ export const getUserSessionById = (params: GetUserSessionByIdParams) =>
 					.from(sessions)
 					.innerJoin(users, eq(users.id, sessions.userId))
 					.where(eq(sessions.id, params.id)),
-			createDataAcessError
+			createDataAcessError,
 		),
 		TE.chainEitherKW((data) =>
-			zodValidate(z.array(z.object({ user: User, session: Session })), data)
+			zodValidate(
+				z.array(z.object({ user: User, session: Session })),
+				data,
+			),
 		),
-		TE.map((value) => O.fromNullable(value[0]))
+		TE.map((value) => O.fromNullable(value[0])),
 	);
 
 interface DeleteSessionByIdParams {
@@ -48,7 +58,10 @@ interface DeleteSessionByIdParams {
 
 export const deleteSessionById = (params: DeleteSessionByIdParams) =>
 	pipe(
-		TE.tryCatch(() => db.delete(sessions).where(eq(sessions.id, params.id)), createDataAcessError)
+		TE.tryCatch(
+			() => db.delete(sessions).where(eq(sessions.id, params.id)),
+			createDataAcessError,
+		),
 	);
 
 interface UpdateSessionByIdParams {
@@ -60,9 +73,14 @@ interface UpdateSessionByIdParams {
 export const updateSessionById = (params: UpdateSessionByIdParams) =>
 	pipe(
 		TE.tryCatch(
-			() => db.update(sessions).set(params).where(eq(sessions.id, params.id)).returning(),
-			createDataAcessError
+			() =>
+				db
+					.update(sessions)
+					.set(params)
+					.where(eq(sessions.id, params.id))
+					.returning(),
+			createDataAcessError,
 		),
 		TE.map((value) => value[0]),
-		TE.chainEitherKW((data) => zodValidate(Session, data))
+		TE.chainEitherKW((data) => zodValidate(Session, data)),
 	);

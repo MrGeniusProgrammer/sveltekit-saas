@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { Slider as SliderPrimitive, type WithoutChildrenOrChild } from 'bits-ui';
 	import { cn } from '@/utils.js';
+	import {
+		Slider as SliderPrimitive,
+		type WithoutChildrenOrChild,
+	} from 'bits-ui';
 
 	let {
 		ref = $bindable(null),
@@ -15,11 +18,16 @@
 <SliderPrimitive.Root
 	bind:ref
 	bind:value
-	class={cn('relative flex w-full touch-none select-none items-center', className)}
+	class={cn(
+		'relative flex w-full touch-none select-none items-center',
+		className,
+	)}
 	{...restProps}
 >
 	{#snippet children({ thumbs })}
-		<span class="relative h-1.5 w-full grow overflow-hidden rounded-full bg-primary/20">
+		<span
+			class="relative h-1.5 w-full grow overflow-hidden rounded-full bg-primary/20"
+		>
 			<SliderPrimitive.Range class="absolute h-full bg-primary" />
 		</span>
 		{#each thumbs as thumb}

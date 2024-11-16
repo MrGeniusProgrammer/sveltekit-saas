@@ -1,5 +1,4 @@
 import { Dialog as SheetPrimitive } from 'bits-ui';
-
 import Content from './sheet-content.svelte';
 import Description from './sheet-description.svelte';
 import Footer from './sheet-footer.svelte';
@@ -33,5 +32,5 @@ export {
 	Title as SheetTitle,
 	Trigger as SheetTrigger,
 	Title,
-	Trigger
+	Trigger,
 };

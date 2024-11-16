@@ -26,5 +26,5 @@ export {
 	Heading,
 	Months,
 	NextButton,
-	PrevButton
+	PrevButton,
 };

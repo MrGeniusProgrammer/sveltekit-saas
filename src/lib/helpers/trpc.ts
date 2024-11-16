@@ -18,12 +18,17 @@ export function trpc(init: TRPCClientInit, queryClient?: QueryClient) {
 			links: [
 				httpBatchLink({
 					url:
-						typeof window === 'undefined' ? `${init.url.origin}${url}` : `${location.origin}${url}`,
-					fetch: typeof window === 'undefined' ? init.fetch : (init?.fetch ?? window.fetch)
-				})
-			]
+						typeof window === 'undefined'
+							? `${init.url.origin}${url}`
+							: `${location.origin}${url}`,
+					fetch:
+						typeof window === 'undefined'
+							? init.fetch
+							: (init?.fetch ?? window.fetch),
+				}),
+			],
 		}),
-		queryClient
+		queryClient,
 	});
 	if (isBrowser) browserClient = client;
 	return client;
@@ -42,5 +47,7 @@ export const getApiClient = (): ApiClient => {
 		return getContext(apiClientContextSymbol) as ApiClient;
 	}
 
-	throw new Error('no api client in the context, please set the api client context');
+	throw new Error(
+		'no api client in the context, please set the api client context',
+	);
 };

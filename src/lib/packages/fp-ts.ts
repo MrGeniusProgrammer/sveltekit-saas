@@ -5,7 +5,14 @@ export { type Bifunctor } from 'fp-ts/lib/Bifunctor';
 export { type Contravariant } from 'fp-ts/lib/Contravariant';
 export * as E from 'fp-ts/lib/Either';
 export { type Foldable } from 'fp-ts/lib/Foldable';
-export { absurd, flow, hole, identity, pipe, unsafeCoerce } from 'fp-ts/lib/Function';
+export {
+	absurd,
+	flow,
+	hole,
+	identity,
+	pipe,
+	unsafeCoerce,
+} from 'fp-ts/lib/Function';
 export { type Functor } from 'fp-ts/lib/Functor';
 export { type HKT } from 'fp-ts/lib/HKT';
 export { type Invariant } from 'fp-ts/lib/Invariant';

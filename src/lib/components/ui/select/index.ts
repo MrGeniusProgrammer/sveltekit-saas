@@ -1,5 +1,4 @@
 import { Select as SelectPrimitive } from 'bits-ui';
-
 import Content from './select-content.svelte';
 import GroupHeading from './select-group-heading.svelte';
 import Item from './select-item.svelte';
@@ -30,5 +29,5 @@ export {
 	Separator as SelectSeparator,
 	Trigger as SelectTrigger,
 	Separator,
-	Trigger
+	Trigger,
 };

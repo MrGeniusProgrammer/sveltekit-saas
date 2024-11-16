@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Label as LabelPrimitive } from 'bits-ui';
 	import { cn } from '@/utils.js';
+	import { Label as LabelPrimitive } from 'bits-ui';
 
 	let {
 		ref = $bindable(null),
@@ -13,7 +13,7 @@
 	bind:ref
 	class={cn(
 		'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-		className
+		className,
 	)}
 	{...restProps}
 />

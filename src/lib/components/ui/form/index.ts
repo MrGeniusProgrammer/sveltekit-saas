@@ -29,5 +29,5 @@ export {
 	Label as FormLabel,
 	Legend as FormLegend,
 	Label,
-	Legend
+	Legend,
 };

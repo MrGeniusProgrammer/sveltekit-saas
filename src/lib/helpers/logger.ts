@@ -4,10 +4,10 @@ import { effectTaskEitherBoth } from './fp-ts';
 const rootLogger = pino({
 	level: 'debug',
 	browser: {
-		disabled: globalThis.window === undefined
+		disabled: globalThis.window === undefined,
 	},
 	transport: {
-		target: 'pino-pretty'
+		target: 'pino-pretty',
 	},
 	redact: [
 		'*.password',
@@ -20,9 +20,9 @@ const rootLogger = pino({
 		'*.oldPassword',
 		'*.newPassword',
 		'oldPassword',
-		'newPassword'
+		'newPassword',
 	],
-	nestedKey: 'payload'
+	nestedKey: 'payload',
 });
 
 export const getLogSuccessMessage = (message: string) => `${message} succeeded`;
@@ -31,7 +31,7 @@ export const getLogErrorMessage = (message: string) => `${message} failed`;
 export const simpleLogTaskEitherBoth = (message: string) =>
 	effectTaskEitherBoth(
 		(value) => rootLogger.error(value, getLogErrorMessage(message)),
-		(value) => rootLogger.info(value, getLogSuccessMessage(message))
+		(value) => rootLogger.info(value, getLogSuccessMessage(message)),
 	);
 
 export { rootLogger as logger };

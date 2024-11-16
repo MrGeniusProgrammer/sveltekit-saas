@@ -10,6 +10,6 @@ export type SessionExpiresAt = typeof SessionExpiresAt._output;
 export const Session = z.object({
 	id: SessionId,
 	userId: UserId,
-	expiresAt: SessionExpiresAt
+	expiresAt: SessionExpiresAt,
 });
 export type Session = typeof Session._output;

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Command as CommandPrimitive } from 'bits-ui';
 	import { cn } from '@/utils.js';
+	import { Command as CommandPrimitive } from 'bits-ui';
 
 	let {
 		ref = $bindable(null),
@@ -19,7 +19,9 @@
 	{...restProps}
 >
 	{#if heading}
-		<CommandPrimitive.GroupHeading class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+		<CommandPrimitive.GroupHeading
+			class="px-2 py-1.5 text-xs font-medium text-muted-foreground"
+		>
 			{heading}
 		</CommandPrimitive.GroupHeading>
 	{/if}

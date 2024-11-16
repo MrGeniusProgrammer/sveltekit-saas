@@ -1,5 +1,4 @@
 import { Dialog as DialogPrimitive } from 'bits-ui';
-
 import Content from './dialog-content.svelte';
 import Description from './dialog-description.svelte';
 import Footer from './dialog-footer.svelte';
@@ -33,5 +32,5 @@ export {
 	Portal,
 	Root,
 	Title,
-	Trigger
+	Trigger,
 };

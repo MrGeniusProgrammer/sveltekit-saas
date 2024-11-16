@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { ContextMenu as ContextMenuPrimitive, type WithoutChild } from 'bits-ui';
-	import DotFilled from 'svelte-radix/DotFilled.svelte';
 	import { cn } from '@/utils.js';
+	import {
+		ContextMenu as ContextMenuPrimitive,
+		type WithoutChild,
+	} from 'bits-ui';
+	import DotFilled from 'svelte-radix/DotFilled.svelte';
 
 	let {
 		ref = $bindable(null),
@@ -15,7 +18,7 @@
 	bind:ref
 	class={cn(
 		'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50',
-		className
+		className,
 	)}
 	{...restProps}
 >
