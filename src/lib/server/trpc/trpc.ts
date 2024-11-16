@@ -31,12 +31,3 @@ export const procedure = t.procedure;
 export const middleware = t.middleware;
 export const createCallerFactory = t.createCallerFactory;
 
-export async function execute<T>(fn: TaskEither<TRPCError, T>) {
-	const result = await fn();
-
-	if (isLeft(result)) {
-		throw result.left;
-	} else {
-		return result.right;
-	}
-}
