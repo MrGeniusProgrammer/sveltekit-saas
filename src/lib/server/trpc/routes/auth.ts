@@ -7,16 +7,16 @@ import { router } from '../trpc';
 
 export const auth = router({
 	signOut: protectedMiddleware.mutation((opts) =>
-			pipe(
-				TE.of(deleteSessionTokenCookie({ event: opts.ctx.event })),
-				TE.chainW(() => invalidateSession({ sessionId: opts.ctx.session.id })),
-				TE.mapError((error) => {
-					switch (error.code) {
-						default:
-							return new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
-					}
-				})
-			)()
+		pipe(
+			TE.of(deleteSessionTokenCookie({ event: opts.ctx.event })),
+			TE.chainW(() => invalidateSession({ sessionId: opts.ctx.session.id })),
+			TE.mapError((error) => {
+				switch (error.code) {
+					default:
+						return new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+				}
+			})
+		)()
 	),
 
 	validateRequest: protectedMiddleware.query((opts) => opts.ctx.user)

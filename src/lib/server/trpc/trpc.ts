@@ -1,5 +1,4 @@
-import { isLeft, type TaskEither } from '@/packages/fp-ts';
-import { initTRPC, TRPCError } from '@trpc/server';
+import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import type { typeToFlattenedError, ZodError } from 'zod';
 import type { Context } from './context';
@@ -30,4 +29,3 @@ export const router = t.router;
 export const procedure = t.procedure;
 export const middleware = t.middleware;
 export const createCallerFactory = t.createCallerFactory;
-
