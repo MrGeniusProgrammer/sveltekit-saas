@@ -13,3 +13,6 @@ export const Session = z.object({
 	expiresAt: SessionExpiresAt,
 });
 export type Session = typeof Session._output;
+
+export const SessionToken = z.string().min(1);
+export type SessionToken = typeof SessionToken._output;

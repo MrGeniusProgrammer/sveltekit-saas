@@ -1,12 +1,16 @@
 import {
 	E,
 	pipe,
+	R,
+	RE,
 	RTE,
 	TE,
 	type Either,
+	type Reader,
+	type ReaderEither,
 	type ReaderTaskEither,
+	type TaskEither,
 } from "@/packages/fp-ts";
-import type { TaskEither } from "fp-ts/lib/TaskEither";
 
 export const effectTaskEitherBoth =
 	<E, A>(onError: (e: E) => void, onSucces: (a: A) => void) =>
@@ -52,6 +56,39 @@ export const effectReaderTaskEitherError =
 		pipe(
 			fa,
 			RTE.tapError((value) => RTE.fromIO(() => fn(value))),
+		);
+
+export const effectReaderEitherBoth =
+	<E, A>(onError: (e: E) => void, onSucces: (a: A) => void) =>
+	<R>(fa: ReaderEither<R, E, A>): ReaderEither<R, E, A> =>
+		pipe(
+			fa,
+			effectReaderEitherError(onError),
+			effectReaderEither(onSucces),
+		);
+
+export const effectReaderEither =
+	<A>(fn: (a: A) => void) =>
+	<E, R>(fa: ReaderEither<R, E, A>): ReaderEither<R, E, A> =>
+		pipe(
+			fa,
+			RE.tap((value) => RE.right(fn(value))),
+		);
+
+export const effectReaderEitherError =
+	<E>(fn: (a: E) => void) =>
+	<A, R>(fa: ReaderEither<R, E, A>): ReaderEither<R, E, A> =>
+		pipe(
+			fa,
+			RE.tapError((value) => RE.right(fn(value))),
+		);
+
+export const effectReader =
+	<A>(fn: (a: A) => void) =>
+	<R>(fa: Reader<R, A>): Reader<R, A> =>
+		pipe(
+			fa,
+			R.tap((value) => R.of(fn(value))),
 		);
 
 export const effectEitherBoth =

@@ -4,7 +4,7 @@ export * as A from "fp-ts/lib/Array";
 export { type Bifunctor } from "fp-ts/lib/Bifunctor";
 export { type Contravariant } from "fp-ts/lib/Contravariant";
 export * as E from "fp-ts/lib/Either";
-export { type Either } from "fp-ts/lib/Either";
+export { type Either, isLeft, isRight } from "fp-ts/lib/Either";
 export { type Foldable } from "fp-ts/lib/Foldable";
 export {
 	absurd,
@@ -24,7 +24,7 @@ export * as IOO from "fp-ts/lib/IOOption";
 export { type IOOption } from "fp-ts/lib/IOOption";
 export { type Monoid } from "fp-ts/lib/Monoid";
 export * as O from "fp-ts/lib/Option";
-export { type Option } from "fp-ts/lib/Option";
+export { isSome, isNone, type Option } from "fp-ts/lib/Option";
 export { type Ord } from "fp-ts/lib/Ord";
 export * as R from "fp-ts/lib/Reader";
 export { type Reader } from "fp-ts/lib/Reader";

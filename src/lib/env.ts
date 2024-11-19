@@ -11,6 +11,12 @@ export const env = createEnv({
 		DATABASE_NAME: z.string().min(1),
 		DATABASE_PORT: z.coerce.number(),
 
+		GITHUB_CLIENT_ID: z.string().min(1),
+		GITHUB_CLIENT_SECRET: z.string().min(1),
+
+		GOOGLE_CLIENT_ID: z.string().min(1),
+		GOOGLE_CLIENT_SECRET: z.string().min(1),
+
 		NODE_ENV: z.enum(["development", "production", "preview"]),
 	},
 
@@ -24,15 +30,5 @@ export const env = createEnv({
 	 * Makes sure you explicitly access **all** environment variables
 	 * from `server` and `client` in your `runtimeEnv`.
 	 */
-	runtimeEnvStrict: {
-		DATABASE_URL: process.env.DATABASE_URL,
-		DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-		NODE_ENV: process.env.NODE_ENV,
-		PUBLIC_SUPABASE_PROJECT_URL: process.env.PUBLIC_SUPABASE_PROJECT_URL,
-		PUBLIC_SUPABASE_ANON_KEY: process.env.PUBLIC_SUPABASE_ANON_KEY,
-		DATABASE_PORT: process.env.DATABASE_PORT,
-		DATABASE_NAME: process.env.DATABASE_NAME,
-		DATABASE_HOST: process.env.DATABASE_HOST,
-		DATABASE_USER: process.env.DATABASE_USER,
-	},
+	runtimeEnv: process.env,
 });

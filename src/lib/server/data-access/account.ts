@@ -19,10 +19,10 @@ import { db } from "../db";
 import { accounts } from "../db/schema";
 import {
 	createDataAccessLogger,
+	createDataAcessError,
 	logDataAccessQuery,
 	logDataAccessSchema,
 } from "./common";
-import { createDataAcessError } from "./types";
 
 interface CreateAccountParams {
 	userId: UserId;

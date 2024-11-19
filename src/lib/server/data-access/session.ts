@@ -4,13 +4,19 @@ import {
 	type SessionId,
 } from "@/entities/session";
 import { User, type UserId } from "@/entities/user";
+import type { AppLoggerContext } from "@/helpers/app";
 import { zodValidate } from "@/helpers/schema";
-import { O, pipe, TE } from "@/packages/fp-ts";
+import { O, pipe, RTE, TE } from "@/packages/fp-ts";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../db";
 import { sessions, users } from "../db/schema";
-import { createDataAcessError } from "./types";
+import {
+	createDataAccessLogger,
+	createDataAcessError,
+	logDataAccessQuery,
+	logDataAccessSchema,
+} from "./common";
 
 interface CreateSessionParams {
 	userId: UserId;
@@ -20,12 +26,25 @@ interface CreateSessionParams {
 
 export const createSession = (params: CreateSessionParams) =>
 	pipe(
-		TE.tryCatch(
-			() => db.insert(sessions).values(params).returning(),
-			createDataAcessError,
+		RTE.ask<AppLoggerContext>(),
+		RTE.local((context: AppLoggerContext) => ({
+			logger: createDataAccessLogger(context.logger, "CREATE SESSION"),
+		})),
+		RTE.chainTaskEitherKW((context) =>
+			pipe(
+				TE.tryCatch(
+					() => db.insert(sessions).values(params).returning(),
+					createDataAcessError,
+				),
+				logDataAccessQuery(context.logger),
+				TE.chainEitherKW((data) =>
+					pipe(
+						zodValidate(Session, data[0]),
+						logDataAccessSchema(context.logger),
+					),
+				),
+			),
 		),
-		TE.map((value) => value[0]),
-		TE.chainEitherKW((data) => zodValidate(Session, data)),
 	);
 
 interface GetUserSessionByIdParams {
@@ -34,22 +53,37 @@ interface GetUserSessionByIdParams {
 
 export const getUserSessionById = (params: GetUserSessionByIdParams) =>
 	pipe(
-		TE.tryCatch(
-			() =>
-				db
-					.select({ user: users, session: sessions })
-					.from(sessions)
-					.innerJoin(users, eq(users.id, sessions.userId))
-					.where(eq(sessions.id, params.id)),
-			createDataAcessError,
-		),
-		TE.chainEitherKW((data) =>
-			zodValidate(
-				z.array(z.object({ user: User, session: Session })),
-				data,
+		RTE.ask<AppLoggerContext>(),
+		RTE.local((context: AppLoggerContext) => ({
+			logger: createDataAccessLogger(
+				context.logger,
+				"GET USER SESSION BY ID",
+			),
+		})),
+		RTE.chainTaskEitherKW((context) =>
+			pipe(
+				TE.tryCatch(
+					() =>
+						db
+							.select({ user: users, session: sessions })
+							.from(sessions)
+							.innerJoin(users, eq(users.id, sessions.userId))
+							.where(eq(sessions.id, params.id)),
+					createDataAcessError,
+				),
+				logDataAccessQuery(context.logger),
+				TE.chainEitherKW((data) =>
+					pipe(
+						zodValidate(
+							z.array(z.object({ user: User, session: Session })),
+							data,
+						),
+						logDataAccessSchema(context.logger),
+					),
+				),
+				TE.map((value) => O.fromNullable(value[0])),
 			),
 		),
-		TE.map((value) => O.fromNullable(value[0])),
 	);
 
 interface DeleteSessionByIdParams {
@@ -58,9 +92,31 @@ interface DeleteSessionByIdParams {
 
 export const deleteSessionById = (params: DeleteSessionByIdParams) =>
 	pipe(
-		TE.tryCatch(
-			() => db.delete(sessions).where(eq(sessions.id, params.id)),
-			createDataAcessError,
+		RTE.ask<AppLoggerContext>(),
+		RTE.local((context: AppLoggerContext) => ({
+			logger: createDataAccessLogger(
+				context.logger,
+				"DELETE SESSION BY ID",
+			),
+		})),
+		RTE.chainTaskEitherKW((context) =>
+			pipe(
+				TE.tryCatch(
+					() =>
+						db
+							.delete(sessions)
+							.where(eq(sessions.id, params.id))
+							.returning(),
+					createDataAcessError,
+				),
+				logDataAccessQuery(context.logger),
+				TE.chainEitherKW((sessions) =>
+					pipe(
+						zodValidate(Session, sessions[0]),
+						logDataAccessSchema(context.logger),
+					),
+				),
+			),
 		),
 	);
 
@@ -72,15 +128,31 @@ interface UpdateSessionByIdParams {
 
 export const updateSessionById = (params: UpdateSessionByIdParams) =>
 	pipe(
-		TE.tryCatch(
-			() =>
-				db
-					.update(sessions)
-					.set(params)
-					.where(eq(sessions.id, params.id))
-					.returning(),
-			createDataAcessError,
+		RTE.ask<AppLoggerContext>(),
+		RTE.local((context: AppLoggerContext) => ({
+			logger: createDataAccessLogger(
+				context.logger,
+				"UPDATE SESSION BY ID",
+			),
+		})),
+		RTE.chainTaskEitherKW((context) =>
+			pipe(
+				TE.tryCatch(
+					() =>
+						db
+							.update(sessions)
+							.set(params)
+							.where(eq(sessions.id, params.id))
+							.returning(),
+					createDataAcessError,
+				),
+				logDataAccessQuery(context.logger),
+				TE.chainEitherKW((data) =>
+					pipe(
+						zodValidate(Session, data[0]),
+						logDataAccessSchema(context.logger),
+					),
+				),
+			),
 		),
-		TE.map((value) => value[0]),
-		TE.chainEitherKW((data) => zodValidate(Session, data)),
 	);

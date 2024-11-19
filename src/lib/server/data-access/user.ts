@@ -14,10 +14,10 @@ import { db } from "../db";
 import { users } from "../db/schema";
 import {
 	createDataAccessLogger,
+	createDataAcessError,
 	logDataAccessQuery,
 	logDataAccessSchema,
 } from "./common";
-import { createDataAcessError } from "./types";
 
 interface CreateUserParams {
 	id?: UserId;
