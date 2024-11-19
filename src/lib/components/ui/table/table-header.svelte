@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import type { WithElementRef } from 'bits-ui';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { cn } from "@/utils.js";
+	import type { WithElementRef } from "bits-ui";
+	import type { HTMLAttributes } from "svelte/elements";
 
 	let {
 		ref = $bindable(null),
@@ -11,6 +11,6 @@
 	}: WithElementRef<HTMLAttributes<HTMLTableSectionElement>> = $props();
 </script>
 
-<thead bind:this={ref} class={cn('[&_tr]:border-b', className)} {...restProps}>
+<thead bind:this={ref} class={cn("[&_tr]:border-b", className)} {...restProps}>
 	{@render children?.()}
 </thead>

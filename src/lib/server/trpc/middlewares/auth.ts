@@ -1,4 +1,4 @@
-import { baseMiddleware } from './base';
+import { baseMiddleware } from "./base";
 
 export const authMiddleware = baseMiddleware.use((opts) => {
 	return opts.next({

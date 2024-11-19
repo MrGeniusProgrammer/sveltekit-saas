@@ -1,17 +1,17 @@
 <script lang="ts">
-	import * as Dialog from '@/components/ui/dialog/index.js';
+	import * as Dialog from "@/components/ui/dialog/index.js";
 	import {
 		Command as CommandPrimitive,
 		Dialog as DialogPrimitive,
 		type WithoutChildrenOrChild,
-	} from 'bits-ui';
-	import type { Snippet } from 'svelte';
-	import Command from './command.svelte';
+	} from "bits-ui";
+	import type { Snippet } from "svelte";
+	import Command from "./command.svelte";
 
 	let {
 		open = $bindable(false),
 		ref = $bindable(null),
-		value = $bindable(''),
+		value = $bindable(""),
 		children,
 		...restProps
 	}: WithoutChildrenOrChild<DialogPrimitive.RootProps> &

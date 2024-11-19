@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { Command as CommandPrimitive } from 'bits-ui';
-	import MagnifyingGlass from 'svelte-radix/MagnifyingGlass.svelte';
+	import { cn } from "@/utils.js";
+	import { Command as CommandPrimitive } from "bits-ui";
+	import MagnifyingGlass from "svelte-radix/MagnifyingGlass.svelte";
 
 	let {
 		ref = $bindable(null),
 		class: className,
-		value = $bindable(''),
+		value = $bindable(""),
 		...restProps
 	}: CommandPrimitive.InputProps = $props();
 </script>
@@ -15,7 +15,7 @@
 	<MagnifyingGlass class="mr-2 size-4 shrink-0 opacity-50" />
 	<CommandPrimitive.Input
 		class={cn(
-			'flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+			"flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
 			className,
 		)}
 		bind:ref

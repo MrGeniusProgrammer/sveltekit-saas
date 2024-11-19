@@ -1,28 +1,28 @@
-import pino from 'pino';
-import { effectTaskEitherBoth } from './fp-ts';
+import pino from "pino";
+import { effectTaskEitherBoth } from "./fp-ts";
 
 const rootLogger = pino({
-	level: 'debug',
+	level: "debug",
 	browser: {
 		disabled: globalThis.window === undefined,
 	},
 	transport: {
-		target: 'pino-pretty',
+		target: "pino-pretty",
 	},
 	redact: [
-		'*.password',
-		'*.hashedPassword',
-		'*.passwordHash',
-		'*.session.id',
-		'password',
-		'passwordHash',
-		'hashedPassword',
-		'*.oldPassword',
-		'*.newPassword',
-		'oldPassword',
-		'newPassword',
+		"*.password",
+		"*.hashedPassword",
+		"*.passwordHash",
+		"*.session.id",
+		"password",
+		"passwordHash",
+		"hashedPassword",
+		"*.oldPassword",
+		"*.newPassword",
+		"oldPassword",
+		"newPassword",
 	],
-	nestedKey: 'payload',
+	nestedKey: "payload",
 });
 
 export const getLogSuccessMessage = (message: string) => `${message} succeeded`;

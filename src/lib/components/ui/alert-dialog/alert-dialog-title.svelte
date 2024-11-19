@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { AlertDialog as AlertDialogPrimitive } from 'bits-ui';
+	import { cn } from "@/utils.js";
+	import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
 
 	let {
 		class: className,
@@ -12,7 +12,7 @@
 
 <AlertDialogPrimitive.Title
 	bind:ref
-	class={cn('text-lg font-semibold', className)}
+	class={cn("text-lg font-semibold", className)}
 	{level}
 	{...restProps}
 />

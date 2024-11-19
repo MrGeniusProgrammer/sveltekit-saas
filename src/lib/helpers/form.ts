@@ -1,12 +1,12 @@
-import { pipe, TE } from '@/packages/fp-ts';
+import { pipe, TE } from "@/packages/fp-ts";
 import {
 	setError,
 	superValidate,
 	type SuperValidated,
-} from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
-import type { z } from 'zod';
-import { createCodeError } from './error';
+} from "sveltekit-superforms";
+import { zod } from "sveltekit-superforms/adapters";
+import type { z } from "zod";
+import { createCodeError } from "./error";
 
 export const setFormErrorsFromZodError = <
 	T extends SuperValidated<Record<string, unknown>>,
@@ -30,8 +30,8 @@ export const validateForm = <S extends z.ZodSchema>(
 			() => superValidate(request, zod(schema)),
 			(error) =>
 				createCodeError({
-					code: 'form-validation-failed',
-					message: 'Form Validation Operation failed',
+					code: "form-validation-failed",
+					message: "Form Validation Operation failed",
 					cause: error,
 				}),
 		),
@@ -41,9 +41,9 @@ export const validateForm = <S extends z.ZodSchema>(
 				? TE.right(form)
 				: TE.left(
 						createCodeError({
-							code: 'form-validation-error',
+							code: "form-validation-error",
 							message:
-								'Cannot process unrecognized form data format',
+								"Cannot process unrecognized form data format",
 							cause: form.errors,
 							details: { form },
 						}),

@@ -1,11 +1,11 @@
-import { E, pipe, TE, type Either, type TaskEither } from '@/packages/fp-ts';
-import type { ZodError, ZodType } from 'zod';
-import { createCodeError } from './error';
+import { E, pipe, TE, type Either, type TaskEither } from "@/packages/fp-ts";
+import type { ZodError, ZodType } from "zod";
+import { createCodeError } from "./error";
 
 export const createValidationError = <T extends ZodError>(error: T) =>
 	createCodeError({
-		code: 'schema-validation-error',
-		message: 'Schema validation failed',
+		code: "schema-validation-error",
+		message: "Schema validation failed",
 		cause: error,
 	});
 

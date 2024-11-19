@@ -1,4 +1,4 @@
-import { Collapsible as CollapsiblePrimitive } from 'bits-ui';
+import { Collapsible as CollapsiblePrimitive } from "bits-ui";
 
 const Root: typeof CollapsiblePrimitive.Root = CollapsiblePrimitive.Root;
 const Trigger: typeof CollapsiblePrimitive.Trigger =

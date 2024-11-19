@@ -1,8 +1,8 @@
-import { pipe, TE } from '@/packages/fp-ts';
-import { fail, type RequestEvent } from '@sveltejs/kit';
-import type { z } from 'zod';
-import type { AppLoggerContext } from './app';
-import { validateForm } from './form';
+import { pipe, TE } from "@/packages/fp-ts";
+import { fail, type RequestEvent } from "@sveltejs/kit";
+import type { z } from "zod";
+import type { AppLoggerContext } from "./app";
+import { validateForm } from "./form";
 
 interface FormActionParams<S extends z.ZodSchema> {
 	schema: S;
@@ -14,21 +14,21 @@ export const formAction =
 	(context: AppLoggerContext) =>
 		pipe(
 			validateForm(params.event.request, params.schema),
-			TE.bindTo('form'),
+			TE.bindTo("form"),
 			TE.tap(({ form }) =>
 				TE.fromIO(() => {
-					context.logger.info('Form successfully posted');
+					context.logger.info("Form successfully posted");
 					if (!form.valid) {
 						context.logger.info(
 							form.errors,
-							'Form Validation Errors',
+							"Form Validation Errors",
 						);
 					} else {
 						context.logger.setBindings({
 							formId: form.id,
 							formData: form.data,
 						});
-						context.logger.info('Form validated');
+						context.logger.info("Form validated");
 					}
 				}),
 			),

@@ -10,7 +10,7 @@ export const createCodeError = <C extends string, M extends string, D, O>(
 ) =>
 	({
 		code: params.code,
-		message: params.message ?? 'An error occurred', // Default message if not provided
+		message: params.message ?? "An error occurred", // Default message if not provided
 		details: params.details,
 		stack: new Error(params.message).stack,
 		cause: params.cause,

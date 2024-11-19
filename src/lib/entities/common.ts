@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export type CreatedAt = Date;
 export const CreatedAt = z.date();

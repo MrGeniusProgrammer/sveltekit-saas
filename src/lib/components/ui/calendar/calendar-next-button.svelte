@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { buttonVariants } from '@/components/ui/button/index.js';
-	import { cn } from '@/utils.js';
-	import { Calendar as CalendarPrimitive } from 'bits-ui';
-	import ChevronRight from 'svelte-radix/ChevronRight.svelte';
+	import { buttonVariants } from "@/components/ui/button/index.js";
+	import { cn } from "@/utils.js";
+	import { Calendar as CalendarPrimitive } from "bits-ui";
+	import ChevronRight from "svelte-radix/ChevronRight.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -19,8 +19,8 @@
 <CalendarPrimitive.NextButton
 	bind:ref
 	class={cn(
-		buttonVariants({ variant: 'outline' }),
-		'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+		buttonVariants({ variant: "outline" }),
+		"size-7 bg-transparent p-0 opacity-50 hover:opacity-100",
 		className,
 	)}
 	{...restProps}

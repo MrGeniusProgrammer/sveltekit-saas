@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { Command as CommandPrimitive } from 'bits-ui';
+	import { cn } from "@/utils.js";
+	import { Command as CommandPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -11,6 +11,6 @@
 
 <CommandPrimitive.Empty
 	bind:ref
-	class={cn('py-6 text-center text-sm', className)}
+	class={cn("py-6 text-center text-sm", className)}
 	{...restProps}
 />

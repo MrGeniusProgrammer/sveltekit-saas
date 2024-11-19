@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
+	import { cn } from "@/utils.js";
 	import {
 		Accordion as AccordionPrimitive,
 		type WithoutChild,
-	} from 'bits-ui';
-	import ChevronDown from 'svelte-radix/ChevronDown.svelte';
+	} from "bits-ui";
+	import ChevronDown from "svelte-radix/ChevronDown.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -13,7 +13,7 @@
 		children,
 		...restProps
 	}: WithoutChild<AccordionPrimitive.TriggerProps> & {
-		level?: AccordionPrimitive.HeaderProps['level'];
+		level?: AccordionPrimitive.HeaderProps["level"];
 	} = $props();
 </script>
 
@@ -21,7 +21,7 @@
 	<AccordionPrimitive.Trigger
 		bind:ref
 		class={cn(
-			'flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
+			"flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
 			className,
 		)}
 		{...restProps}

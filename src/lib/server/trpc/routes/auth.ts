@@ -1,9 +1,9 @@
-import { pipe, TE } from '@/packages/fp-ts';
-import { deleteSessionTokenCookie } from '@/server/auth';
-import { invalidateSession } from '@/server/use-cases/session';
-import { TRPCError } from '@trpc/server';
-import { protectedMiddleware } from '../middlewares/protected';
-import { router } from '../trpc';
+import { pipe, TE } from "@/packages/fp-ts";
+import { deleteSessionTokenCookie } from "@/server/auth";
+import { invalidateSession } from "@/server/use-cases/session";
+import { TRPCError } from "@trpc/server";
+import { protectedMiddleware } from "../middlewares/protected";
+import { router } from "../trpc";
 
 export const auth = router({
 	signOut: protectedMiddleware.mutation((opts) =>
@@ -15,7 +15,7 @@ export const auth = router({
 			TE.mapError((error) => {
 				switch (error.code) {
 					default:
-						return new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+						return new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 				}
 			}),
 		)(),

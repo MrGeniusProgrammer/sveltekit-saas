@@ -1,19 +1,19 @@
-import { createCodeError } from '@/helpers/error';
-import { effectTaskEitherBoth } from '@/helpers/fp-ts';
+import { createCodeError } from "@/helpers/error";
+import { effectTaskEitherBoth } from "@/helpers/fp-ts";
 import {
 	getLogErrorMessage,
 	getLogSuccessMessage,
 	logger,
 	simpleLogTaskEitherBoth,
-} from '@/helpers/logger';
-import { E, pipe, TE } from '@/packages/fp-ts';
-import { db } from '@/server/db';
-import { sql } from 'drizzle-orm';
+} from "@/helpers/logger";
+import { E, pipe, TE } from "@/packages/fp-ts";
+import { db } from "@/server/db";
+import { sql } from "drizzle-orm";
 
 const createDatabaseError = (error: unknown) =>
 	createCodeError({
-		code: 'database-operation-error',
-		message: 'Failed at doing operation on the Database',
+		code: "database-operation-error",
+		message: "Failed at doing operation on the Database",
 		cause: error,
 	});
 
@@ -23,12 +23,12 @@ const main = pipe(
 			? E.right(null)
 			: E.left(
 					createCodeError({
-						code: 'schema-not-loaded',
-						message: 'Database Schema is not loaded',
+						code: "schema-not-loaded",
+						message: "Database Schema is not loaded",
 					}),
 				),
 	),
-	simpleLogTaskEitherBoth('Loading Schema'),
+	simpleLogTaskEitherBoth("Loading Schema"),
 	TE.chainW(() =>
 		pipe(
 			TE.tryCatch(
@@ -109,8 +109,8 @@ const main = pipe(
 				() => db.$client.end(),
 				(error) =>
 					createCodeError({
-						code: 'postgress-close-failed',
-						message: 'Postgress Connection is not closed',
+						code: "postgress-close-failed",
+						message: "Postgress Connection is not closed",
 						cause: error,
 					}),
 			),
@@ -118,10 +118,10 @@ const main = pipe(
 				(error) =>
 					logger.fatal(
 						error,
-						getLogSuccessMessage('Closing database client'),
+						getLogSuccessMessage("Closing database client"),
 					),
 				() =>
-					logger.info(getLogErrorMessage('Closing database client')),
+					logger.info(getLogErrorMessage("Closing database client")),
 			),
 		),
 	),

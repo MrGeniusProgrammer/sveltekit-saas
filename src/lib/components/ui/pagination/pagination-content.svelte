@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import type { WithElementRef } from 'bits-ui';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { cn } from "@/utils.js";
+	import type { WithElementRef } from "bits-ui";
+	import type { HTMLAttributes } from "svelte/elements";
 
 	let {
 		ref = $bindable(null),
@@ -13,7 +13,7 @@
 
 <ul
 	bind:this={ref}
-	class={cn('flex flex-row items-center gap-1', className)}
+	class={cn("flex flex-row items-center gap-1", className)}
 	{...restProps}
 >
 	{@render children?.()}

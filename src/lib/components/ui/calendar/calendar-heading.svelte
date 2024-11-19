@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { Calendar as CalendarPrimitive } from 'bits-ui';
+	import { cn } from "@/utils.js";
+	import { Calendar as CalendarPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -11,6 +11,6 @@
 
 <CalendarPrimitive.Heading
 	bind:ref
-	class={cn('text-sm font-medium', className)}
+	class={cn("text-sm font-medium", className)}
 	{...restProps}
 />

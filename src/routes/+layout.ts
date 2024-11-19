@@ -1,7 +1,7 @@
-import { trpc } from '@/helpers/trpc';
-import { QueryClient } from '@tanstack/svelte-query';
-import { browser } from '$app/environment';
-import type { LayoutLoad } from './$types';
+import { trpc } from "@/helpers/trpc";
+import { QueryClient } from "@tanstack/svelte-query";
+import { browser } from "$app/environment";
+import type { LayoutLoad } from "./$types";
 
 export const load: LayoutLoad = async (event) => {
 	const queryClient = new QueryClient({

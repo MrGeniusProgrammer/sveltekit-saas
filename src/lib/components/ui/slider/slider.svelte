@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
+	import { cn } from "@/utils.js";
 	import {
 		Slider as SliderPrimitive,
 		type WithoutChildrenOrChild,
-	} from 'bits-ui';
+	} from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -19,7 +19,7 @@
 	bind:ref
 	bind:value
 	class={cn(
-		'relative flex w-full touch-none select-none items-center',
+		"relative flex w-full touch-none select-none items-center",
 		className,
 	)}
 	{...restProps}

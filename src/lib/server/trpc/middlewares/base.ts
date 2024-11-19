@@ -1,3 +1,3 @@
-import { procedure } from '../trpc';
+import { procedure } from "../trpc";
 
 export const baseMiddleware = procedure;

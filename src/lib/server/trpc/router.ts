@@ -1,6 +1,6 @@
-import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
-import { auth } from './routes/auth';
-import { createCallerFactory, router as primitiveRouter } from './trpc';
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { auth } from "./routes/auth";
+import { createCallerFactory, router as primitiveRouter } from "./trpc";
 
 export const router = primitiveRouter({
 	auth,

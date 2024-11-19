@@ -2,15 +2,15 @@ import {
 	Session,
 	type SessionExpiresAt,
 	type SessionId,
-} from '@/entities/session';
-import { User, type UserId } from '@/entities/user';
-import { zodValidate } from '@/helpers/schema';
-import { O, pipe, TE } from '@/packages/fp-ts';
-import { eq } from 'drizzle-orm';
-import { z } from 'zod';
-import { db } from '../db';
-import { sessions, users } from '../db/schema';
-import { createDataAcessError } from './types';
+} from "@/entities/session";
+import { User, type UserId } from "@/entities/user";
+import { zodValidate } from "@/helpers/schema";
+import { O, pipe, TE } from "@/packages/fp-ts";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
+import { db } from "../db";
+import { sessions, users } from "../db/schema";
+import { createDataAcessError } from "./types";
 
 interface CreateSessionParams {
 	userId: UserId;

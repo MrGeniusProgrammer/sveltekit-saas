@@ -1,10 +1,10 @@
-import { initTRPC } from '@trpc/server';
-import superjson from 'superjson';
-import type { typeToFlattenedError, ZodError } from 'zod';
-import type { Context } from './context';
+import { initTRPC } from "@trpc/server";
+import superjson from "superjson";
+import type { typeToFlattenedError, ZodError } from "zod";
+import type { Context } from "./context";
 
 export interface ValidationError {
-	type: 'validation-error';
+	type: "validation-error";
 	data: typeToFlattenedError<ZodError>;
 }
 

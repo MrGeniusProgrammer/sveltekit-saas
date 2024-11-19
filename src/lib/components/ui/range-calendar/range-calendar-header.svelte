@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
+	import { cn } from "@/utils.js";
+	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -12,7 +12,7 @@
 <RangeCalendarPrimitive.Header
 	bind:ref
 	class={cn(
-		'relative flex w-full items-center justify-between pt-1',
+		"relative flex w-full items-center justify-between pt-1",
 		className,
 	)}
 	{...restProps}

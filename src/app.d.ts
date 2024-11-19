@@ -3,7 +3,7 @@
 declare global {
 	namespace App {
 		interface Locals {
-			trpc: import('@/server/trpc/router').CreateCaller;
+			trpc: import("@/server/trpc/router").CreateCaller;
 		}
 
 		// interface Error {}

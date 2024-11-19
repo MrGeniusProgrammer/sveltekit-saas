@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import type { WithElementRef } from 'bits-ui';
-	import type { Snippet } from 'svelte';
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
+	import { cn } from "@/utils.js";
+	import type { WithElementRef } from "bits-ui";
+	import type { Snippet } from "svelte";
+	import type { HTMLAnchorAttributes } from "svelte/elements";
 
 	let {
 		ref = $bindable(null),
@@ -16,7 +16,7 @@
 	} = $props();
 
 	const attrs = $derived({
-		class: cn('hover:text-foreground transition-colors', className),
+		class: cn("hover:text-foreground transition-colors", className),
 		href,
 		...restProps,
 	});

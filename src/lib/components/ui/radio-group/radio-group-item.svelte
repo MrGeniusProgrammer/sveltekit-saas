@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
+	import { cn } from "@/utils.js";
 	import {
 		RadioGroup as RadioGroupPrimitive,
 		type WithoutChildrenOrChild,
-	} from 'bits-ui';
-	import Check from 'svelte-radix/Check.svelte';
+	} from "bits-ui";
+	import Check from "svelte-radix/Check.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -18,7 +18,7 @@
 <RadioGroupPrimitive.Item
 	bind:ref
 	class={cn(
-		'aspect-square size-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+		"aspect-square size-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
 		className,
 	)}
 	{...restProps}

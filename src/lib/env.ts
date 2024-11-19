@@ -1,6 +1,6 @@
-import 'dotenv/config';
-import { createEnv } from '@t3-oss/env-core';
-import { z } from 'zod';
+import "dotenv/config";
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
 
 export const env = createEnv({
 	server: {
@@ -11,10 +11,10 @@ export const env = createEnv({
 		DATABASE_NAME: z.string().min(1),
 		DATABASE_PORT: z.coerce.number(),
 
-		NODE_ENV: z.enum(['development', 'production', 'preview']),
+		NODE_ENV: z.enum(["development", "production", "preview"]),
 	},
 
-	clientPrefix: 'PUBLIC_',
+	clientPrefix: "PUBLIC_",
 	client: {
 		PUBLIC_SUPABASE_PROJECT_URL: z.string().min(1).url(),
 		PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),

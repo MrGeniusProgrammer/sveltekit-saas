@@ -1,13 +1,13 @@
-import { createCodeError } from '@/helpers/error';
-import { effectEitherBoth, effectTaskEitherBoth } from '@/helpers/fp-ts';
-import { getLogErrorMessage, getLogSuccessMessage } from '@/helpers/logger';
-import { pipe, type Either, type TaskEither } from '@/packages/fp-ts';
-import type pino from 'pino';
+import { createCodeError } from "@/helpers/error";
+import { effectEitherBoth, effectTaskEitherBoth } from "@/helpers/fp-ts";
+import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
+import { pipe, type Either, type TaskEither } from "@/packages/fp-ts";
+import type pino from "pino";
 
 export const createDataAcessError = <D>(error: unknown, details?: D) =>
 	createCodeError({
-		code: 'data-acces-failed',
-		message: 'Error while executing queries to the Database',
+		code: "data-acces-failed",
+		message: "Error while executing queries to the Database",
 		cause: error,
 		details: details,
 	});
@@ -24,12 +24,12 @@ export const logDataAccessQuery =
 				(value) =>
 					logger.fatal(
 						value,
-						getLogErrorMessage('Database query execution'),
+						getLogErrorMessage("Database query execution"),
 					),
 				(value) =>
 					logger.info(
 						value,
-						getLogSuccessMessage('Database query execution'),
+						getLogSuccessMessage("Database query execution"),
 					),
 			),
 		);
@@ -44,14 +44,14 @@ export const logDataAccessSchema =
 					logger.fatal(
 						value,
 						getLogErrorMessage(
-							'Entity validate agains database result',
+							"Entity validate agains database result",
 						),
 					),
 				(value) =>
 					logger.info(
 						value,
 						getLogSuccessMessage(
-							'Entity validate agains database result',
+							"Entity validate agains database result",
 						),
 					),
 			),

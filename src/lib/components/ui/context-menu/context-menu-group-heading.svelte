@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { ContextMenu as ContextMenuPrimitive } from 'bits-ui';
+	import { cn } from "@/utils.js";
+	import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -15,8 +15,8 @@
 <ContextMenuPrimitive.GroupHeading
 	bind:ref
 	class={cn(
-		'px-2 py-1.5 text-sm font-semibold text-foreground',
-		inset && 'pl-8',
+		"px-2 py-1.5 text-sm font-semibold text-foreground",
+		inset && "pl-8",
 		className,
 	)}
 	{...restProps}

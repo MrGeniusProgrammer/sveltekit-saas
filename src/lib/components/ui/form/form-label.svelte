@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Label } from '@/components/ui/label/index.js';
-	import { cn } from '@/utils.js';
-	import type { WithoutChild } from 'bits-ui';
-	import * as FormPrimitive from 'formsnap';
+	import { Label } from "@/components/ui/label/index.js";
+	import { cn } from "@/utils.js";
+	import type { WithoutChild } from "bits-ui";
+	import * as FormPrimitive from "formsnap";
 
 	let {
 		ref = $bindable(null),
@@ -16,7 +16,7 @@
 	{#snippet child({ props })}
 		<Label
 			{...props}
-			class={cn('data-[fs-error]:text-destructive', className)}
+			class={cn("data-[fs-error]:text-destructive", className)}
 		>
 			{@render children?.()}
 		</Label>

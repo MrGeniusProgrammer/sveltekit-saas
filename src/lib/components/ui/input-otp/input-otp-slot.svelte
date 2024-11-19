@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import { PinInput as InputOTPPrimitive } from 'bits-ui';
-	import type { ComponentProps } from 'svelte';
+	import { cn } from "@/utils.js";
+	import { PinInput as InputOTPPrimitive } from "bits-ui";
+	import type { ComponentProps } from "svelte";
 
 	let {
 		ref = $bindable(null),
@@ -15,8 +15,8 @@
 	{cell}
 	bind:ref
 	class={cn(
-		'relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md',
-		cell.isActive && 'z-10 ring-1 ring-ring',
+		"relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+		cell.isActive && "z-10 ring-1 ring-ring",
 		className,
 	)}
 	{...restProps}

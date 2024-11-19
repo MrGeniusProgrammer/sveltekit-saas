@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import { CreatedAt } from './common';
-import { UserId } from './user';
+import { z } from "zod";
+import { CreatedAt } from "./common";
+import { UserId } from "./user";
 
-export const AccountProvider = z.enum(['github', 'google']);
+export const AccountProvider = z.enum(["github", "google"]);
 export type AccountProvider = typeof AccountProvider._output;
 
 export const AccountProviderId = z.string().min(1);

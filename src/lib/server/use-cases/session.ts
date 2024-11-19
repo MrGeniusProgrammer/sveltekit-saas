@@ -1,18 +1,18 @@
-import type { SessionId } from '@/entities/session';
-import type { UserId } from '@/entities/user';
-import { createCodeError } from '@/helpers/error';
-import { O, pipe, TE } from '@/packages/fp-ts';
-import { sha256 } from '@oslojs/crypto/sha2';
+import type { SessionId } from "@/entities/session";
+import type { UserId } from "@/entities/user";
+import { createCodeError } from "@/helpers/error";
+import { O, pipe, TE } from "@/packages/fp-ts";
+import { sha256 } from "@oslojs/crypto/sha2";
 import {
 	encodeBase32LowerCaseNoPadding,
 	encodeHexLowerCase,
-} from '@oslojs/encoding';
+} from "@oslojs/encoding";
 import {
 	deleteSessionById,
 	getUserSessionById,
 	createSession as primitiveCreateSession,
 	updateSessionById,
-} from '../data-access/session';
+} from "../data-access/session";
 
 export const generateSessionToken = () => {
 	const bytes = new Uint8Array(20);
@@ -72,8 +72,8 @@ export const validateSessionToken = (params: ValidateSessionTokenParams) =>
 					() =>
 						TE.left(
 							createCodeError({
-								code: 'session-not-found',
-								message: 'Session not found',
+								code: "session-not-found",
+								message: "Session not found",
 							}),
 						),
 					(userSession) => TE.right(userSession),
@@ -89,8 +89,8 @@ export const validateSessionToken = (params: ValidateSessionTokenParams) =>
 					TE.chainW(() =>
 						TE.left(
 							createCodeError({
-								code: 'session-expired',
-								message: 'Session expired',
+								code: "session-expired",
+								message: "Session expired",
 							}),
 						),
 					),

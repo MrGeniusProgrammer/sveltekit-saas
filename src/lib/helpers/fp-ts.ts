@@ -5,8 +5,8 @@ import {
 	TE,
 	type Either,
 	type ReaderTaskEither,
-} from '@/packages/fp-ts';
-import type { TaskEither } from 'fp-ts/lib/TaskEither';
+} from "@/packages/fp-ts";
+import type { TaskEither } from "fp-ts/lib/TaskEither";
 
 export const effectTaskEitherBoth =
 	<E, A>(onError: (e: E) => void, onSucces: (a: A) => void) =>

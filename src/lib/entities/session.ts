@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { UserId } from './user';
+import { z } from "zod";
+import { UserId } from "./user";
 
 export const SessionId = z.string().min(1);
 export type SessionId = typeof SessionId._output;

@@ -1,10 +1,10 @@
-import { UserCredits, UserEmail, type UserName } from '@/entities/user';
-import { createCodeError } from '@/helpers/error';
-import { O, pipe, TE } from '@/packages/fp-ts';
+import { UserCredits, UserEmail, type UserName } from "@/entities/user";
+import { createCodeError } from "@/helpers/error";
+import { O, pipe, TE } from "@/packages/fp-ts";
 import {
 	getUserByEmail,
 	createUser as primtiveCreateUser,
-} from '../data-access/user';
+} from "../data-access/user";
 
 interface CheckIsUserEmailAlreadyExistsParams {
 	userEmail: UserEmail;
@@ -24,8 +24,8 @@ export const checkIsUserEmailAlreadyExists = (
 					() =>
 						TE.left(
 							createCodeError({
-								code: 'user-email-already-exist',
-								message: 'The User email already exists',
+								code: "user-email-already-exist",
+								message: "The User email already exists",
 								cause: { email: params.userEmail },
 							}),
 						),

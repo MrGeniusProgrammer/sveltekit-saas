@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { FormPathLeaves as _FormPathLeaves } from 'sveltekit-superforms';
+	import type { FormPathLeaves as _FormPathLeaves } from "sveltekit-superforms";
 
 	type T = Record<string, unknown>;
 	type U = _FormPathLeaves<T>;
@@ -9,10 +9,10 @@
 	lang="ts"
 	generics="T extends Record<string, unknown>, U extends _FormPathLeaves<T>"
 >
-	import { cn } from '@/utils.js';
-	import type { WithElementRef } from 'bits-ui';
-	import * as FormPrimitive from 'formsnap';
-	import type { HTMLAttributes } from 'svelte/elements';
+	import { cn } from "@/utils.js";
+	import type { WithElementRef } from "bits-ui";
+	import * as FormPrimitive from "formsnap";
+	import type { HTMLAttributes } from "svelte/elements";
 
 	let {
 		ref = $bindable(null),
@@ -27,7 +27,7 @@
 
 <FormPrimitive.ElementField {form} {name}>
 	{#snippet children({ constraints, errors, tainted, value })}
-		<div bind:this={ref} class={cn('space-y-2', className)} {...restProps}>
+		<div bind:this={ref} class={cn("space-y-2", className)} {...restProps}>
 			{@render childrenProp?.({
 				constraints,
 				errors,

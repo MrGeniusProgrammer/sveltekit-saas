@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
-	import type { WithElementRef } from 'bits-ui';
-	import ChevronRight from 'svelte-radix/ChevronRight.svelte';
-	import type { HTMLLiAttributes } from 'svelte/elements';
+	import { cn } from "@/utils.js";
+	import type { WithElementRef } from "bits-ui";
+	import ChevronRight from "svelte-radix/ChevronRight.svelte";
+	import type { HTMLLiAttributes } from "svelte/elements";
 
 	let {
 		ref = $bindable(null),
@@ -15,7 +15,7 @@
 <li
 	role="presentation"
 	aria-hidden="true"
-	class={cn('[&>svg]:size-3.5', className)}
+	class={cn("[&>svg]:size-3.5", className)}
 	bind:this={ref}
 	{...restProps}
 >

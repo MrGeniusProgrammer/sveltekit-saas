@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { cn } from '@/utils.js';
+	import { cn } from "@/utils.js";
 	import {
 		Select as SelectPrimitive,
 		type WithoutChildrenOrChild,
-	} from 'bits-ui';
-	import ChevronDown from 'svelte-radix/ChevronDown.svelte';
+	} from "bits-ui";
+	import ChevronDown from "svelte-radix/ChevronDown.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -16,7 +16,7 @@
 <SelectPrimitive.ScrollDownButton
 	bind:ref
 	class={cn(
-		'flex cursor-default items-center justify-center py-1',
+		"flex cursor-default items-center justify-center py-1",
 		className,
 	)}
 	{...restProps}
