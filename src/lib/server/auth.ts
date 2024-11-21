@@ -1,6 +1,6 @@
 import type { SessionExpiresAt } from "@/entities/session";
 import { createCodeError } from "@/helpers/error";
-import { O, pipe, T, TE } from "@/packages/fp-ts";
+import { O, pipe, RTE, T, TE } from "@/packages/fp-ts";
 import type { RequestEvent } from "@sveltejs/kit";
 import { generateState } from "arctic";
 import {
@@ -116,14 +116,14 @@ export const handleGithubOauthCallback = (
 			O.fromNullable(params.event.cookies.get("github_oauth_state")),
 		),
 		O.filter(({ state, storedState }) => state === storedState),
-		TE.fromOption(() =>
+		RTE.fromOption(() =>
 			createCodeError({
 				code: "invalid-state",
 				message: "Missing or mismatched state parameter",
 			}),
 		), // Converts missing/invalid state into a CodeError
 
-		TE.chainW(({ code }) =>
+		RTE.chainTaskEitherKW(({ code }) =>
 			// Step 2: Validate the authorization code
 			pipe(
 				TE.tryCatch(
@@ -138,7 +138,7 @@ export const handleGithubOauthCallback = (
 			),
 		),
 
-		TE.chainW((tokens) =>
+		RTE.chainTaskEitherKW((tokens) =>
 			// Step 3: Fetch GitHub user info
 			pipe(
 				TE.tryCatch(
@@ -163,14 +163,14 @@ export const handleGithubOauthCallback = (
 			),
 		),
 
-		TE.chainW(({ githubUserId, githubUsername, tokens }) =>
+		RTE.chainW(({ githubUserId, githubUsername, tokens }) =>
 			// Step 4: Find or create user in the database
 			pipe(
 				getAccountByProviderAndId({
 					provider: "github",
 					providerId: githubUserId,
 				}),
-				TE.chainW((optionalAccount) =>
+				RTE.chainW((optionalAccount) =>
 					pipe(
 						optionalAccount,
 						O.foldW(
@@ -179,9 +179,8 @@ export const handleGithubOauthCallback = (
 									createUser({
 										userName: githubUsername,
 										userEmail: githubUsername,
-										userCredits: 0,
 									}),
-									TE.chainW((user) =>
+									RTE.chainW((user) =>
 										createAccount({
 											providerId: githubUserId,
 											provider: "github",
@@ -189,27 +188,30 @@ export const handleGithubOauthCallback = (
 										}),
 									),
 								),
-							TE.of,
+							RTE.of,
 						),
 					),
 				),
-				TE.map((account) => ({ account, tokens })),
+				RTE.map((account) => ({ account, tokens })),
 			),
 		),
 
-		TE.chainW(({ account }) =>
+		RTE.chainW(({ account }) =>
 			// Step 5: Create session and set cookie
 			pipe(
-				TE.Do,
-				TE.apSW("sessionToken", TE.of(generateSessionToken())),
-				TE.bindW("session", ({ sessionToken }) =>
+				RTE.Do,
+				RTE.apSW(
+					"sessionToken",
+					RTE.fromReader(generateSessionToken()),
+				),
+				RTE.bindW("session", ({ sessionToken }) =>
 					createSession({
 						sessionToken,
 						userId: account.userId,
 					}),
 				),
-				TE.tap(({ sessionToken, session }) =>
-					TE.of(
+				RTE.tap(({ sessionToken, session }) =>
+					RTE.of(
 						setSessionTokenCookie({
 							event: params.event,
 							sessionToken: sessionToken,
