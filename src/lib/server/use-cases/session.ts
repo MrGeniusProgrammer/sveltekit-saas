@@ -25,7 +25,7 @@ import { createUseCaseLogger } from "./common";
 export const generateSessionToken = () =>
 	pipe(
 		R.ask<AppLoggerContext>(),
-		R.local((context: AppLoggerContext) => ({
+		R.map((context) => ({
 			logger: createUseCaseLogger(
 				context.logger,
 				"GENERATE SESSION TOKEN",
@@ -55,7 +55,7 @@ export const getSessionIdFromSessionToken = (
 ) =>
 	pipe(
 		R.ask<AppLoggerContext>(),
-		R.local((context: AppLoggerContext) => ({
+		R.map((context) => ({
 			logger: createUseCaseLogger(
 				context.logger,
 				"GET SESSION ID FROM SESSION TOKEN",
@@ -84,40 +84,38 @@ interface CreateSessionParams {
 }
 
 export const createSession = (params: CreateSessionParams) =>
-	RTE.local((context: AppLoggerContext) => ({
-		logger: createUseCaseLogger(context.logger, "CREATE SESSION"),
-	}))(
-		pipe(
-			RTE.ask<AppLoggerContext>(),
-			RTE.chainW((context) =>
-				pipe(
-					RTE.fromReader(getSessionIdFromSessionToken(params)),
-					RTE.chainW((sessionId) =>
-						pipe(
-							primitiveCreateSession({
-								id: sessionId,
-								userId: params.userId,
-								expiresAt: new Date(
-									Date.now() + 1000 * 60 * 60 * 24 * 30,
-								),
-							}),
-							effectReaderTaskEitherBoth(
-								(error) =>
-									context.logger.error(
-										error,
-										getLogErrorMessage("Creating session"),
-									),
-								(value) =>
-									context.logger.info(
-										value,
-										getLogSuccessMessage(
-											"Creating session",
-										),
-									),
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(context.logger, "CREATE SESSION"),
+		})),
+		RTE.chainW((context) =>
+			pipe(
+				RTE.fromReader(getSessionIdFromSessionToken(params)),
+				RTE.chainW((sessionId) =>
+					pipe(
+						primitiveCreateSession({
+							id: sessionId,
+							userId: params.userId,
+							expiresAt: new Date(
+								Date.now() + 1000 * 60 * 60 * 24 * 30,
 							),
+						}),
+						effectReaderTaskEitherBoth(
+							(error) =>
+								context.logger.error(
+									error,
+									getLogErrorMessage("Creating session"),
+								),
+							(value) =>
+								context.logger.info(
+									value,
+									getLogSuccessMessage("Creating session"),
+								),
 						),
 					),
 				),
+				RTE.local(() => context),
 			),
 		),
 	);
@@ -127,132 +125,132 @@ interface ValidateSessionTokenParams {
 }
 
 export const validateSessionToken = (params: ValidateSessionTokenParams) =>
-	RTE.local((context: AppLoggerContext) => ({
-		logger: createUseCaseLogger(context.logger, "VALIDATE SESSION TOKEN"),
-	}))(
-		pipe(
-			RTE.ask<AppLoggerContext>(),
-			RTE.chainW((context) =>
-				pipe(
-					RTE.fromReader(getSessionIdFromSessionToken(params)),
-					RTE.chainW((sessionId) =>
-						pipe(
-							getUserSessionById({ id: sessionId }),
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(
+				context.logger,
+				"VALIDATE SESSION TOKEN",
+			),
+		})),
+		RTE.chainW((context) =>
+			pipe(
+				RTE.fromReader(getSessionIdFromSessionToken(params)),
+				RTE.chainW((sessionId) =>
+					pipe(
+						getUserSessionById({ id: sessionId }),
+						effectReaderTaskEitherBoth(
+							(error) =>
+								context.logger.error(
+									error,
+									getLogErrorMessage(
+										"Getting user session by id",
+									),
+								),
+							(value) =>
+								context.logger.info(
+									value,
+									getLogSuccessMessage(
+										"Getting user session by id",
+									),
+								),
+						),
+					),
+				),
+				RTE.chainW((optionalUserSession) =>
+					pipe(
+						optionalUserSession,
+						O.matchW(
+							() =>
+								RTE.left(
+									createCodeError({
+										code: "session-not-found",
+										message: "Session not found",
+									}),
+								),
+							(userSession) => RTE.right(userSession),
+						),
+					),
+				),
+				RTE.chainW((userSession) => {
+					if (Date.now() >= userSession.session.expiresAt.getTime()) {
+						return pipe(
+							invalidateSession({
+								sessionId: userSession.session.id,
+							}),
 							effectReaderTaskEitherBoth(
 								(error) =>
 									context.logger.error(
 										error,
 										getLogErrorMessage(
-											"Getting user session by id",
+											"Invalidating session",
 										),
 									),
 								(value) =>
 									context.logger.info(
 										value,
 										getLogSuccessMessage(
-											"Getting user session by id",
+											"Invalidating session",
 										),
 									),
 							),
-						),
-					),
-					RTE.chainW((optionalUserSession) =>
-						pipe(
-							optionalUserSession,
-							O.matchW(
-								() =>
+							RTE.chainW(() =>
+								pipe(
 									RTE.left(
 										createCodeError({
-											code: "session-not-found",
-											message: "Session not found",
+											code: "session-expired",
+											message: "Session expired",
 										}),
 									),
-								(userSession) => RTE.right(userSession),
+									effectReaderTaskEitherError((error) =>
+										context.logger.error(
+											error,
+											"Session expired",
+										),
+									),
+								),
 							),
-						),
-					),
-					RTE.chainW((userSession) => {
-						if (
-							Date.now() >=
-							userSession.session.expiresAt.getTime()
-						) {
-							return pipe(
-								invalidateSession({
-									sessionId: userSession.session.id,
-								}),
-								effectReaderTaskEitherBoth(
-									(error) =>
-										context.logger.error(
-											error,
-											getLogErrorMessage(
-												"Invalidating session",
-											),
-										),
-									(value) =>
-										context.logger.info(
-											value,
-											getLogSuccessMessage(
-												"Invalidating session",
-											),
-										),
+						);
+					}
+
+					return RTE.right(userSession);
+				}),
+				RTE.chainW((userSession) => {
+					if (
+						Date.now() >=
+						userSession.session.expiresAt.getTime() -
+							1000 * 60 * 60 * 24 * 15
+					) {
+						return pipe(
+							updateSessionById({
+								id: userSession.session.id,
+								expiresAt: new Date(
+									Date.now() + 1000 * 60 * 60 * 24 * 30,
 								),
-								RTE.chainW(() =>
-									pipe(
-										RTE.left(
-											createCodeError({
-												code: "session-expired",
-												message: "Session expired",
-											}),
-										),
-										effectReaderTaskEitherError((error) =>
-											context.logger.error(
-												error,
-												"Session expired",
-											),
+							}),
+							effectReaderTaskEitherBoth(
+								(error) =>
+									context.logger.error(
+										error,
+										getLogErrorMessage(
+											"Updating session by id",
 										),
 									),
-								),
-							);
-						}
-
-						return RTE.right(userSession);
-					}),
-					RTE.chainW((userSession) => {
-						if (
-							Date.now() >=
-							userSession.session.expiresAt.getTime() -
-								1000 * 60 * 60 * 24 * 15
-						) {
-							return pipe(
-								updateSessionById({
-									id: userSession.session.id,
-									expiresAt: new Date(
-										Date.now() + 1000 * 60 * 60 * 24 * 30,
+								(value) =>
+									context.logger.info(
+										value,
+										getLogSuccessMessage(
+											"Updating session by id",
+										),
 									),
-								}),
-								effectReaderTaskEitherBoth(
-									(error) =>
-										context.logger.error(
-											error,
-											getLogErrorMessage(
-												"Updating session by id",
-											),
-										),
-									(value) =>
-										context.logger.info(
-											value,
-											getLogSuccessMessage(
-												"Updating session by id",
-											),
-										),
-								),
-								RTE.map(() => userSession),
-							);
-						}
+							),
+							RTE.map(() => userSession),
+						);
+					}
 
-						return RTE.right(userSession);
-					}),
-				),
+					return RTE.right(userSession);
+				}),
+				RTE.local(() => context),
 			),
 		),
 	);
@@ -262,27 +260,27 @@ interface InvalidateSessionParams {
 }
 
 export const invalidateSession = (params: InvalidateSessionParams) =>
-	RTE.local((context: AppLoggerContext) => ({
-		logger: createUseCaseLogger(context.logger, "INVALIDATE SESSION"),
-	}))(
-		pipe(
-			RTE.ask<AppLoggerContext>(),
-			RTE.chainW((context) =>
-				pipe(
-					deleteSessionById({ id: params.sessionId }),
-					effectReaderTaskEitherBoth(
-						(error) =>
-							context.logger.error(
-								error,
-								getLogErrorMessage("Deleting session by id"),
-							),
-						(value) =>
-							context.logger.info(
-								value,
-								getLogSuccessMessage("Deleting session by id"),
-							),
-					),
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(context.logger, "INVALIDATE SESSION"),
+		})),
+		RTE.chainW((context) =>
+			pipe(
+				deleteSessionById({ id: params.sessionId }),
+				effectReaderTaskEitherBoth(
+					(error) =>
+						context.logger.error(
+							error,
+							getLogErrorMessage("Deleting session by id"),
+						),
+					(value) =>
+						context.logger.info(
+							value,
+							getLogSuccessMessage("Deleting session by id"),
+						),
 				),
+				RTE.local(() => context),
 			),
 		),
 	);

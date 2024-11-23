@@ -17,47 +17,47 @@ interface CheckIsUserEmailAlreadyExistsParams {
 export const checkIsUserEmailAlreadyExists = (
 	params: CheckIsUserEmailAlreadyExistsParams,
 ) =>
-	RTE.local((context: AppLoggerContext) => ({
-		logger: createUseCaseLogger(
-			context.logger,
-			"CHECK IS USER EMAIL ALREADY EXISTS",
-		),
-	}))(
-		pipe(
-			RTE.ask<AppLoggerContext>(),
-			RTE.chainW((context) =>
-				pipe(
-					getUserByEmail({ email: params.userEmail }),
-					effectReaderTaskEitherBoth(
-						(error) =>
-							context.logger.error(
-								error,
-								getLogErrorMessage("Getting user by email"),
-							),
-						(value) =>
-							context.logger.info(
-								value,
-								getLogSuccessMessage("Getting user by email"),
-							),
-					),
-					RTE.chainW((optionUser) =>
-						pipe(
-							optionUser,
-							O.fold(
-								() => RTE.right(params),
-								() =>
-									RTE.left(
-										createCodeError({
-											code: "user-email-already-exist",
-											message:
-												"The User email already exists",
-											cause: { email: params.userEmail },
-										}),
-									),
-							),
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(
+				context.logger,
+				"CHECK IS USER EMAIL ALREADY EXISTS",
+			),
+		})),
+		RTE.chainW((context) =>
+			pipe(
+				getUserByEmail({ email: params.userEmail }),
+				effectReaderTaskEitherBoth(
+					(error) =>
+						context.logger.error(
+							error,
+							getLogErrorMessage("Getting user by email"),
+						),
+					(value) =>
+						context.logger.info(
+							value,
+							getLogSuccessMessage("Getting user by email"),
+						),
+				),
+				RTE.chainW((optionUser) =>
+					pipe(
+						optionUser,
+						O.fold(
+							() => RTE.right(params),
+							() =>
+								RTE.left(
+									createCodeError({
+										code: "user-email-already-exist",
+										message:
+											"The User email already exists",
+										cause: { email: params.userEmail },
+									}),
+								),
 						),
 					),
 				),
+				RTE.local(() => context),
 			),
 		),
 	);
@@ -68,57 +68,57 @@ interface CreateUserParams {
 }
 
 export const createUser = (params: CreateUserParams) =>
-	RTE.local((context: AppLoggerContext) => ({
-		logger: createUseCaseLogger(
-			context.logger,
-			"CHECK IS USER EMAIL ALREADY EXISTS",
-		),
-	}))(
-		pipe(
-			RTE.ask<AppLoggerContext>(),
-			RTE.chainW((context) =>
-				pipe(
-					// check the email exists or not
-					checkIsUserEmailAlreadyExists(params),
-					effectReaderTaskEitherBoth(
-						(error) =>
-							context.logger.error(
-								error,
-								getLogErrorMessage(
-									"Checking is user email already exists",
-								),
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(
+				context.logger,
+				"CHECK IS USER EMAIL ALREADY EXISTS",
+			),
+		})),
+		RTE.chainW((context) =>
+			pipe(
+				// check the email exists or not
+				checkIsUserEmailAlreadyExists(params),
+				effectReaderTaskEitherBoth(
+					(error) =>
+						context.logger.error(
+							error,
+							getLogErrorMessage(
+								"Checking is user email already exists",
 							),
-						(value) =>
-							context.logger.info(
-								value,
-								getLogSuccessMessage(
-									"Checking is user email already exists",
-								),
+						),
+					(value) =>
+						context.logger.info(
+							value,
+							getLogSuccessMessage(
+								"Checking is user email already exists",
 							),
-					),
+						),
+				),
 
-					// Create the user
-					RTE.chainW(() =>
-						pipe(
-							primtiveCreateUser({
-								name: params.userName,
-								email: params.userEmail,
-							}),
-							effectReaderTaskEitherBoth(
-								(error) =>
-									context.logger.error(
-										error,
-										getLogErrorMessage("Creating user"),
-									),
-								(value) =>
-									context.logger.info(
-										value,
-										getLogSuccessMessage("Creating user"),
-									),
-							),
+				// Create the user
+				RTE.chainW(() =>
+					pipe(
+						primtiveCreateUser({
+							name: params.userName,
+							email: params.userEmail,
+						}),
+						effectReaderTaskEitherBoth(
+							(error) =>
+								context.logger.error(
+									error,
+									getLogErrorMessage("Creating user"),
+								),
+							(value) =>
+								context.logger.info(
+									value,
+									getLogSuccessMessage("Creating user"),
+								),
 						),
 					),
 				),
+				RTE.local(() => context),
 			),
 		),
 	);

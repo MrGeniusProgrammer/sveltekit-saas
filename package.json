@@ -16,7 +16,9 @@
 		"db:generate": "cross-env NODE_ENV=development drizzle-kit generate --config=drizzle.config.ts",
 		"db:push": "cross-env NODE_ENV=development drizzle-kit push --config=drizzle.config.ts",
 		"db:reset": "pnpm run db:clear && pnpm run db:push && pnpm run db:setup",
-		"db:setup": ""
+		"db:setup": "",
+		"test:unit": "vitest",
+		"test": "npm run test:unit -- --run"
 	},
 	"devDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "^4.4.0",
@@ -79,6 +81,7 @@
 		"typescript-eslint": "^8.14.0",
 		"vaul-svelte": "1.0.0-next.2",
 		"vite": "^5.0.3",
+		"vitest": "^2.0.4",
 		"zod": "^3.23.8"
 	},
 	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
