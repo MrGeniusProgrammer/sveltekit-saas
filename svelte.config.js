@@ -16,6 +16,10 @@ const config = {
 			"@/*": "./src/lib/*",
 		},
 	},
+
+	compilerOptions: {
+		css: "injected",
+	},
 };
 
 export default config;

@@ -5,9 +5,10 @@ import { createTransport } from "nodemailer";
 
 const transport = createTransport(
 	{
+		service: env.SMTP_SERVICE,
 		host: env.SMTP_HOST,
 		port: env.SMTP_PORT,
-		secure: env.NODE_ENV !== "development",
+		secure: false,
 		auth: {
 			user: env.SMTP_AUTH_USER,
 			pass: env.SMTP_AUTH_PASSWORD,

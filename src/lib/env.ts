@@ -20,9 +20,10 @@ export const env = createEnv({
 		SMTP_AUTH_USER: z.string().min(1),
 		SMTP_AUTH_PASSWORD: z.string().min(1),
 		SMTP_HOST: z.string().min(1),
+		SMTP_SERVICE: z.string().min(1),
 		SMTP_PORT: z.coerce.number(),
 		SMTP_FROM_USERNAME: z.string().min(1),
-		SMTP_FROM_EMAIL: z.string().min(1),
+		SMTP_FROM_EMAIL: z.string().min(1).email(),
 
 		NODE_ENV: z.enum(["development", "production", "preview"]),
 	},
