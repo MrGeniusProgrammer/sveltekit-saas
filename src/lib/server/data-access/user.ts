@@ -29,7 +29,7 @@ interface CreateUserParams {
 export const createUser = (params: CreateUserParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(context.logger, "CREATE USER"),
 		})),
 		RTE.chainTaskEitherKW((context) =>
@@ -56,7 +56,7 @@ interface GetUserByEmailParams {
 export const getUserByEmail = (params: GetUserByEmailParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(context.logger, "GET USER BY EMAIL"),
 		})),
 		RTE.chainTaskEitherKW((context) =>

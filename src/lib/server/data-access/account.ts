@@ -40,7 +40,7 @@ interface CreateAccountParams {
 export const createAccount = (params: CreateAccountParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(context.logger, "CREATE ACCOUNT"),
 		})),
 		RTE.chainTaskEitherKW((context) =>
@@ -70,7 +70,7 @@ export const getAccountByProviderAndId = (
 ) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(
 				context.logger,
 				"GET ACCOUNT BY PROVIDER AND ID",

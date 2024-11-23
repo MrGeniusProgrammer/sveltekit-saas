@@ -27,7 +27,7 @@ interface CreateSessionParams {
 export const createSession = (params: CreateSessionParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(context.logger, "CREATE SESSION"),
 		})),
 		RTE.chainTaskEitherKW((context) =>
@@ -54,7 +54,7 @@ interface GetUserSessionByIdParams {
 export const getUserSessionById = (params: GetUserSessionByIdParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(
 				context.logger,
 				"GET USER SESSION BY ID",
@@ -93,7 +93,7 @@ interface DeleteSessionByIdParams {
 export const deleteSessionById = (params: DeleteSessionByIdParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(
 				context.logger,
 				"DELETE SESSION BY ID",
@@ -129,7 +129,7 @@ interface UpdateSessionByIdParams {
 export const updateSessionById = (params: UpdateSessionByIdParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.local((context: AppLoggerContext) => ({
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(
 				context.logger,
 				"UPDATE SESSION BY ID",

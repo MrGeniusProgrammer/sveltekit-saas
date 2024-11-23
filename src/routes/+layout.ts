@@ -17,7 +17,6 @@ export const load: LayoutLoad = async (event) => {
 	const api = trpc(event, queryClient);
 
 	return {
-		...event.data,
 		queryClient,
 		api,
 	};
