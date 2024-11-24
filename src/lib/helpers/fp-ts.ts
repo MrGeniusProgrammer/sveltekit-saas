@@ -1,5 +1,6 @@
 import {
 	E,
+	isLeft,
 	pipe,
 	R,
 	RE,
@@ -117,3 +118,11 @@ export const effectEitherError =
 				return value;
 			}),
 		);
+
+export const runEither = <E, A>(value: Either<E, A>) => {
+	if (isLeft(value)) {
+		return value.left;
+	} else {
+		return value.right;
+	}
+};

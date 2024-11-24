@@ -14,6 +14,7 @@ export {
 	pipe,
 	unsafeCoerce,
 } from "fp-ts/lib/function";
+export { sequenceS, sequenceT } from "fp-ts/lib/Apply";
 export { type Functor } from "fp-ts/lib/Functor";
 export { type HKT } from "fp-ts/lib/HKT";
 export { type Invariant } from "fp-ts/lib/Invariant";

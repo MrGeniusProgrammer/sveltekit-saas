@@ -1,9 +1,16 @@
 import { AccountProvider, AccountProviderId } from "@/entities/account";
 import { UserEmail, UserName } from "@/entities/user";
 import { env } from "@/env";
+import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
+import {
+	effectReaderTaskEither,
+	effectReaderTaskEitherBoth,
+	effectReaderTaskEitherError,
+} from "@/helpers/fp-ts";
+import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
 import { zodValidate } from "@/helpers/schema";
-import { flow, O, pipe, RT, RTE, TE, type Option } from "@/packages/fp-ts";
+import { O, pipe, RT, RTE, TE, type Option } from "@/packages/fp-ts";
 import {
 	decodeIdToken,
 	generateCodeVerifier,
@@ -17,6 +24,7 @@ import {
 	createAccount,
 	getAccountByProviderAndId,
 } from "../data-access/account";
+import { createUseCaseLogger } from "./common";
 import { createSession, generateSessionToken } from "./session";
 import { createUser } from "./user";
 
@@ -41,66 +49,141 @@ interface CreateUserWithProviderParams {
 
 export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
 	pipe(
-		getAccountByProviderAndId({
-			provider: params.accountProvider,
-			providerId: params.accountProviderId,
-		}),
-		RTE.chainW((optionalAccount) =>
-			pipe(
-				optionalAccount,
-				O.foldW(
-					() =>
-						pipe(
-							createUser({
-								userName: params.userName,
-								userEmail: params.userEmail,
-							}),
-							RTE.chainW((user) =>
-								createAccount({
-									providerId: params.accountProviderId,
-									provider: params.accountProvider,
-									userId: user.id,
-								}),
-							),
-						),
-					RTE.of,
-				),
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(
+				context.logger,
+				"CREATE USER WITH PROVIDER",
 			),
-		),
-
-		RTE.chainW((account) =>
+		})),
+		RTE.chainW((context) =>
 			pipe(
-				RTE.Do,
-				RTE.apSW(
-					"sessionToken",
-					RTE.fromReader(generateSessionToken()),
+				getAccountByProviderAndId({
+					provider: params.accountProvider,
+					providerId: params.accountProviderId,
+				}),
+				effectReaderTaskEitherError((error) =>
+					context.logger.error(
+						error,
+						getLogErrorMessage(
+							"Getting account by provider and id",
+						),
+					),
 				),
-				RTE.bindW("session", ({ sessionToken }) =>
-					createSession({
-						sessionToken,
-						userId: account.userId,
-					}),
+				RTE.chainW((optionalAccount) =>
+					pipe(
+						optionalAccount,
+						O.foldW(
+							() =>
+								pipe(
+									RTE.fromIO(() =>
+										context.logger.info(
+											"No such user provider found",
+										),
+									),
+									RTE.chainW(() =>
+										pipe(
+											createUser({
+												userName: params.userName,
+												userEmail: params.userEmail,
+											}),
+											effectReaderTaskEitherBoth(
+												(error) =>
+													context.logger.error(
+														error,
+														getLogErrorMessage(
+															"Creating user",
+														),
+													),
+												(value) =>
+													context.logger.info(
+														value,
+														getLogErrorMessage(
+															"Creating user",
+														),
+													),
+											),
+										),
+									),
+									RTE.chainW((user) =>
+										pipe(
+											createAccount({
+												providerId:
+													params.accountProviderId,
+												provider:
+													params.accountProvider,
+												userId: user.id,
+											}),
+											effectReaderTaskEitherBoth(
+												(error) =>
+													context.logger.error(
+														error,
+														getLogErrorMessage(
+															"Creating user account",
+														),
+													),
+												(value) =>
+													context.logger.info(
+														value,
+														getLogErrorMessage(
+															"Creating user account",
+														),
+													),
+											),
+										),
+									),
+								),
+							(value) =>
+								pipe(
+									RTE.of(value),
+									effectReaderTaskEither((value) =>
+										context.logger.info(
+											value,
+											getLogSuccessMessage(
+												"Getting account by provider and id",
+											),
+										),
+									),
+								),
+						),
+					),
 				),
+
+				RTE.chainW((account) =>
+					pipe(
+						RTE.Do,
+						RTE.apSW(
+							"sessionToken",
+							RTE.fromReader(generateSessionToken()),
+						),
+						RTE.bindW("session", ({ sessionToken }) =>
+							createSession({
+								sessionToken,
+								userId: account.userId,
+							}),
+						),
+					),
+				),
+
+				RTE.local(() => context),
 			),
 		),
 	);
 
-interface HandleOAuthCallbackParams {
-	code: Option<string>;
-	state: Option<string>;
-	storedState: Option<string>;
-}
-
-interface HandleOAuthCallbackContructor {
-	validateAuthorizationCode: (params: {
-		code: string;
-		state: string;
-	}) => Promise<OAuth2Tokens>;
-	fetchOAuthUser: (params: {
-		code: string;
-		state: string;
-		tokens: OAuth2Tokens;
-	}) => Promise<{
+interface HandleOAuthCallbackContructor<T extends Record<string, unknown>> {
+	validateAuthorizationCode: (
+		params: T & {
+			code: string;
+			state: string;
+		},
+	) => Promise<OAuth2Tokens>;
+	fetchOAuthUser: (
+		params: T & {
+			code: string;
+			state: string;
+			tokens: OAuth2Tokens;
+		},
+	) => Promise<{
 		accountProviderId: AccountProviderId;
 		userName: UserName;
 		userEmail: UserEmail;
@@ -109,181 +192,169 @@ interface HandleOAuthCallbackContructor {
 }
 
 export const handleOAuthCallback =
-	(constructor: HandleOAuthCallbackContructor) =>
-	(params: HandleOAuthCallbackParams) =>
+	<T extends Record<string, unknown>>(
+		constructor: HandleOAuthCallbackContructor<T>,
+	) =>
+	(
+		data: Option<
+			T & {
+				storedState: string;
+				state: string;
+				code: string;
+			}
+		>,
+	) =>
 		pipe(
-			// Step 1: Extract required parameters and validate state
-			O.Do,
-			O.apS("code", params.code),
-			O.apS("state", params.state),
-			O.apS("storedState", params.storedState),
-			O.filter(({ state, storedState }) => state === storedState),
-			RTE.fromOption(() =>
-				createCodeError({
-					code: "invalid-state",
-					message: "Missing or mismatched state parameter",
-				}),
-			), // Converts missing/invalid state into a CodeError
-
-			RTE.bindW("tokens", (data) =>
-				// Step 2: Validate the authorization code
-				RTE.fromTaskEither(
-					TE.tryCatch(
-						() => constructor.validateAuthorizationCode(data),
-						(error) =>
-							createCodeError({
-								code: "invalid-auth-code",
-								message: "Authorization code validation failed",
-								cause: error,
-							}),
-					),
+			RTE.ask<AppLoggerContext>(),
+			RTE.map((context) => ({
+				logger: createUseCaseLogger(
+					context.logger,
+					"HANDLE OAUTH CALLBACK",
 				),
-			),
-
-			RTE.bindW("oauthUser", (data) =>
-				// Step 3: Fetch GitHub user info
+			})),
+			RTE.chainW((context) =>
 				pipe(
-					RTE.fromTaskEither(
-						TE.tryCatch(
-							() => constructor.fetchOAuthUser(data),
-							(error) =>
-								createCodeError({
-									code: "fetch-oauth-user-failed",
-									message:
-										"Failed to fetch user info from GitHub",
-									cause: error,
-								}),
-						),
-					),
-					RTE.chainEitherKW((data) =>
-						zodValidate(
-							z.object({
-								accountProviderId: AccountProviderId,
-								userName: UserName,
-								userEmail: UserEmail,
-							}),
-							data,
-						),
-					),
-				),
-			),
+					data,
 
-			RTE.chainW(({ oauthUser }) =>
-				pipe(
-					createUserWithProvider({
-						userEmail: oauthUser.userEmail,
-						userName: oauthUser.userName,
-						accountProviderId: oauthUser.accountProviderId,
-						accountProvider: constructor.accountProvider,
-					}),
-				),
-			),
-		);
-
-interface HandleOAuthCallbackWithVerifierParams {
-	code: Option<string>;
-	state: Option<string>;
-	storedState: Option<string>;
-	codeVerifier: Option<string>;
-}
-
-interface HandleOAuthCallbackWithVerifierContructor {
-	validateAuthorizationCode: (params: {
-		code: string;
-		state: string;
-		codeVerifier: string;
-	}) => Promise<OAuth2Tokens>;
-	getOAuthUser: (params: {
-		code: string;
-		state: string;
-		codeVerifier: string;
-		tokens: OAuth2Tokens;
-	}) => {
-		accountProviderId: AccountProviderId;
-		userName: UserName;
-		userEmail: UserEmail;
-	};
-	accountProvider: AccountProvider;
-}
-
-export const handleOAuthCallbackWithVerifier =
-	(constructor: HandleOAuthCallbackWithVerifierContructor) =>
-	(params: HandleOAuthCallbackWithVerifierParams) =>
-		pipe(
-			// Step 1: Extract required parameters and validate state
-			O.Do,
-			O.apS("code", params.code),
-			O.apS("state", params.state),
-			O.apS("storedState", params.storedState),
-			O.apS("codeVerifier", params.codeVerifier),
-			O.filter(({ state, storedState }) => state === storedState),
-			RTE.fromOption(() =>
-				createCodeError({
-					code: "invalid-state",
-					message: "Missing or mismatched state parameter",
-				}),
-			), // Converts missing/invalid state into a CodeError
-
-			RTE.bindW("tokens", (data) =>
-				// Step 2: Validate the authorization code
-				RTE.fromTaskEither(
-					TE.tryCatch(
-						() => constructor.validateAuthorizationCode(data),
-						(error) =>
-							createCodeError({
-								code: "invalid-auth-code",
-								message: "Authorization code validation failed",
-								cause: error,
-							}),
-					),
-				),
-			),
-
-			RTE.bindW("oauthUser", (data) =>
-				// Step 3: Fetch oauth user info
-				RTE.fromEither(
-					zodValidate(
-						z.object({
-							accountProviderId: AccountProviderId,
-							userName: UserName,
-							userEmail: UserEmail,
+					O.filter(({ state, storedState }) => state === storedState),
+					RTE.fromOption(() =>
+						createCodeError({
+							code: "invalid-state",
+							message: "Missing or mismatched state parameter",
 						}),
-						constructor.getOAuthUser(data),
 					),
-				),
-			),
 
-			RTE.chainW(({ oauthUser }) =>
-				pipe(
-					createUserWithProvider({
-						userEmail: oauthUser.userEmail,
-						userName: oauthUser.userName,
-						accountProviderId: oauthUser.accountProviderId,
-						accountProvider: constructor.accountProvider,
-					}),
+					effectReaderTaskEitherBoth(
+						(error) =>
+							context.logger.error(
+								error,
+								getLogErrorMessage("Checking valid state"),
+							),
+						(value) =>
+							context.logger.info(
+								value,
+								getLogSuccessMessage("Checking valid state"),
+							),
+					),
+
+					RTE.chainW((data) =>
+						pipe(
+							// Step 2: Validate the authorization code
+							RTE.fromTaskEither(
+								TE.tryCatch(
+									() =>
+										constructor.validateAuthorizationCode(
+											data,
+										),
+									(error) =>
+										createCodeError({
+											code: "invalid-auth-code",
+											message:
+												"Authorization code validation failed",
+											cause: error,
+										}),
+								),
+							),
+
+							effectReaderTaskEitherBoth(
+								(error) =>
+									context.logger.error(
+										error,
+										getLogErrorMessage(
+											"Validating authorization code",
+										),
+									),
+								(value) =>
+									context.logger.info(
+										value,
+										getLogSuccessMessage(
+											"Validating authorization code",
+										),
+									),
+							),
+
+							RTE.map((tokens) => ({ tokens, ...data })),
+						),
+					),
+
+					RTE.chainW((data) =>
+						// Step 3: Fetch oauth user info
+						pipe(
+							RTE.fromTaskEither(
+								TE.tryCatch(
+									() => constructor.fetchOAuthUser(data),
+									(error) =>
+										createCodeError({
+											code: "fetch-oauth-user-failed",
+											message:
+												"Failed to fetch user info from GitHub",
+											cause: error,
+										}),
+								),
+							),
+
+							effectReaderTaskEitherBoth(
+								(error) =>
+									context.logger.error(
+										error,
+										getLogErrorMessage(
+											"Fetching OAuth user info",
+										),
+									),
+								(value) =>
+									context.logger.info(
+										value,
+										getLogSuccessMessage(
+											"Fetching OAuth user info",
+										),
+									),
+							),
+
+							RTE.chainEitherKW((data) =>
+								zodValidate(
+									z.object({
+										accountProviderId: AccountProviderId,
+										userName: UserName,
+										userEmail: UserEmail,
+									}),
+									data,
+								),
+							),
+						),
+					),
+
+					RTE.chainW((oauthUser) =>
+						pipe(
+							createUserWithProvider({
+								userEmail: oauthUser.userEmail,
+								userName: oauthUser.userName,
+								accountProviderId: oauthUser.accountProviderId,
+								accountProvider: constructor.accountProvider,
+							}),
+						),
+					),
+					RTE.local(() => context),
 				),
 			),
 		);
 
-export const handleGithubOAuthCallback = flow(
-	handleOAuthCallback({
-		validateAuthorizationCode: ({ code }) =>
-			github.validateAuthorizationCode(code),
-		fetchOAuthUser: ({ tokens }) =>
-			fetch("https://api.github.com/user", {
-				headers: {
-					Authorization: `Bearer ${tokens.accessToken()}`,
-				},
-			})
-				.then((res) => res.json())
-				.then((data) => ({
-					userEmail: data.email,
-					userName: data.login,
-					accountProviderId: data.id,
-				})),
-		accountProvider: "github",
-	}),
-);
+export const handleGithubOAuthCallback = handleOAuthCallback({
+	validateAuthorizationCode: ({ code }) =>
+		github.validateAuthorizationCode(code),
+	fetchOAuthUser: ({ tokens }) =>
+		fetch("https://api.github.com/user", {
+			headers: {
+				Authorization: `Bearer ${tokens.accessToken()}`,
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => ({
+				userEmail: data.email,
+				userName: data.login,
+				accountProviderId: data.id,
+			})),
+	accountProvider: "github",
+});
 
 export const getGithubOAuthUrl = () =>
 	pipe(
@@ -294,29 +365,29 @@ export const getGithubOAuthUrl = () =>
 		),
 	);
 
-export const handleGoogleOAuthCallback = flow(
-	handleOAuthCallbackWithVerifier({
-		validateAuthorizationCode: ({ code, codeVerifier }) =>
-			google.validateAuthorizationCode(code, codeVerifier),
-		getOAuthUser: ({ tokens }) => {
-			const claims = decodeIdToken(tokens.idToken()) as unknown as {
-				sub: string;
-				name: string;
-				email: string;
-			};
-			const googleUserId = claims.sub;
-			const username = claims.name;
-			const email = claims.email;
+export const handleGoogleOAuthCallback = handleOAuthCallback<{
+	codeVerifier: string;
+}>({
+	validateAuthorizationCode: ({ code, codeVerifier }) =>
+		google.validateAuthorizationCode(code, codeVerifier),
+	fetchOAuthUser: async ({ tokens }) => {
+		const claims = decodeIdToken(tokens.idToken()) as unknown as {
+			sub: string;
+			name: string;
+			email: string;
+		};
+		const googleUserId = claims.sub;
+		const username = claims.name;
+		const email = claims.email;
 
-			return {
-				accountProviderId: googleUserId,
-				userName: username,
-				userEmail: email,
-			};
-		},
-		accountProvider: "google",
-	}),
-);
+		return {
+			accountProviderId: googleUserId,
+			userName: username,
+			userEmail: email,
+		};
+	},
+	accountProvider: "google",
+});
 
 export const getGoogleOAuthUrl = () =>
 	pipe(

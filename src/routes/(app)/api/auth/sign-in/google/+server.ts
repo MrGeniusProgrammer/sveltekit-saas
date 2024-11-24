@@ -1,3 +1,4 @@
+import { logger } from "@/helpers/logger";
 import { pipe, RT } from "@/packages/fp-ts";
 import { setOauthCookie } from "@/server/auth";
 import { getGoogleOAuthUrl } from "@/server/use-cases/auth";
@@ -24,4 +25,4 @@ export const GET = (event: RequestEvent) =>
 				headers: { Location: data.url.toString() },
 			});
 		}),
-	);
+	)({ logger })();
