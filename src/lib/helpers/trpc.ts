@@ -36,7 +36,7 @@ export function trpc(init: TRPCClientInit, queryClient?: QueryClient) {
 
 export type ApiClient = ReturnType<typeof svelteQueryWrapper<Router>>;
 
-const apiClientContextSymbol = "helpers--trpc--api-client";
+const apiClientContextSymbol = "@app/helpers/trpc";
 
 export const setApiClient = (apiClient: ApiClient) => {
 	setContext(apiClientContextSymbol, apiClient);
