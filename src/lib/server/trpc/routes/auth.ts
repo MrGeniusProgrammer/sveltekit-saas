@@ -3,6 +3,7 @@ import type { AppLoggerContext } from "@/helpers/app";
 import {
 	effectReaderTaskEither,
 	effectReaderTaskEitherBoth,
+	runEither,
 } from "@/helpers/fp-ts";
 import {
 	getLogErrorMessage,
@@ -44,19 +45,18 @@ export const auth = router({
 								getLogSuccessMessage("Invalidating session"),
 							),
 					),
-					RTE.mapError((error) => {
-						switch (error.code) {
-							default:
-								return new TRPCError({
-									code: "INTERNAL_SERVER_ERROR",
-								});
-						}
-					}),
+					RTE.mapError(
+						(error) =>
+							new TRPCError({
+								code: "INTERNAL_SERVER_ERROR",
+								message: error.message,
+							}),
+					),
 				),
 			),
 		)({
 			logger: logger.child({}, { msgPrefix: "[TRPC MUTATION SIGN OUT]" }),
-		})(),
+		})().then(runEither),
 	),
 
 	signInWithAccountProvider: redirectAuthMiddleware
@@ -104,7 +104,7 @@ export const auth = router({
 				}
 			};
 
-			return getSelectedProvider()({})();
+			return getSelectedProvider()({ logger: logger })();
 		}),
 
 	validateRequest: protectedMiddleware.query((opts) => opts.ctx.user),
