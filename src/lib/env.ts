@@ -43,7 +43,7 @@ export const env = createEnv({
 	clientPrefix: "PUBLIC_",
 	client: {
 		// Supabase
-		PUBLIC_SUPABASE_PROJECT_ID: z.string().min(1).url(),
+		PUBLIC_SUPABASE_PROJECT_ID: z.string().min(1),
 		PUBLIC_SUPABASE_PROJECT_URL: z.string().min(1).url(),
 		PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
 	},
