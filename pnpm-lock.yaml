@@ -14,6 +14,9 @@ importers:
       '@internationalized/date':
         specifier: ^3.5.6
         version: 3.5.6
+      '@lemonsqueezy/lemonsqueezy.js':
+        specifier: ^4.0.0
+        version: 4.0.0
       '@node-rs/argon2':
         specifier: ^2.0.0
         version: 2.0.0
@@ -92,6 +95,9 @@ importers:
       drizzle-orm:
         specifier: ^0.36.3
         version: 0.36.3(postgres@3.4.5)(react@18.2.0)
+      embla-carousel-auto-scroll:
+        specifier: ^8.5.1
+        version: 8.5.1(embla-carousel@8.3.1)
       embla-carousel-svelte:
         specifier: ^8.3.1
         version: 8.3.1(svelte@5.2.1)
@@ -113,6 +119,9 @@ importers:
       globals:
         specifier: ^15.0.0
         version: 15.12.0
+      lemonsqueezy-webhooks:
+        specifier: ^0.1.2
+        version: 0.1.2
       lucide-svelte:
         specifier: ^0.460.1
         version: 0.460.1(svelte@5.2.1)
@@ -968,6 +977,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@lemonsqueezy/lemonsqueezy.js@4.0.0':
+    resolution: {integrity: sha512-xcY1/lDrY7CpIF98WKiL1ElsfoVhddP7FT0fw7ssOzrFqQsr44HgolKrQZxd9SywsCPn12OTOUieqDIokI3mFg==}
+    engines: {node: '>=20'}
 
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
@@ -1867,6 +1880,11 @@ packages:
   electron-to-chromium@1.5.62:
     resolution: {integrity: sha512-t8c+zLmJHa9dJy96yBZRXGQYoiCEnHYgFwn1asvSPZSUdVxnB62A4RASd7k41ytG3ErFBA0TpHlKg9D9SQBmLg==}
 
+  embla-carousel-auto-scroll@8.5.1:
+    resolution: {integrity: sha512-fbkZ5+kPHJnJ0aVhRClodnBuaWp8RvV/AW4ex+YhXtvkTld9ApAxmyKQsZzycQc24uz15kzyRjSTNfEvzXPYuQ==}
+    peerDependencies:
+      embla-carousel: 8.5.1
+
   embla-carousel-reactive-utils@8.3.1:
     resolution: {integrity: sha512-Js6rTTINNGnUGPu7l5kTcheoSbEnP5Ak2iX0G9uOoI8okTNLMzuWlEIpYFd1WP0Sq82FFcLkKM2oiO6jcElZ/Q==}
     peerDependencies:
@@ -2308,6 +2326,9 @@ packages:
 
   known-css-properties@0.35.0:
     resolution: {integrity: sha512-a/RAk2BfKk+WFGhhOCAYqSiFLc34k8Mt/6NWRI4joER0EYUzXIcFivjjnoD3+XU1DggLn/tZc3DOAgke7l8a4A==}
+
+  lemonsqueezy-webhooks@0.1.2:
+    resolution: {integrity: sha512-L0gaGYWv+kzxgr4oumKGY8ss1Bjty4GJdDmXiR6s3lXJfPtuO2Auw8el48N/E9O1TpSzBMxFAXjkwZD0O3WOhw==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -3879,6 +3900,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  '@lemonsqueezy/lemonsqueezy.js@4.0.0': {}
+
   '@mapbox/node-pre-gyp@1.0.11':
     dependencies:
       detect-libc: 2.0.3
@@ -4694,6 +4717,10 @@ snapshots:
 
   electron-to-chromium@1.5.62: {}
 
+  embla-carousel-auto-scroll@8.5.1(embla-carousel@8.3.1):
+    dependencies:
+      embla-carousel: 8.3.1
+
   embla-carousel-reactive-utils@8.3.1(embla-carousel@8.3.1):
     dependencies:
       embla-carousel: 8.3.1
@@ -5225,6 +5252,8 @@ snapshots:
   kleur@4.1.5: {}
 
   known-css-properties@0.35.0: {}
+
+  lemonsqueezy-webhooks@0.1.2: {}
 
   levn@0.4.1:
     dependencies:

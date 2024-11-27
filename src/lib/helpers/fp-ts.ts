@@ -126,3 +126,11 @@ export const runEither = <E, A>(value: Either<E, A>) => {
 		return value.right;
 	}
 };
+
+export const throwEither = <E, A>(value: Either<E, A>) => {
+	if (isLeft(value)) {
+		throw value.left;
+	} else {
+		return value.right;
+	}
+};

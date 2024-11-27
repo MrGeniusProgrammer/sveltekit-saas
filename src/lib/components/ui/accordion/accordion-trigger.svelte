@@ -4,7 +4,7 @@
 		Accordion as AccordionPrimitive,
 		type WithoutChild,
 	} from "bits-ui";
-	import ChevronDown from "svelte-radix/ChevronDown.svelte";
+	import { ChevronDown } from "lucide-svelte";
 
 	let {
 		ref = $bindable(null),

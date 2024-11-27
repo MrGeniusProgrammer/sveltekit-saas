@@ -17,7 +17,7 @@ import {
 	generateState,
 	GitHub,
 	Google,
-	OAuth2Tokens,
+	type OAuth2Tokens,
 } from "arctic";
 import { z } from "zod";
 import {
