@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { createEnv } from "@t3-oss/env-core";
-import { PUBLIC_BASE_URL_PORT } from "$env/static/public";
 import { z } from "zod";
 
 export const env = createEnv({
