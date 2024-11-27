@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      pino-pretty:
+        specifier: ^13.0.0
+        version: 13.0.0
     devDependencies:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.4.0
@@ -137,9 +141,6 @@ importers:
       pino:
         specifier: ^9.5.0
         version: 9.5.0
-      pino-pretty:
-        specifier: ^13.0.0
-        version: 13.0.0
       postgres:
         specifier: ^3.4.5
         version: 3.4.5

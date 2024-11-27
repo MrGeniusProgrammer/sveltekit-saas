@@ -66,7 +66,6 @@
 		"nodemailer": "^6.9.16",
 		"paneforge": "1.0.0-next.1",
 		"pino": "^9.5.0",
-		"pino-pretty": "^13.0.0",
 		"postgres": "^3.4.5",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
@@ -90,6 +89,9 @@
 		"vite": "^5.0.3",
 		"vitest": "^2.0.4",
 		"zod": "^3.23.8"
+	},
+	"dependencies": {
+		"pino-pretty": "^13.0.0"
 	},
 	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }
