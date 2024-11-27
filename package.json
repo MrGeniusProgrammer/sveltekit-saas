@@ -20,7 +20,7 @@
 		"db:migrate": "cross-env NODE_ENV=development tsx --tsconfig ./tsconfig.json ./src/scripts/db-migrate.ts",
 		"db:generate": "cross-env NODE_ENV=development drizzle-kit generate --config=drizzle.config.ts",
 		"db:push": "cross-env NODE_ENV=development drizzle-kit push --config=drizzle.config.ts",
-		"db:reset": "pnpm run db:clear && pnpm run db:push && pnpm run db:setup"
+		"db:reset": "pnpm run db:clear && pnpm run db:push && pnpm run setup:db"
 	},
 	"devDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "^4.4.0",
