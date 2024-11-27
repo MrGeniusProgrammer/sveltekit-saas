@@ -92,6 +92,9 @@ importers:
       drizzle-orm:
         specifier: ^0.36.3
         version: 0.36.3(postgres@3.4.5)(react@18.2.0)
+      embla-carousel-auto-scroll:
+        specifier: ^8.5.1
+        version: 8.5.1(embla-carousel@8.3.1)
       embla-carousel-svelte:
         specifier: ^8.3.1
         version: 8.3.1(svelte@5.2.1)
@@ -1811,6 +1814,11 @@ packages:
 
   electron-to-chromium@1.5.62:
     resolution: {integrity: sha512-t8c+zLmJHa9dJy96yBZRXGQYoiCEnHYgFwn1asvSPZSUdVxnB62A4RASd7k41ytG3ErFBA0TpHlKg9D9SQBmLg==}
+
+  embla-carousel-auto-scroll@8.5.1:
+    resolution: {integrity: sha512-fbkZ5+kPHJnJ0aVhRClodnBuaWp8RvV/AW4ex+YhXtvkTld9ApAxmyKQsZzycQc24uz15kzyRjSTNfEvzXPYuQ==}
+    peerDependencies:
+      embla-carousel: 8.5.1
 
   embla-carousel-reactive-utils@8.3.1:
     resolution: {integrity: sha512-Js6rTTINNGnUGPu7l5kTcheoSbEnP5Ak2iX0G9uOoI8okTNLMzuWlEIpYFd1WP0Sq82FFcLkKM2oiO6jcElZ/Q==}
@@ -4430,6 +4438,10 @@ snapshots:
     optional: true
 
   electron-to-chromium@1.5.62: {}
+
+  embla-carousel-auto-scroll@8.5.1(embla-carousel@8.3.1):
+    dependencies:
+      embla-carousel: 8.3.1
 
   embla-carousel-reactive-utils@8.3.1(embla-carousel@8.3.1):
     dependencies:

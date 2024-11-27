@@ -1,37 +1,22 @@
 <script lang="ts">
-	import {
-		Card,
-		CardContent,
-		CardHeader,
-		CardTitle,
-	} from "@/components/ui/card";
-	import { CircleCheck, CircleX } from "lucide-svelte";
+	import Companies from "./companies.svelte";
+	import Faq from "./faq.svelte";
+	import Features from "./features.svelte";
+	import Footer from "./footer.svelte";
+	import Header from "./header.svelte";
+	import Pricing from "./pricing.svelte";
+	import Testimonials from "./testimonials.svelte";
 </script>
 
-<div class="flex h-screen w-screen items-center justify-center">
-	<div class="flex w-full max-w-xl flex-wrap gap-2.5">
-		<Card>
-			<CardHeader>
-				<CardTitle>Basic</CardTitle>
-			</CardHeader>
-			<CardContent class="flex flex-col justify-center gap-1.5">
-				<div class="flex items-center gap-2">
-					<CircleCheck class="size-6" />
-					<p class="text-lg leading-tight">Simple</p>
-				</div>
-				<div class="flex items-center gap-2">
-					<CircleCheck class="size-6" />
-					<p class="text-lg leading-tight">Simple</p>
-				</div>
-				<div class="flex items-center gap-2">
-					<CircleCheck class="size-6" />
-					<p class="text-lg leading-tight">Simple</p>
-				</div>
-				<div class="flex items-center gap-2">
-					<CircleCheck class="size-6" />
-					<p class="text-lg leading-tight">Simple</p>
-				</div>
-			</CardContent>
-		</Card>
-	</div>
+<div class="flex min-h-screen flex-col">
+	<Header />
+	<main class="flex-grow">
+		<!-- <Hero /> -->
+		<Features />
+		<Companies />
+		<Pricing />
+		<Testimonials />
+		<Faq />
+	</main>
+	<Footer />
 </div>

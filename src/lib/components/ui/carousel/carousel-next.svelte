@@ -2,7 +2,7 @@
 	import { Button, type Props } from "@/components/ui/button/index.js";
 	import { cn } from "@/utils.js";
 	import type { WithoutChildren } from "bits-ui";
-	import ArrowRight from "svelte-radix/ArrowRight.svelte";
+	import { ArrowRight } from "lucide-svelte";
 	import { getEmblaContext } from "./context.js";
 
 	let {

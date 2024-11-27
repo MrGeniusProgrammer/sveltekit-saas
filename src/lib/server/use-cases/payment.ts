@@ -1,6 +1,12 @@
-import type { UserId } from "@/entities/user";
+import type { PaymentVariantId } from "@/entities/payment";
+import type { UserEmail, UserId, UserName } from "@/entities/user";
+import { env } from "@/env";
+import { type AppLoggerContext } from "@/helpers/app";
+import { pipe, RTE } from "@/packages/fp-ts";
 import type { DiscriminatedWebhookPayload } from "lemonsqueezy-webhooks";
+import { createPaymentCheckoutUrl } from "../data-access/payment";
 import { configureLemonSqueezy } from "../lemonsqueezy";
+import { createUseCaseLogger } from "./common";
 
 interface ProcessPaymentWebhookPayloadParams {
 	payload: DiscriminatedWebhookPayload<{
@@ -19,3 +25,31 @@ export const processPaymentWebhookPayload = (
 		}
 	}
 };
+
+interface CreateCheckoutUrlParams {
+	userId: UserId;
+	userEmail: UserEmail;
+	userName: UserName;
+	paymentVariantId: PaymentVariantId;
+}
+
+export const createCheckoutUrl = (params: CreateCheckoutUrlParams) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
+			logger: createUseCaseLogger(context.logger, "CREATE CHECKOUT URL"),
+		})),
+		RTE.chainW((context) =>
+			pipe(
+				createPaymentCheckoutUrl({
+					variantId: params.paymentVariantId,
+					userName: params.userName,
+					userEmail: params.userEmail,
+					userId: params.userId,
+					redirectUrl: `${env.PUBLIC_BASE_URL}/threads/`,
+					thankYouNote: "Thank you for signing up to despai!",
+				}),
+				RTE.local(() => context),
+			),
+		),
+	);

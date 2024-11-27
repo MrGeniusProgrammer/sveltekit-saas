@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { createEnv } from "@t3-oss/env-core";
+import { PUBLIC_BASE_URL_PORT } from "$env/static/public";
 import { z } from "zod";
 
 export const env = createEnv({
@@ -46,6 +47,10 @@ export const env = createEnv({
 		PUBLIC_SUPABASE_PROJECT_ID: z.string().min(1),
 		PUBLIC_SUPABASE_PROJECT_URL: z.string().min(1).url(),
 		PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+
+		PUBLIC_BASE_URL: z.string().min(1).url(),
+		PUBLIC_BASE_URL_PORT: z.coerce.number(),
+		PUBLIC_BASE_URL_DOMAIN: z.string().min(1),
 	},
 
 	runtimeEnv: process.env,
