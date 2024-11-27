@@ -38,6 +38,15 @@ export const env = createEnv({
 		SMTP_FROM_EMAIL: z.string().min(1).email(),
 
 		NODE_ENV: z.enum(["development", "production", "preview"]),
+		LOG_LEVEL: z.enum([
+			"info",
+			"debug",
+			"warn",
+			"error",
+			"fatal",
+			"trace",
+			"silent",
+		]),
 	},
 
 	clientPrefix: "PUBLIC_",

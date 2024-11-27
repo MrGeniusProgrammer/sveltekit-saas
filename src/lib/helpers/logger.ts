@@ -1,8 +1,9 @@
+import { env } from "@/env";
 import pino from "pino";
 import { effectTaskEitherBoth } from "./fp-ts";
 
 const rootLogger = pino({
-	level: "debug",
+	level: env.LOG_LEVEL,
 	browser: {
 		disabled: globalThis.window === undefined,
 	},
