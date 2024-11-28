@@ -326,18 +326,6 @@ export const handleOAuthCallback =
 										),
 									),
 							),
-
-							RTE.chainEitherKW((data) =>
-								zodValidate(
-									z.object({
-										accountProviderId: AccountProviderId,
-										userName: UserName,
-										userEmail: UserEmail,
-										userImage: UserImage,
-									}),
-									data,
-								),
-							),
 						),
 					),
 
