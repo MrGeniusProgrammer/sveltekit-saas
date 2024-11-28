@@ -31,13 +31,13 @@ import { createUser } from "./user";
 export const github = new GitHub(
 	env.GITHUB_CLIENT_ID,
 	env.GITHUB_CLIENT_SECRET,
-	"http://localhost:5173/api/auth/sign-in/github/callback",
+	`${env.PUBLIC_BASE_URL}/api/auth/sign-in/github/callback`,
 );
 
 export const google = new Google(
 	env.GOOGLE_CLIENT_ID,
 	env.GOOGLE_CLIENT_SECRET,
-	"http://localhost:5173/api/auth/sign-in/google/callback",
+	`${env.PUBLIC_BASE_URL}/api/auth/sign-in/google/callback`,
 );
 
 interface CreateUserWithProviderParams {
