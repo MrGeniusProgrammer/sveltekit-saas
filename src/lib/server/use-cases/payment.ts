@@ -46,8 +46,9 @@ export const createCheckoutUrl = (params: CreateCheckoutUrlParams) =>
 					userName: params.userName,
 					userEmail: params.userEmail,
 					userId: params.userId,
-					redirectUrl: `${env.PUBLIC_BASE_URL}/threads/`,
-					thankYouNote: "Thank you for signing up to despai!",
+					redirectUrl: `${env.PUBLIC_BASE_URL}/`,
+					thankYouNote:
+						"Thank you for signing up to Sveltekit SaaS kit!",
 				}),
 				RTE.local(() => context),
 			),

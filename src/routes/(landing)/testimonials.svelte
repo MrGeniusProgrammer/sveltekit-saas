@@ -69,6 +69,7 @@
 		]}
 		opts={{
 			loop: true,
+			dragFree: true,
 		}}
 		class="flex overflow-hidden whitespace-nowrap"
 	>

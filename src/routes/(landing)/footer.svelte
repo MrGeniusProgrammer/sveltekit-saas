@@ -69,21 +69,21 @@
 				<ul class="space-y-2">
 					<li>
 						<a
-							href="/privacy"
+							href="/legal/privacy-policy"
 							class="text-sm text-muted-foreground hover:text-primary"
 							>Privacy Policy</a
 						>
 					</li>
 					<li>
 						<a
-							href="/terms"
+							href="/legal/terms-of-service"
 							class="text-sm text-muted-foreground hover:text-primary"
 							>Terms of Service</a
 						>
 					</li>
 					<li>
 						<a
-							href="/cookie-policy"
+							href="/legal/cookie-policy"
 							class="text-sm text-muted-foreground hover:text-primary"
 							>Cookie Policy</a
 						>

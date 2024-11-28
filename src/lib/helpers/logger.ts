@@ -1,18 +1,18 @@
-import { env } from "@/env";
+import { building } from "$app/environment";
+import { PUBLIC_LOG_LEVEL } from "$env/static/public";
 import pino from "pino";
 import { effectTaskEitherBoth } from "./fp-ts";
 
 const rootLogger = pino({
-	level: env.LOG_LEVEL,
+	level: PUBLIC_LOG_LEVEL,
 	browser: {
 		disabled: globalThis.window === undefined,
 	},
-	transport:
-		env.NODE_ENV === "development"
-			? {
-					target: "pino-pretty",
-				}
-			: undefined,
+	transport: !building
+		? {
+				target: "pino-pretty",
+			}
+		: undefined,
 	redact: [
 		"*.password",
 		"*.hashedPassword",

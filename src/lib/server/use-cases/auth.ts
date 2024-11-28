@@ -24,8 +24,10 @@ import {
 	createAccount,
 	getAccountByProviderAndId,
 } from "../data-access/account";
+import { getWelcomeUserEmail } from "../data-access/email";
 import { createUser, getUserByEmail } from "../data-access/user";
 import { createUseCaseLogger } from "./common";
+import { sendMail } from "./email";
 import { createSession, generateSessionToken } from "./session";
 
 export const github = new GitHub(
@@ -345,8 +347,22 @@ export const handleOAuthCallback =
 								...oauthUser,
 								accountProvider: constructor.accountProvider,
 							}),
+							RTE.tap(() =>
+								pipe(
+									RTE.fromReader(
+										getWelcomeUserEmail(oauthUser),
+									),
+									effectReaderTaskEither((data) =>
+										sendMail({
+											to: oauthUser.userEmail,
+											...data,
+										}),
+									),
+								),
+							),
 						),
 					),
+
 					RTE.local(() => context),
 				),
 			),
