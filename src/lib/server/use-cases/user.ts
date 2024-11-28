@@ -1,4 +1,4 @@
-import { UserEmail, type UserName } from "@/entities/user";
+import { UserEmail, UserImage, type UserName } from "@/entities/user";
 import type { AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import { effectReaderTaskEitherBoth } from "@/helpers/fp-ts";
@@ -65,6 +65,7 @@ export const checkIsUserEmailAlreadyExists = (
 interface CreateUserParams {
 	userName: UserName;
 	userEmail: UserEmail;
+	userImage?: UserImage;
 }
 
 export const createUser = (params: CreateUserParams) =>
@@ -103,6 +104,7 @@ export const createUser = (params: CreateUserParams) =>
 						primtiveCreateUser({
 							name: params.userName,
 							email: params.userEmail,
+							image: params.userImage,
 						}),
 						effectReaderTaskEitherBoth(
 							(error) =>
