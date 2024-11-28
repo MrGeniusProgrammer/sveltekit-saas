@@ -19,10 +19,7 @@
 		</nav>
 		<div class="flex items-center space-x-4">
 			<a href="/sign-in">
-				<Button variant="ghost">Sign in</Button>
-			</a>
-			<a href="/sign-up">
-				<Button>Sign Up</Button>
+				<Button>Sign in</Button>
 			</a>
 		</div>
 	</div>

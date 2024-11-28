@@ -1,91 +1,169 @@
 <script lang="ts">
 	import { Button } from "@/components/ui/button";
 	import {
-		Card,
-		CardContent,
-		CardHeader,
-		CardTitle,
-	} from "@/components/ui/card";
+		FormControl,
+		FormDescription,
+		FormField,
+		FormFieldErrors,
+		FormLabel,
+	} from "@/components/ui/form";
+	import { Input } from "@/components/ui/input";
 	import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
 	import { getApiClient } from "@/helpers/trpc";
-	import { Github } from "lucide-svelte";
+	import { SiGithub, SiGoogle } from "@icons-pack/svelte-simple-icons";
+	import { LoaderCircle } from "lucide-svelte";
 	import { toast } from "svelte-sonner";
+	import { superForm } from "sveltekit-superforms";
+	import { zodClient } from "sveltekit-superforms/adapters";
+	import { formSchema, type FormSchema } from "./schema";
+
+	let isLoading = $state(false);
 
 	const api = getApiClient();
 	const apiUtils = api.createUtils();
 
 	const signInWithProviderResult =
-		api.auth.signInWithAccountProvider.createMutation();
+		api.auth.signInWithAccountProvider.createMutation({
+			onSettled(data, variables, context) {
+				apiUtils.auth.validateRequest.refetch();
+			},
+			onSuccess(data, variables, context) {
+				toast.success(
+					getLogSuccessMessage(
+						`User signing with provider ${variables.accountProvider[0].toUpperCase()}${variables.accountProvider.slice(1)}`,
+					),
+				);
+				window.location.href = data;
+			},
+			onError(error, variables, context) {
+				toast.error(
+					getLogErrorMessage(
+						`User signing with provider ${variables.accountProvider[0].toUpperCase()}${variables.accountProvider.slice(1)}`,
+					),
+				);
+			},
+		});
+
+	$effect(() => {
+		isLoading = $signInWithProviderResult.isPending;
+	});
+
+	const form = superForm<FormSchema>(
+		{
+			userEmail: "",
+		},
+		{
+			validators: zodClient(formSchema),
+		},
+	);
+
+	const { form: formData, enhance, delayed, timeout } = form;
 </script>
 
 <div class="flex h-screen w-screen items-center justify-center px-6">
-	<Card class="w-full max-w-lg ">
-		<CardHeader>
-			<CardTitle class="text-xl">Sign In with any providers</CardTitle>
-		</CardHeader>
-		<CardContent class="flex flex-col gap-2">
-			<Button
-				variant="secondary"
-				disabled={$signInWithProviderResult.isPending}
-				onclick={() =>
-					$signInWithProviderResult.mutateAsync(
-						{ accountProvider: "github" },
-						{
-							onSettled(data, variables, context) {
-								apiUtils.auth.validateRequest.refetch();
-							},
-							onSuccess(data, variables, context) {
-								toast.success(
-									getLogSuccessMessage(
-										"User signing with provider Github",
-									),
-								);
-								window.location.href = data;
-							},
-							onError(error, variables, context) {
-								toast.error(
-									getLogErrorMessage(
-										"User signing with provider Github",
-									),
-								);
-							},
-						},
-					)}
+	<div
+		class="mx-auto flex w-full min-w-[350px] max-w-md flex-col justify-center space-y-6"
+	>
+		<div class="flex flex-col space-y-2 text-center">
+			<h1 class="text-2xl font-semibold tracking-tight">
+				Create an account
+			</h1>
+			<p class="text-sm text-muted-foreground">
+				Enter your email below to create your account
+			</p>
+		</div>
+		<div class="flex flex-col gap-6">
+			<form use:enhance action="?/sign-in" method="POST">
+				<FormField {form} name="userEmail">
+					<FormControl>
+						{#snippet children({ props })}
+							<FormLabel class="sr-only">Email</FormLabel>
+							<Input
+								{...props}
+								bind:value={$formData.userEmail}
+								placeholder="name@example.com"
+								type="email"
+								autocapitalize="none"
+								autocomplete="email"
+								autocorrect="off"
+								disabled={isLoading}
+							/>
+						{/snippet}
+					</FormControl>
+					<FormDescription />
+					<FormFieldErrors />
+				</FormField>
+				<div class="grid gap-2">
+					<div class="grid gap-1"></div>
+					<Button type="submit" disabled={isLoading}>
+						{#if isLoading}
+							<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+						{/if}
+						Sign In with Email
+					</Button>
+				</div>
+			</form>
+			<div class="relative">
+				<div class="absolute inset-0 flex items-center">
+					<span class="w-full border-t" />
+				</div>
+				<div class="relative flex justify-center text-xs uppercase">
+					<span class="bg-background px-2 text-muted-foreground">
+						Or continue with
+					</span>
+				</div>
+			</div>
+			<div class="flex flex-col space-y-2">
+				<Button
+					variant="outline"
+					onclick={() =>
+						$signInWithProviderResult.mutateAsync({
+							accountProvider: "google",
+						})}
+					type="button"
+					disabled={isLoading}
+				>
+					{#if isLoading}
+						<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+					{:else}
+						<SiGoogle />
+					{/if}
+					Google
+				</Button>
+				<Button
+					variant="outline"
+					onclick={() =>
+						$signInWithProviderResult.mutateAsync({
+							accountProvider: "github",
+						})}
+					type="button"
+					disabled={isLoading}
+				>
+					{#if isLoading}
+						<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+					{:else}
+						<SiGithub />
+					{/if}
+					GitHub
+				</Button>
+			</div>
+		</div>
+		<p class="px-8 text-center text-sm text-muted-foreground">
+			By clicking continue, you agree to our
+			<a
+				href="/legal/terms-of-service"
+				class="underline underline-offset-4 hover:text-primary"
 			>
-				<Github class="mr-2 size-4" />
-				Github
-			</Button>
-			<Button
-				variant="secondary"
-				disabled={$signInWithProviderResult.isPending}
-				onclick={() =>
-					$signInWithProviderResult.mutateAsync(
-						{ accountProvider: "google" },
-						{
-							onSettled(data, variables, context) {
-								apiUtils.auth.validateRequest.refetch();
-							},
-							onSuccess(data, variables, context) {
-								toast.success(
-									getLogSuccessMessage(
-										"User signing with provider Google",
-									),
-								);
-								window.location.href = data;
-							},
-							onError(error, variables, context) {
-								toast.error(
-									getLogErrorMessage(
-										"User signing with provider Google",
-									),
-								);
-							},
-						},
-					)}
+				Terms of Service
+			</a>
+			and
+			<a
+				href="/legal/privacy-policy"
+				class="underline underline-offset-4 hover:text-primary"
 			>
-				<Github class="mr-2 size-4" />
-				Google
-			</Button>
-		</CardContent>
-	</Card>
+				Privacy Policy
+			</a>
+			.
+		</p>
+	</div>
 </div>

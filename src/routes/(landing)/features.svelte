@@ -36,20 +36,20 @@
 	];
 </script>
 
-<section id="features" class="bg-background px-4 py-20 md:px-6">
-	<div class="container mx-auto">
-		<h2 class="mb-12 text-center text-3xl font-bold">Powerful Features</h2>
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-			{#each features as feature}
-				<Card>
-					<CardHeader>
-						<feature.icon class="mb-4 h-10 w-10 text-primary" />
-						<CardTitle>{feature.title}</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<CardDescription>{feature.description}</CardDescription>
-					</CardContent>
-				</Card>
+<section id="features" class="overflow-hidden py-20">
+	<div class="container mx-auto px-4">
+		<h2 class="mb-12 text-center text-3xl font-bold">
+			Powerful Features for Your Success
+		</h2>
+		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+			{#each features as feature (feature.title)}
+				<div class="text-center">
+					<feature.icon class="mx-auto mb-4 h-12 w-12" />
+					<h3 class="mb-2 text-xl font-semibold">
+						{feature.title}
+					</h3>
+					<p class="text-muted-foreground">{feature.description}</p>
+				</div>
 			{/each}
 		</div>
 	</div>

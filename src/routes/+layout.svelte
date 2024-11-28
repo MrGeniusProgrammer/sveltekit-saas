@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "../app.css";
+	import { ScrollArea } from "@/components/ui/scroll-area";
 	import { Toaster } from "@/components/ui/sonner";
 	import { setApiClient } from "@/helpers/trpc";
 	import { QueryClientProvider } from "@tanstack/svelte-query";
@@ -17,8 +18,10 @@
 	setApiClient(data.api);
 </script>
 
-<ModeWatcher />
-<Toaster richColors />
-<QueryClientProvider client={data.queryClient}>
-	{@render children()}
-</QueryClientProvider>
+<ScrollArea>
+	<ModeWatcher />
+	<Toaster richColors />
+	<QueryClientProvider client={data.queryClient}>
+		{@render children()}
+	</QueryClientProvider>
+</ScrollArea>

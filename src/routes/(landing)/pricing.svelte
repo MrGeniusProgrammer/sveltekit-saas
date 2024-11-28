@@ -29,7 +29,7 @@
 			name: "Pro",
 			price: "$99",
 			description: "Ideal for growing businesses",
-			id: 1214,
+			id: 1215,
 			features: [
 				"Up to 20 users",
 				"Advanced analytics",
@@ -42,7 +42,7 @@
 			name: "Enterprise",
 			price: "Custom",
 			description: "For large-scale operations",
-			id: 1214,
+			id: 1216,
 			features: [
 				"Unlimited users",
 				"Enterprise-grade analytics",
@@ -75,7 +75,7 @@
 	<div class="container mx-auto">
 		<h2 class="mb-12 text-center text-3xl font-bold">Choose Your Plan</h2>
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-			{#each plans as plan}
+			{#each plans as plan (plan.id)}
 				<Card class="flex flex-col">
 					<CardHeader>
 						<CardTitle>{plan.name}</CardTitle>
@@ -89,7 +89,9 @@
 						<ul class="space-y-2">
 							{#each plan.features as feature}
 								<li class="flex items-center">
-									<Check class="mr-2 h-5 w-5 text-primary" />
+									<Check
+										class="mr-2 h-5 w-5 text-green-500"
+									/>
 									<span>{feature}</span>
 								</li>
 							{/each}

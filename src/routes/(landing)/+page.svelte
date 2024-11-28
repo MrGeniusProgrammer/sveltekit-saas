@@ -1,22 +1,24 @@
 <script lang="ts">
+	import { ScrollArea } from "@/components/ui/scroll-area";
 	import Companies from "./companies.svelte";
 	import Faq from "./faq.svelte";
 	import Features from "./features.svelte";
 	import Footer from "./footer.svelte";
 	import Header from "./header.svelte";
+	import Hero from "./hero.svelte";
 	import Pricing from "./pricing.svelte";
 	import Testimonials from "./testimonials.svelte";
 </script>
 
-<div class="flex min-h-screen flex-col">
+<ScrollArea class="flex h-screen flex-col">
 	<Header />
 	<main class="flex-grow">
-		<!-- <Hero /> -->
-		<Features />
+		<Hero />
 		<Companies />
+		<Features />
 		<Pricing />
 		<Testimonials />
 		<Faq />
 	</main>
 	<Footer />
-</div>
+</ScrollArea>
