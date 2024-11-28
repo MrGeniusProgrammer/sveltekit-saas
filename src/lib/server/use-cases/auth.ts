@@ -1,5 +1,5 @@
 import { AccountProvider, AccountProviderId } from "@/entities/account";
-import { UserEmail, UserName } from "@/entities/user";
+import { UserEmail, UserImage, UserName } from "@/entities/user";
 import { env } from "@/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
@@ -45,6 +45,7 @@ interface CreateUserWithProviderParams {
 	accountProviderId: AccountProviderId;
 	userName: UserName;
 	userEmail: UserEmail;
+	userImage?: UserImage;
 }
 
 export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
@@ -86,6 +87,7 @@ export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
 											createUser({
 												userName: params.userName,
 												userEmail: params.userEmail,
+												userImage: params.userImage,
 											}),
 											effectReaderTaskEitherBoth(
 												(error) =>
@@ -187,6 +189,7 @@ interface HandleOAuthCallbackContructor<T extends Record<string, unknown>> {
 		accountProviderId: AccountProviderId;
 		userName: UserName;
 		userEmail: UserEmail;
+		userImage?: UserImage;
 	}>;
 	accountProvider: AccountProvider;
 }
@@ -316,6 +319,7 @@ export const handleOAuthCallback =
 										accountProviderId: AccountProviderId,
 										userName: UserName,
 										userEmail: UserEmail,
+										userImage: UserImage,
 									}),
 									data,
 								),
@@ -326,9 +330,7 @@ export const handleOAuthCallback =
 					RTE.chainW((oauthUser) =>
 						pipe(
 							createUserWithProvider({
-								userEmail: oauthUser.userEmail,
-								userName: oauthUser.userName,
-								accountProviderId: oauthUser.accountProviderId,
+								...oauthUser,
 								accountProvider: constructor.accountProvider,
 							}),
 						),
@@ -351,6 +353,7 @@ export const handleGithubOAuthCallback = handleOAuthCallback({
 			.then((data) => ({
 				userEmail: data.email,
 				userName: data.login,
+				UserImage: data.avatar_url,
 				accountProviderId: data.id,
 			})),
 	accountProvider: "github",
@@ -361,7 +364,7 @@ export const getGithubOAuthUrl = () =>
 		RT.Do,
 		RT.apS("state", RT.of(generateState())),
 		RT.bind("url", (data) =>
-			RT.of(github.createAuthorizationURL(data.state, [])),
+			RT.of(github.createAuthorizationURL(data.state, ["user:email"])),
 		),
 	);
 
@@ -371,19 +374,18 @@ export const handleGoogleOAuthCallback = handleOAuthCallback<{
 	validateAuthorizationCode: ({ code, codeVerifier }) =>
 		google.validateAuthorizationCode(code, codeVerifier),
 	fetchOAuthUser: async ({ tokens }) => {
-		const claims = decodeIdToken(tokens.idToken()) as unknown as {
+		const data = decodeIdToken(tokens.idToken()) as unknown as {
 			sub: string;
 			name: string;
 			email: string;
+			picture: string;
 		};
-		const googleUserId = claims.sub;
-		const username = claims.name;
-		const email = claims.email;
 
 		return {
-			accountProviderId: googleUserId,
-			userName: username,
-			userEmail: email,
+			accountProviderId: data.sub,
+			userName: data.name,
+			userEmail: data.email,
+			userImage: data.picture,
 		};
 	},
 	accountProvider: "google",
@@ -398,6 +400,7 @@ export const getGoogleOAuthUrl = () =>
 			RT.of(
 				google.createAuthorizationURL(data.state, data.codeVerifier, [
 					"openid",
+					"email",
 					"profile",
 				]),
 			),
