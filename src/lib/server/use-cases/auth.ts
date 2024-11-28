@@ -353,7 +353,11 @@ export const handleGithubOAuthCallback = handleOAuthCallback({
 			.then((data) => ({
 				userEmail: data.email,
 				userName: data.login,
+<<<<<<< HEAD
 				UserImage: data.avatar_url,
+=======
+				userImage: data.avatar_url,
+>>>>>>> fix/2
 				accountProviderId: data.id,
 			})),
 	accountProvider: "github",
