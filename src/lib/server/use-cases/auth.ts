@@ -24,9 +24,9 @@ import {
 	createAccount,
 	getAccountByProviderAndId,
 } from "../data-access/account";
+import { createUser, getUserByEmail } from "../data-access/user";
 import { createUseCaseLogger } from "./common";
 import { createSession, generateSessionToken } from "./session";
-import { createUser } from "./user";
 
 export const github = new GitHub(
 	env.GITHUB_CLIENT_ID,
@@ -84,26 +84,38 @@ export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
 									),
 									RTE.chainW(() =>
 										pipe(
-											createUser({
-												userName: params.userName,
-												userEmail: params.userEmail,
-												userImage: params.userImage,
+											getUserByEmail({
+												email: params.userEmail,
 											}),
 											effectReaderTaskEitherBoth(
 												(error) =>
 													context.logger.error(
 														error,
 														getLogErrorMessage(
-															"Creating user",
+															"Getting user by email",
 														),
 													),
 												(value) =>
 													context.logger.info(
 														value,
 														getLogErrorMessage(
-															"Creating user",
+															"Getting user by email",
 														),
 													),
+											),
+											RTE.chainW((optionalUser) =>
+												pipe(
+													optionalUser,
+													O.foldW(
+														() =>
+															createUser({
+																name: params.userName,
+																email: params.userEmail,
+																image: params.userImage,
+															}),
+														RTE.of,
+													),
+												),
 											),
 										),
 									),
