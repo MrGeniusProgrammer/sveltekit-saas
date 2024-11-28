@@ -1,4 +1,4 @@
-import { building } from "$app/environment";
+import { dev } from "$app/environment";
 import { PUBLIC_LOG_LEVEL } from "$env/static/public";
 import pino from "pino";
 import { effectTaskEitherBoth } from "./fp-ts";
@@ -8,7 +8,7 @@ const rootLogger = pino({
 	browser: {
 		disabled: globalThis.window === undefined,
 	},
-	transport: !building
+	transport: dev
 		? {
 				target: "pino-pretty",
 			}
