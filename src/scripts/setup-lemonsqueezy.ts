@@ -119,6 +119,6 @@ const setupWebhook = (webhookUrl: string) =>
 		),
 	);
 
-const main = setupWebhook("/api/lemonsqueezy/webhook");
+const main = setupWebhook("/api/webhook/lemonsqueezy");
 
 main({ logger: logger })().then(() => process.exit());

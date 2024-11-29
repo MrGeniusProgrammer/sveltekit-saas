@@ -19,13 +19,13 @@ const transport = createTransport(
 	},
 );
 
-interface SendMailParams {
+interface SendEmailParams {
 	to: string | string[];
 	subject: string;
 	html: string;
 }
 
-export const sendMail = (params: SendMailParams) =>
+export const sendEmail = (params: SendEmailParams) =>
 	TE.tryCatch(
 		() =>
 			transport.sendMail({

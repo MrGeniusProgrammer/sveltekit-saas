@@ -9,7 +9,6 @@ import {
 	effectReaderTaskEitherError,
 } from "@/helpers/fp-ts";
 import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
-import { zodValidate } from "@/helpers/schema";
 import { O, pipe, RT, RTE, TE, type Option } from "@/packages/fp-ts";
 import {
 	decodeIdToken,
@@ -19,7 +18,7 @@ import {
 	Google,
 	type OAuth2Tokens,
 } from "arctic";
-import { z } from "zod";
+import jwt from "jsonwebtoken";
 import {
 	createAccount,
 	getAccountByProviderAndId,
@@ -27,20 +26,14 @@ import {
 import { getWelcomeUserEmail } from "../data-access/email";
 import { createUser, getUserByEmail } from "../data-access/user";
 import { createUseCaseLogger } from "./common";
-import { sendMail } from "./email";
+import { sendEmail } from "./email";
 import { createSession, generateSessionToken } from "./session";
 
-export const github = new GitHub(
-	env.GITHUB_CLIENT_ID,
-	env.GITHUB_CLIENT_SECRET,
-	`${env.PUBLIC_BASE_URL}/api/auth/sign-in/github/callback`,
-);
+interface SignInWithEmailParams {
+	userEmail: UserEmail;
+}
 
-export const google = new Google(
-	env.GOOGLE_CLIENT_ID,
-	env.GOOGLE_CLIENT_SECRET,
-	`${env.PUBLIC_BASE_URL}/api/auth/sign-in/google/callback`,
-);
+export const signInWithEmail = (params: SignInWithEmailParams) => pipe();
 
 interface CreateUserWithProviderParams {
 	accountProvider: AccountProvider;
@@ -341,10 +334,15 @@ export const handleOAuthCallback =
 										getWelcomeUserEmail(oauthUser),
 									),
 									effectReaderTaskEither((data) =>
-										sendMail({
+										sendEmail({
 											to: oauthUser.userEmail,
 											...data,
 										}),
+									),
+									effectReaderTaskEither(() =>
+										context.logger.info(
+											`Send welcome email to the user of ${oauthUser.userName}`,
+										),
 									),
 								),
 							),
@@ -355,6 +353,12 @@ export const handleOAuthCallback =
 				),
 			),
 		);
+
+const github = new GitHub(
+	env.GITHUB_CLIENT_ID,
+	env.GITHUB_CLIENT_SECRET,
+	`${env.PUBLIC_BASE_URL}/api/auth/sign-in/github/callback`,
+);
 
 export const handleGithubOAuthCallback = handleOAuthCallback({
 	validateAuthorizationCode: ({ code }) =>
@@ -383,6 +387,12 @@ export const getGithubOAuthUrl = () =>
 			RT.of(github.createAuthorizationURL(data.state, ["user:email"])),
 		),
 	);
+
+const google = new Google(
+	env.GOOGLE_CLIENT_ID,
+	env.GOOGLE_CLIENT_SECRET,
+	`${env.PUBLIC_BASE_URL}/api/auth/sign-in/google/callback`,
+);
 
 export const handleGoogleOAuthCallback = handleOAuthCallback<{
 	codeVerifier: string;
