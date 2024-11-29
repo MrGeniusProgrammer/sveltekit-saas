@@ -1,44 +1,71 @@
-import { ResetPassword, WelcomeUser } from "@/emails";
-import type { UserName } from "@/entities/user";
+import { MagicLinkCode, WelcomeUser } from "@/emails";
+import type { UserEmail, UserImage, UserName } from "@/entities/user";
 import { type AppLoggerContext } from "@/helpers/app";
-import { pipe, R } from "@/packages/fp-ts";
-import { render } from "svelte/server";
+import { createCodeError } from "@/helpers/error";
+import { renderEmail } from "@/helpers/render";
+import { E, pipe, RTE } from "@/packages/fp-ts";
 import { createDataAccessLogger } from "./common";
 
 interface GetWelcomeUserEmailParams {
 	userName: UserName;
+	userEmail: UserEmail;
+	userImage: UserImage;
 }
 
 export const getWelcomeUserEmail = (params: GetWelcomeUserEmailParams) =>
 	pipe(
-		R.ask<AppLoggerContext>(),
-		R.map((context) => ({
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(
 				context.logger,
 				"GET WELCOME USER EMAIL HTML",
 			),
 		})),
-		R.chainW((context) =>
-			R.of({
-				html: render(WelcomeUser).body,
-				subject: `Welcome to Saas starter kit ${params.userName}`,
-			}),
+		RTE.chainEitherKW((context) =>
+			pipe(
+				E.tryCatch(
+					() => renderEmail(WelcomeUser, params),
+					(error) =>
+						createCodeError({
+							cause: "data-access-failed",
+							cause: error,
+						}),
+				),
+				E.map((data) => ({
+					...data,
+					subject: `Welcome to Saas starter kit ${params.userName}`,
+				})),
+			),
 		),
 	);
 
-export const getResetPasswordEmail = () =>
+interface GetMagicLinkCodeEmailParams {
+	token: string;
+}
+
+export const getMagicLinkCodeEmail = (params: GetMagicLinkCodeEmailParams) =>
 	pipe(
-		R.ask<AppLoggerContext>(),
-		R.map((context) => ({
+		RTE.ask<AppLoggerContext>(),
+		RTE.map((context) => ({
 			logger: createDataAccessLogger(
 				context.logger,
-				"GET RESET PASSWORD EMAIL HTML",
+				"GET WELCOME USER EMAIL HTML",
 			),
 		})),
-		R.chainW((context) =>
-			R.of({
-				html: render(ResetPassword).body,
-				subject: "Welcome to Saas starter kit",
-			}),
+		RTE.chainEitherKW((context) =>
+			pipe(
+				E.tryCatch(
+					() => renderEmail(MagicLinkCode, params),
+					(error) =>
+						createCodeError({
+							cause: "data-access-failed",
+							cause: error,
+						}),
+				),
+				E.map((data) => ({
+					...data,
+					subject: "Your magic link",
+				})),
+			),
 		),
 	);

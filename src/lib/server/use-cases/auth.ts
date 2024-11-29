@@ -33,7 +33,26 @@ interface SignInWithEmailParams {
 	userEmail: UserEmail;
 }
 
-export const signInWithEmail = (params: SignInWithEmailParams) => pipe();
+export const signInWithEmail = (params: SignInWithEmailParams) =>
+	pipe(
+		getUserByEmail({ email: params.userEmail }),
+		RTE.chainW((optionalUser) =>
+			pipe(
+				optionalUser,
+				O.foldW(
+					() =>
+						pipe(
+							RTE.fromTaskEither(
+								sendEmail({
+									to: params.userEmail,
+								}),
+							),
+						),
+					RTE.of,
+				),
+			),
+		),
+	);
 
 interface CreateUserWithProviderParams {
 	accountProvider: AccountProvider;
@@ -330,9 +349,7 @@ export const handleOAuthCallback =
 							}),
 							RTE.tap(() =>
 								pipe(
-									RTE.fromReader(
-										getWelcomeUserEmail(oauthUser),
-									),
+									getWelcomeUserEmail(oauthUser),
 									effectReaderTaskEither((data) =>
 										sendEmail({
 											to: oauthUser.userEmail,

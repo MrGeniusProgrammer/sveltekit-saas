@@ -1,0 +1,31 @@
+import {
+	Body,
+	Button,
+	Column,
+	Container,
+	Head,
+	Heading,
+	Hr,
+	Html,
+	Img,
+	Link,
+	Preview,
+	Section,
+	Text,
+} from "svelte-email";
+
+export {
+	Body as EmailBody,
+	Button as EmailButton,
+	Column as EmailColumn,
+	Container as EmailContainer,
+	Head as EmailHead,
+	Heading as EmailHeading,
+	Hr as EmailHr,
+	Html as EmailHtml,
+	Img as EmailImg,
+	Link as EmailLink,
+	Preview as EmailPreview,
+	Section as EmailSection,
+	Text as EmailText,
+};

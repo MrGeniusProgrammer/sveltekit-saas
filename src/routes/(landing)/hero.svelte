@@ -13,7 +13,7 @@
 	} from "@/components/ui/tooltip";
 
 	const avatars = [
-		{ src: "/placeholder.svg", alt: "User 1", name: "User 1" },
+		{ src: "/test.jpg", alt: "User 1", name: "User 1" },
 		{ src: "/placeholder.svg", alt: "User 2", name: "User 1" },
 		{ src: "/placeholder.svg", alt: "User 3", name: "User 1" },
 		{ src: "/placeholder.svg", alt: "User 4", name: "User 1" },

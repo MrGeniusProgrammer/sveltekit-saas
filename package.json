@@ -1,5 +1,5 @@
 {
-	"name": "sveltekit-saas-template",
+	"name": "sveltekit-saas",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
@@ -44,6 +44,8 @@
 		"@trpc/client": "^10.45.2",
 		"@trpc/server": "^10.45.2",
 		"@types/eslint": "^9.6.0",
+		"@types/html-to-text": "^9.0.4",
+		"@types/jsonwebtoken": "^9.0.7",
 		"@types/node": "^22.9.0",
 		"@types/nodemailer": "^6.4.17",
 		"arctic": "^2.2.2",
@@ -62,6 +64,8 @@
 		"formsnap": "2.0.0-next.1",
 		"fp-ts": "^2.16.9",
 		"globals": "^15.0.0",
+		"html-to-text": "^9.0.5",
+		"jsonwebtoken": "^9.0.2",
 		"lemonsqueezy-webhooks": "^0.1.2",
 		"lucide-svelte": "^0.460.1",
 		"mode-watcher": "^0.4.1",
@@ -76,6 +80,7 @@
 		"superjson": "^2.2.1",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
+		"svelte-email": "^0.0.4",
 		"svelte-simple-icons": "link:@types/@icons-pack/svelte-simple-icons",
 		"svelte-sonner": "^0.3.28",
 		"sveltekit-superforms": "^2.20.1",
@@ -94,9 +99,5 @@
 		"vitest": "^2.0.4",
 		"zod": "^3.23.8"
 	},
-	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b",
-	"dependencies": {
-		"@types/jsonwebtoken": "^9.0.7",
-		"jsonwebtoken": "^9.0.2"
-	}
+	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }
