@@ -18,6 +18,7 @@
 	import { formSchema, type FormSchema } from "./schema";
 
 	let isLoading = $state(false);
+	let isTimeout = $state(false);
 
 	const api = getApiClient();
 	const apiUtils = api.createUtils();
@@ -54,10 +55,31 @@
 		},
 		{
 			validators: zodClient(formSchema),
+			onResult(event) {
+				if (event.result.type === "success") {
+					const data = event.result.data as unknown as {
+						isSigingUp: boolean;
+					};
+
+					if (data.isSigingUp) {
+						toast.info("Please check your mail inbox to sign up");
+					} else {
+						toast.info("Please check your mail inbox to sign in");
+					}
+				}
+			},
 		},
 	);
 
 	const { form: formData, enhance, delayed, timeout } = form;
+
+	$effect(() => {
+		isLoading = $delayed;
+	});
+
+	$effect(() => {
+		isTimeout = $timeout;
+	});
 </script>
 
 <div class="flex h-screen w-screen items-center justify-center px-6">

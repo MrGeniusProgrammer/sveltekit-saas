@@ -5,7 +5,7 @@ import { effectReaderTaskEitherBoth } from "@/helpers/fp-ts";
 import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
 import { O, pipe, RTE } from "@/packages/fp-ts";
 import {
-	getUserByEmail,
+	getUserByEmail as getUserByEmailPrimitive,
 	createUser as primtiveCreateUser,
 } from "../data-access/user";
 import { createUseCaseLogger } from "./common";
@@ -27,7 +27,7 @@ export const checkIsUserEmailAlreadyExists = (
 		})),
 		RTE.chainW((context) =>
 			pipe(
-				getUserByEmail({ email: params.userEmail }),
+				getUserByEmailPrimitive({ email: params.userEmail }),
 				effectReaderTaskEitherBoth(
 					(error) =>
 						context.logger.error(
@@ -58,6 +58,48 @@ export const checkIsUserEmailAlreadyExists = (
 					),
 				),
 				RTE.local(() => context),
+			),
+		),
+	);
+
+interface GetUserByEmailParams {
+	userEmail: UserEmail;
+}
+
+export const getUserByEmail = (params: GetUserByEmailParams) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainW((context) =>
+			pipe(
+				getUserByEmailPrimitive({ email: params.userEmail }),
+				effectReaderTaskEitherBoth(
+					(error) =>
+						context.logger.error(
+							error,
+							getLogErrorMessage("Getting user by email"),
+						),
+					(value) =>
+						context.logger.info(
+							value,
+							getLogSuccessMessage("Getting user by email"),
+						),
+				),
+				RTE.chainW((optionUser) =>
+					pipe(
+						optionUser,
+						O.foldW(
+							() =>
+								RTE.left(
+									createCodeError({
+										code: "user-email-not-found",
+										message: "The User email is not found",
+										cause: { email: params.userEmail },
+									}),
+								),
+							RTE.of,
+						),
+					),
+				),
 			),
 		),
 	);

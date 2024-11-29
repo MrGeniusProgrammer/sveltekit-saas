@@ -29,7 +29,7 @@
 	/>
 	<EmailBody
 		style={{
-			backgroundColor: "rgb(255, 255, 255)",
+			backgroundColor: "#fff",
 			fontFamily:
 				"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
 		}}
@@ -63,8 +63,8 @@
 					lineHeight: "26px",
 				}}
 			>
-				Welcome to Koala, the sales intelligence platform that helps you
-				uncover qualified leads and close deals faster.
+				Welcome to Sveltekit SaaS Kit, the sales intelligence platform
+				that helps you uncover qualified leads and close deals faster.
 			</EmailText>
 			<EmailSection
 				style={{
@@ -73,9 +73,9 @@
 			>
 				<EmailButton
 					style={{
-						backgroundColor: "rgb(95, 81, 232)",
-						borderRadius: "3px",
-						color: "rgb(255, 255, 255)",
+						backgroundColor: "#18181b",
+						borderRadius: "4px",
+						color: "#fff",
 						fontSize: "16px",
 						textDecoration: "none",
 						textAlign: "center",
@@ -87,29 +87,19 @@
 					Get started
 				</EmailButton>
 			</EmailSection>
-			<EmailText
-				style={{
-					fontSize: "16px",
-					lineHeight: "26px",
-				}}
-			>
-				Best,
-				<br />
-				The Koala team
-			</EmailText>
 			<EmailHr
 				style={{
-					borderColor: "rgb(204, 204, 204)",
+					borderColor: "#dfe1e4",
 					margin: "20px 0",
 				}}
 			/>
 			<EmailText
 				style={{
-					color: "rgb(136, 152, 170)",
+					color: "#b4becc",
 					fontSize: "12px",
 				}}
 			>
-				470 Noor Ave STE B #1148, South San Francisco, CA 94080
+				Sveltekit SaaS Kit
 			</EmailText>
 		</EmailContainer>
 	</EmailBody>

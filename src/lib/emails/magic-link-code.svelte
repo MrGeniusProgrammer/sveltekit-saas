@@ -19,7 +19,7 @@
 
 <EmailHtml>
 	<EmailHead />
-	<EmailPreview preview="Your login link for Sveltekit SaaS Kit" />
+	<EmailPreview preview="Your magic link for Sveltekit SaaS Kit" />
 	<EmailBody
 		style={{
 			backgroundColor: "#ffffff",
@@ -40,7 +40,7 @@
 				height="42"
 				alt="Linear"
 				style={{
-					borderRadius: 21,
+					borderRadius: 22,
 					width: 42,
 					height: 42,
 				}}
@@ -49,40 +49,40 @@
 				style={{
 					fontSize: "24px",
 					letterSpacing: "-0.5px",
-					lineHeight: "1.3",
+					lineHeight: "1.4",
 					fontWeight: "400",
 					color: "#484848",
-					padding: "17px 0 0",
+					padding: "18px 0 0",
 				}}
 			>
-				Your login link for Sveltekit SaaS Kit
+				Your magic link for Sveltekit SaaS Kit
 			</EmailText>
 			<EmailSection
 				style={{
-					padding: "27px 0 27px",
+					padding: "28px 0 28px",
 				}}
 			>
 				<EmailButton
 					style={{
-						backgroundColor: "#5e6ad2",
-						borderRadius: "3px",
+						backgroundColor: "#18181b",
+						borderRadius: "4px",
 						fontWeight: "600",
 						color: "#fff",
-						fontSize: "15px",
+						fontSize: "16px",
 						textDecoration: "none",
 						textAlign: "center",
 						display: "block",
-						padding: "11px 23px",
+						padding: "12px 24px",
 					}}
-					href={`${env.PUBLIC_BASE_URL}/magic-link/token/${token}`}
+					href={`${env.PUBLIC_BASE_URL}/api/auth/sign-in/magic-link/${token}`}
 				>
 					Login to Sveltekit SaaS Kit
 				</EmailButton>
 			</EmailSection>
 			<EmailText
 				style={{
-					margin: "0 0 15px",
-					fontSize: "15px",
+					margin: "0 0 16px",
+					fontSize: "16px",
 					lineHeight: "1.4",
 					color: "#3c4149",
 				}}
@@ -102,7 +102,7 @@
 				}}
 			>
 				<EmailLink
-					href="https://linear.app"
+					href={env.PUBLIC_BASE_URL}
 					style={{ color: "#b4becc" }}
 				>
 					Sveltekit SaaS Kit

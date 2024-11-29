@@ -1,4 +1,5 @@
-import ResetPassword from "./reset-password.svelte";
+import MagicLinkCode from "./magic-link-code.svelte";
+import SignUpWithMagicLink from "./sign-up-with-magic-link.svelte";
 import WelcomeUser from "./welcome-user.svelte";
 
-export { WelcomeUser, ResetPassword };
+export { WelcomeUser, MagicLinkCode, SignUpWithMagicLink };

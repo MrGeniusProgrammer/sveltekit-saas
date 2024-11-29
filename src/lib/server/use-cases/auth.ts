@@ -1,5 +1,5 @@
 import { AccountProvider, AccountProviderId } from "@/entities/account";
-import { UserEmail, UserImage, UserName } from "@/entities/user";
+import { UserEmail, UserId, UserImage, UserName } from "@/entities/user";
 import { env } from "@/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
@@ -9,7 +9,8 @@ import {
 	effectReaderTaskEitherError,
 } from "@/helpers/fp-ts";
 import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
-import { O, pipe, RT, RTE, TE, type Option } from "@/packages/fp-ts";
+import { zodValidate } from "@/helpers/schema";
+import { E, O, pipe, RT, RTE, TE, type Option } from "@/packages/fp-ts";
 import {
 	decodeIdToken,
 	generateCodeVerifier,
@@ -23,32 +24,175 @@ import {
 	createAccount,
 	getAccountByProviderAndId,
 } from "../data-access/account";
-import { getWelcomeUserEmail } from "../data-access/email";
-import { createUser, getUserByEmail } from "../data-access/user";
+import {
+	getMagicLinkCodeEmail,
+	getSignUpWithMagicLinkEmail,
+	getWelcomeUserEmail,
+} from "../data-access/email";
+import {
+	createUser as createUserPrimitive,
+	getUserByEmail as getUserByEmailPrimitve,
+} from "../data-access/user";
 import { createUseCaseLogger } from "./common";
 import { sendEmail } from "./email";
 import { createSession, generateSessionToken } from "./session";
+import { createUser, getUserByEmail } from "./user";
 
-interface SignInWithEmailParams {
+interface CreateAuthSessionParams {
+	userId: UserId;
+}
+
+export const createAuthSession = (params: CreateAuthSessionParams) =>
+	pipe(
+		RTE.Do,
+		RTE.apSW("sessionToken", RTE.fromReader(generateSessionToken())),
+		RTE.bindW("session", ({ sessionToken }) =>
+			createSession({
+				sessionToken,
+				userId: params.userId,
+			}),
+		),
+	);
+
+interface VerifyMagicLinkTokenParams {
+	token: string;
+}
+
+export const verifyMagicLinkToken = (params: VerifyMagicLinkTokenParams) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainW((context) =>
+			pipe(
+				RTE.fromEither(
+					E.tryCatch(
+						() =>
+							jwt.verify(params.token, env.SECRET, {
+								maxAge: 60 * 5,
+							}) as unknown as { data: string },
+						(error) =>
+							createCodeError({
+								code: "jwt-verifying-failed",
+								cause: error,
+								message: "JWT Verifying failed",
+							}),
+					),
+				),
+				RTE.chainEitherKW((data) => zodValidate(UserEmail, data.data)),
+			),
+		),
+	);
+
+interface SignMagicLinkParams {
 	userEmail: UserEmail;
 }
 
-export const signInWithEmail = (params: SignInWithEmailParams) =>
+export const signMagicLink = (params: SignMagicLinkParams) =>
 	pipe(
-		getUserByEmail({ email: params.userEmail }),
-		RTE.chainW((optionalUser) =>
+		RTE.fromEither(
+			E.tryCatch(
+				() =>
+					jwt.sign({ data: params.userEmail }, env.SECRET, {
+						expiresIn: 60 * 5,
+					}),
+				(error) =>
+					createCodeError({
+						code: "jwt-signing-failed",
+						cause: error,
+						message: "JWT Signing failed",
+					}),
+			),
+		),
+	);
+
+interface SignUpWithMagicLinkParams {
+	userName: UserName;
+	token: string;
+}
+
+export const signUpWithMagicLink = (params: SignUpWithMagicLinkParams) =>
+	pipe(
+		verifyMagicLinkToken({ token: params.token }),
+		RTE.chainW((userEmail) =>
+			createUser({ userEmail, userName: params.userName }),
+		),
+		RTE.chainW((user) => createAuthSession({ userId: user.id })),
+	);
+
+interface SignInWithMagicLinkTokenParams {
+	token: string;
+}
+
+export const signInWithMagicLinkToken = (
+	params: SignInWithMagicLinkTokenParams,
+) =>
+	pipe(
+		verifyMagicLinkToken(params),
+		RTE.chainW((userEmail) => getUserByEmail({ userEmail })),
+		RTE.chainW((user) =>
 			pipe(
-				optionalUser,
-				O.foldW(
-					() =>
-						pipe(
-							RTE.fromTaskEither(
-								sendEmail({
-									to: params.userEmail,
-								}),
-							),
+				RTE.Do,
+				RTE.apSW(
+					"sessionToken",
+					RTE.fromReader(generateSessionToken()),
+				),
+				RTE.bindW("session", ({ sessionToken }) =>
+					createSession({
+						sessionToken,
+						userId: user.id,
+					}),
+				),
+			),
+		),
+	);
+
+interface SignInWithMagicLinkParams {
+	userEmail: UserEmail;
+}
+
+export const signInWithMagicLink = (params: SignInWithMagicLinkParams) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainW((context) =>
+			pipe(
+				getUserByEmailPrimitve({ email: params.userEmail }),
+				RTE.chainW((optionalUser) =>
+					pipe(
+						optionalUser,
+						O.foldW(
+							() =>
+								pipe(
+									signMagicLink(params),
+									RTE.chainW((token) =>
+										getSignUpWithMagicLinkEmail({ token }),
+									),
+									RTE.chainTaskEitherKW((data) =>
+										sendEmail({
+											to: params.userEmail,
+											...data,
+										}),
+									),
+									RTE.map(() => ({ isSigninUp: true })),
+								),
+							() =>
+								pipe(
+									signMagicLink(params),
+									RTE.chainW((token) =>
+										getMagicLinkCodeEmail({ token }),
+									),
+									RTE.chainTaskEitherKW((data) =>
+										sendEmail({
+											to: params.userEmail,
+											...data,
+										}),
+									),
+									RTE.map(() => ({ isSigninUp: false })),
+								),
 						),
-					RTE.of,
+						effectReaderTaskEitherBoth(
+							(error) => context.logger.error(error),
+							(value) => context.logger.info(value),
+						),
+					),
 				),
 			),
 		),
@@ -98,7 +242,7 @@ export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
 									),
 									RTE.chainW(() =>
 										pipe(
-											getUserByEmail({
+											getUserByEmailPrimitve({
 												email: params.userEmail,
 											}),
 											effectReaderTaskEitherBoth(
@@ -122,11 +266,13 @@ export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
 													optionalUser,
 													O.foldW(
 														() =>
-															createUser({
-																name: params.userName,
-																email: params.userEmail,
-																image: params.userImage,
-															}),
+															createUserPrimitive(
+																{
+																	name: params.userName,
+																	email: params.userEmail,
+																	image: params.userImage,
+																},
+															),
 														RTE.of,
 													),
 												),
@@ -178,19 +324,7 @@ export const createUserWithProvider = (params: CreateUserWithProviderParams) =>
 				),
 
 				RTE.chainW((account) =>
-					pipe(
-						RTE.Do,
-						RTE.apSW(
-							"sessionToken",
-							RTE.fromReader(generateSessionToken()),
-						),
-						RTE.bindW("session", ({ sessionToken }) =>
-							createSession({
-								sessionToken,
-								userId: account.userId,
-							}),
-						),
-					),
+					createAuthSession({ userId: account.userId }),
 				),
 
 				RTE.local(() => context),
@@ -349,7 +483,11 @@ export const handleOAuthCallback =
 							}),
 							RTE.tap(() =>
 								pipe(
-									getWelcomeUserEmail(oauthUser),
+									getWelcomeUserEmail({
+										userName: oauthUser.userName,
+										userEmail: oauthUser.userEmail,
+										userImage: oauthUser.userImage,
+									}),
 									effectReaderTaskEither((data) =>
 										sendEmail({
 											to: oauthUser.userEmail,

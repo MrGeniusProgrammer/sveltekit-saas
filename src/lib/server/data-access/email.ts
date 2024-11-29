@@ -1,4 +1,4 @@
-import { MagicLinkCode, WelcomeUser } from "@/emails";
+import { MagicLinkCode, SignUpWithMagicLink, WelcomeUser } from "@/emails";
 import type { UserEmail, UserImage, UserName } from "@/entities/user";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
@@ -27,7 +27,7 @@ export const getWelcomeUserEmail = (params: GetWelcomeUserEmailParams) =>
 					() => renderEmail(WelcomeUser, params),
 					(error) =>
 						createCodeError({
-							cause: "data-access-failed",
+							code: "data-access-failed",
 							cause: error,
 						}),
 				),
@@ -46,25 +46,46 @@ interface GetMagicLinkCodeEmailParams {
 export const getMagicLinkCodeEmail = (params: GetMagicLinkCodeEmailParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.map((context) => ({
-			logger: createDataAccessLogger(
-				context.logger,
-				"GET WELCOME USER EMAIL HTML",
-			),
-		})),
 		RTE.chainEitherKW((context) =>
 			pipe(
 				E.tryCatch(
 					() => renderEmail(MagicLinkCode, params),
 					(error) =>
 						createCodeError({
-							cause: "data-access-failed",
+							code: "data-access-failed",
 							cause: error,
 						}),
 				),
 				E.map((data) => ({
 					...data,
 					subject: "Your magic link",
+				})),
+			),
+		),
+	);
+
+interface GetSignUpWithMagicLinkEmailParams {
+	token: string;
+}
+
+export const getSignUpWithMagicLinkEmail = (
+	params: GetSignUpWithMagicLinkEmailParams,
+) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainEitherKW((context) =>
+			pipe(
+				E.tryCatch(
+					() => renderEmail(SignUpWithMagicLink, params),
+					(error) =>
+						createCodeError({
+							code: "data-access-failed",
+							cause: error,
+						}),
+				),
+				E.map((data) => ({
+					...data,
+					subject: "Your magic sign up link",
 				})),
 			),
 		),
