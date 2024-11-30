@@ -12,13 +12,14 @@
 		<div class="flex flex-wrap gap-8">
 			<div>
 				<h3 class="mb-4 text-lg font-semibold">SveltekitSaaS</h3>
-				<p class="text-sm text-muted-foreground">
-					Revolutionizing business processes with cutting-edge SaaS
-					solutions.
+				<p class="max-w-md text-sm text-muted-foreground">
+					We’ve built this kit to simplify the complexities of SaaS
+					development so you can focus on building your app’s core
+					value.
 				</p>
 			</div>
 			<div
-				class="flex min-w-96 flex-1 flex-row flex-wrap justify-between lg:justify-evenly"
+				class="flex min-w-56 flex-1 flex-row flex-wrap justify-between lg:justify-evenly"
 			>
 				<div>
 					<h4 class="mb-4 text-sm font-semibold">Product</h4>
@@ -26,21 +27,21 @@
 						<li>
 							<a
 								href="#features"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Features</a
 							>
 						</li>
 						<li>
 							<a
 								href="#pricing"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Pricing</a
 							>
 						</li>
 						<li>
 							<a
 								href="#faq"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>FAQ</a
 							>
 						</li>
@@ -52,21 +53,21 @@
 						<li>
 							<a
 								href="/about"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>About Us</a
 							>
 						</li>
 						<li>
 							<a
 								href="/careers"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Careers</a
 							>
 						</li>
 						<li>
 							<a
 								href="/contact"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Contact</a
 							>
 						</li>
@@ -78,21 +79,21 @@
 						<li>
 							<a
 								href="/legal/privacy-policy"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Privacy Policy</a
 							>
 						</li>
 						<li>
 							<a
 								href="/legal/terms-of-service"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Terms of Service</a
 							>
 						</li>
 						<li>
 							<a
 								href="/legal/cookie-policy"
-								class="text-sm text-muted-foreground hover:text-primary"
+								class="text-sm text-muted-foreground hover:text-foreground"
 								>Cookie Policy</a
 							>
 						</li>
@@ -107,19 +108,19 @@
 				&copy; {new Date().getFullYear()} SveltekitSaaS. All rights reserved.
 			</p>
 			<div class="mt-4 flex space-x-4 md:mt-0">
-				<a href="#" class="text-muted-foreground hover:text-primary">
+				<a href="#" class="text-muted-foreground hover:text-foreground">
 					<SiFacebook size={24} />
 					<span class="sr-only">Facebook</span>
 				</a>
-				<a href="#" class="text-muted-foreground hover:text-primary">
+				<a href="#" class="text-muted-foreground hover:text-foreground">
 					<SiTwitter size={24} />
 					<span class="sr-only">Twitter</span>
 				</a>
-				<a href="#" class="text-muted-foreground hover:text-primary">
+				<a href="#" class="text-muted-foreground hover:text-foreground">
 					<SiInstagram size={24} />
 					<span class="sr-only">Instagram</span>
 				</a>
-				<a href="#" class="text-muted-foreground hover:text-primary">
+				<a href="#" class="text-muted-foreground hover:text-foreground">
 					<SiLinkedin size={24} />
 					<span class="sr-only">LinkedIn</span>
 				</a>

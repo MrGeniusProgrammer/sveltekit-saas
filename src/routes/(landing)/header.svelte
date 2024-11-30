@@ -1,10 +1,17 @@
 <script lang="ts">
+	import { IconLogo } from "@/components/icon";
 	import { Button } from "@/components/ui/button";
 </script>
 
 <header class="bg-background px-4 py-4 md:px-6">
 	<div class="container mx-auto flex items-center justify-between">
-		<a href="/" class="text-2xl font-bold text-primary">SveltekitSaaS</a>
+		<a
+			href="/"
+			class="flex items-center gap-2 text-2xl font-bold text-primary"
+		>
+			<IconLogo class="size-6" />
+			SveltekitSaaS
+		</a>
 		<nav class="hidden space-x-4 md:flex">
 			<a href="#features" class="text-sm font-medium hover:underline"
 				>Features</a

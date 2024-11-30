@@ -22,20 +22,31 @@
 	];
 </script>
 
-<section class="py-20">
+<section class="py-32">
 	<div class="container mx-auto px-4 md:px-6">
-		<div class="flex flex-col items-center lg:flex-row">
-			<div class="mb-10 lg:mb-0 lg:w-1/2">
-				<h1 class="mb-6 text-4xl font-bold lg:text-5xl">
+		<div
+			class="flex flex-col items-center justify-center md:justify-start lg:flex-row"
+		>
+			<div
+				class="mb-10 flex flex-col items-center text-center md:items-start md:text-start lg:mb-0 lg:w-1/2"
+			>
+				<h1 class="mb-6 text-2xl font-bold md:text-4xl lg:text-5xl">
 					Build, Launch, and Grow Your SaaS in Days – Not Weeks
 				</h1>
-				<p class="mb-8 max-w-2xl text-xl">
+				<p class="mb-8 max-w-2xl text-lg md:text-xl">
 					Introducing the <b>SvelteKit SaaS Starter Kit:</b> the ultimate
 					toolkit for turning your SaaS idea into reality. Whether you're
 					a solo founder or part of a fast-paced startup, our kit has everything
 					you need to get your product off the ground quickly and efficiently.
 				</p>
-				<div class="mb-8 flex items-center">
+				<Button
+					size="lg"
+					class="mb-8"
+					href="https://github.com/MrGeniusProgrammer/sveltekit-saas"
+				>
+					Get Started
+				</Button>
+				<div class="flex flex-wrap items-center justify-center gap-2">
 					{#each avatars as avatar, index (index)}
 						<TooltipProvider>
 							<Tooltip>
@@ -69,12 +80,6 @@
 						Join 10,000+ developers
 					</span>
 				</div>
-				<Button
-					size="lg"
-					href="https://github.com/MrGeniusProgrammer/sveltekit-saas"
-				>
-					Get Started
-				</Button>
 			</div>
 			<div class="lg:w-1/2">
 				<img

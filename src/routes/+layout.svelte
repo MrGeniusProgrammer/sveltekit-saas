@@ -4,8 +4,10 @@
 	import { Toaster } from "@/components/ui/sonner";
 	import { setApiClient } from "@/helpers/trpc";
 	import { QueryClientProvider } from "@tanstack/svelte-query";
+	import { page } from "$app/stores";
 	import { ModeWatcher } from "mode-watcher";
 	import type { Snippet } from "svelte";
+	import SvelteSeo from "svelte-seo";
 	import type { LayoutData } from "./$types";
 
 	interface Props {
@@ -17,6 +19,49 @@
 
 	setApiClient(data.api);
 </script>
+
+<SvelteSeo
+	title="SvelteKit SaaS Starter Kit | Build and Launch Faster"
+	description="Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks."
+	canonical={$page.url.origin}
+	keywords="SvelteKit SaaS, SaaS starter kit, tRPC, shadcn-svelte, magic link authentication, LemonSqueezy, TailwindCSS"
+	openGraph={{
+		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
+		description:
+			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
+		url: $page.url.origin,
+		type: "website",
+		images: [
+			{
+				url: `${$page.url.origin}/images/saas-dashboard.jpg`,
+				width: 1200,
+				height: 630,
+				alt: "SaaS Dashboard",
+			},
+			{
+				url: `${$page.url.origin}/images/saas-payments.jpg`,
+				width: 1200,
+				height: 630,
+				alt: "Payment Integration",
+			},
+			{
+				url: `${$page.url.origin}/images/saas-auth.jpg`,
+				width: 1200,
+				height: 630,
+				alt: "Authentication Flow",
+			},
+		],
+		site_name: "SvelteKit SaaS Starter Kit",
+	}}
+	twitter={{
+		card: "summary_large_image",
+		site: "@sveltekitsaas",
+		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
+		description:
+			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
+		image: `${$page.url.origin}/images/saas-dashboard.jpg`,
+	}}
+/>
 
 <ScrollArea>
 	<ModeWatcher />
