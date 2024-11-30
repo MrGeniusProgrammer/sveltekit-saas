@@ -27,15 +27,19 @@
 </script>
 
 <section id="faq" class="bg-background px-4 py-20 md:px-6">
-	<div class="container mx-auto">
+	<div class="container prose mx-auto dark:prose-invert">
 		<h2 class="mb-12 text-center text-3xl font-bold">
 			Frequently Asked Questions
 		</h2>
 		<Accordion type="single" class="mx-auto w-full max-w-3xl">
 			{#each faqs as faq, index}
 				<AccordionItem value={`item-${index}`}>
-					<AccordionTrigger>{faq.question}</AccordionTrigger>
-					<AccordionContent>{faq.answer}</AccordionContent>
+					<AccordionTrigger class="text-xl font-semibold"
+						>{faq.question}</AccordionTrigger
+					>
+					<AccordionContent class="text-lg"
+						>{faq.answer}</AccordionContent
+					>
 				</AccordionItem>
 			{/each}
 		</Accordion>

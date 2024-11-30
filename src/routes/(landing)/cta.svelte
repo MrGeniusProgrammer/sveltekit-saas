@@ -2,7 +2,7 @@
 	import { Button } from "@/components/ui/button";
 </script>
 
-<section class="py-20">
+<section class="py-28">
 	<div class="container mx-auto px-4 text-center">
 		<h2 class="mb-4 text-3xl font-bold text-foreground">
 			Build Smarter, Launch Faster

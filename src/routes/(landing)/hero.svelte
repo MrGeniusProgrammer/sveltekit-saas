@@ -46,9 +46,9 @@
 				>
 					Get Started
 				</Button>
-				<div class="flex flex-wrap items-center justify-center gap-2">
-					{#each avatars as avatar, index (index)}
-						<TooltipProvider>
+				<div class="flex flex-wrap items-center justify-center gap-y-2">
+					<TooltipProvider>
+						{#each avatars as avatar, index (index)}
 							<Tooltip>
 								<TooltipTrigger
 									class={index !== 0 ? "-ml-3" : ""}
@@ -74,8 +74,8 @@
 									</span>
 								</TooltipContent>
 							</Tooltip>
-						</TooltipProvider>
-					{/each}
+						{/each}
+					</TooltipProvider>
 					<span class="ml-3 text-sm text-muted-foreground">
 						Join 10,000+ developers
 					</span>
