@@ -61,7 +61,12 @@
 			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
 		image: `${$page.url.origin}/images/saas-dashboard.jpg`,
 	}}
-/>
+>
+	<meta
+		name="google-site-verification"
+		content="4VMOIVCpdmAtNWRQk20P2D0TsFDctTbWCgrcvZWrifI"
+	/>
+</SvelteSeo>
 
 <ScrollArea>
 	<ModeWatcher />
