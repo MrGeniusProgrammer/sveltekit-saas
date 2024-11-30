@@ -1,6 +1,6 @@
 import { AccountProvider, AccountProviderId } from "@/entities/account";
 import { UserEmail, UserId, UserImage, UserName } from "@/entities/user";
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import {

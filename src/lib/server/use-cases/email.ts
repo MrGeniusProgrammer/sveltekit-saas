@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { createCodeError } from "@/helpers/error";
 import { TE } from "@/packages/fp-ts";
 import { createTransport } from "nodemailer";

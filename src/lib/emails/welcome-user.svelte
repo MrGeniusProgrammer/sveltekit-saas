@@ -12,7 +12,7 @@
 		EmailText,
 	} from "@/components/email";
 	import type { UserEmail, UserImage, UserName } from "@/entities/user";
-	import { env } from "@/env";
+	import { env } from "@/server/env";
 
 	let {
 		userName,

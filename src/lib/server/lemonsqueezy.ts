@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { logger } from "@/helpers/logger";
 import { lemonSqueezySetup } from "@lemonsqueezy/lemonsqueezy.js";
 

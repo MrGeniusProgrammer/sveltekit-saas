@@ -1,6 +1,6 @@
 import { PaymentCheckoutUrl, PaymentVariantId } from "@/entities/payment";
 import type { UserEmail, UserId, UserName } from "@/entities/user";
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import { zodValidate } from "@/helpers/schema";

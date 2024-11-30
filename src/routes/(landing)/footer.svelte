@@ -11,7 +11,7 @@
 	<div class="container mx-auto">
 		<div class="flex flex-wrap gap-8">
 			<div>
-				<h3 class="mb-4 text-lg font-semibold">SaaSPro</h3>
+				<h3 class="mb-4 text-lg font-semibold">SveltekitSaaS</h3>
 				<p class="text-sm text-muted-foreground">
 					Revolutionizing business processes with cutting-edge SaaS
 					solutions.
@@ -104,23 +104,23 @@
 			class="mt-12 flex flex-col items-center justify-between border-t border-muted-foreground/20 pt-8 md:flex-row"
 		>
 			<p class="text-sm text-muted-foreground">
-				&copy; {new Date().getFullYear()} SaaSPro. All rights reserved.
+				&copy; {new Date().getFullYear()} SveltekitSaaS. All rights reserved.
 			</p>
 			<div class="mt-4 flex space-x-4 md:mt-0">
 				<a href="#" class="text-muted-foreground hover:text-primary">
-					<SiFacebook class="h-5 w-5" />
+					<SiFacebook size={24} />
 					<span class="sr-only">Facebook</span>
 				</a>
 				<a href="#" class="text-muted-foreground hover:text-primary">
-					<SiTwitter class="h-5 w-5" />
+					<SiTwitter size={24} />
 					<span class="sr-only">Twitter</span>
 				</a>
 				<a href="#" class="text-muted-foreground hover:text-primary">
-					<SiInstagram class="h-5 w-5" />
+					<SiInstagram size={24} />
 					<span class="sr-only">Instagram</span>
 				</a>
 				<a href="#" class="text-muted-foreground hover:text-primary">
-					<SiLinkedin class="h-5 w-5" />
+					<SiLinkedin size={24} />
 					<span class="sr-only">LinkedIn</span>
 				</a>
 			</div>

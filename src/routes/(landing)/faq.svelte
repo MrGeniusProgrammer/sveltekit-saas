@@ -8,24 +8,20 @@
 
 	const faqs = [
 		{
-			question: "What is SaaSPro?",
-			answer: "SaaSPro is a comprehensive software-as-a-service platform designed to streamline business processes, enhance productivity, and drive growth for companies of all sizes.",
+			question: "What tech stack does this starter kit use?",
+			answer: "The kit leverages SvelteKit, Tailwind CSS, shadcn-svelte, tRPC, Superforms, and integrations like LemonSqueezy and Nodemailer.",
 		},
 		{
-			question: "How does pricing work?",
-			answer: "We offer flexible pricing plans to suit businesses of all sizes. Our plans are based on the number of users and features required. Check out our pricing section for more details.",
+			question: "Is this suitable for non-technical founders?",
+			answer: "While some technical knowledge helps, the starter kit includes detailed documentation to guide you step-by-step.",
 		},
 		{
-			question: "Is there a free trial available?",
-			answer: "Yes, we offer a 14-day free trial for all our plans. You can sign up and explore all the features before committing to a subscription.",
+			question: "How customizable is the kit?",
+			answer: "Highly customizable! You can tailor the authentication, UI, and APIs to meet your unique needs.",
 		},
 		{
-			question: "How secure is my data?",
-			answer: "We take data security very seriously. SaaSPro employs bank-grade encryption, regular security audits, and follows industry best practices to ensure your data is always protected.",
-		},
-		{
-			question: "Can I cancel my subscription at any time?",
-			answer: "Yes, you can cancel your subscription at any time. There are no long-term contracts or cancellation fees.",
+			question: "What kind of support do you offer?",
+			answer: "We offer comprehensive documentation, video tutorials, and a community forum for all users. Pro and Enterprise plan users also receive priority support and direct access to our development team.",
 		},
 	];
 </script>

@@ -12,7 +12,7 @@
 		EmailSection,
 		EmailText,
 	} from "@/components/email";
-	import { env } from "@/env";
+	import { env } from "@/server/env";
 
 	let { token }: { token: string } = $props();
 </script>

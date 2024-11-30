@@ -1,37 +1,49 @@
 <script lang="ts">
 	import {
-		Card,
-		CardContent,
-		CardDescription,
-		CardHeader,
-		CardTitle,
-	} from "@/components/ui/card";
-	import { BarChart, Shield, Users, Zap } from "lucide-svelte";
+		Code,
+		CreditCard,
+		FileCode,
+		Key,
+		Mail,
+		Palette,
+	} from "lucide-svelte";
 
 	const features = [
 		{
-			title: "Lightning Fast",
+			icon: Key,
+			title: "Authentication, Simplified",
 			description:
-				"Experience unparalleled speed and performance with our optimized platform.",
-			icon: Zap,
+				"Magic Links for secure, passwordless login and OAuth integration with Google and GitHub.",
 		},
 		{
-			title: "Bank-Grade Security",
+			icon: CreditCard,
+			title: "Built-In Payments",
 			description:
-				"Rest easy knowing your data is protected by state-of-the-art security measures.",
-			icon: Shield,
+				"Fully integrated with LemonSqueezy to handle subscriptions and one-time payments effortlessly.",
 		},
 		{
-			title: "Advanced Analytics",
+			icon: Mail,
+			title: "Professional Email Made Easy",
 			description:
-				"Gain valuable insights with our powerful analytics and reporting tools.",
-			icon: BarChart,
+				"Robust email integration using Nodemailer, with templates for signups, notifications, and more.",
 		},
 		{
-			title: "Team Collaboration",
+			icon: Code,
+			title: "Type-Safe APIs with tRPC",
 			description:
-				"Foster seamless teamwork with our intuitive collaboration features.",
-			icon: Users,
+				"End-to-end type-safe remote procedure calls for confident app scaling.",
+		},
+		{
+			icon: Palette,
+			title: "Sleek UI with shadcn-svelte",
+			description:
+				"Beautiful, customizable UI components for a polished user experience.",
+		},
+		{
+			icon: FileCode,
+			title: "Smart Forms with Superforms",
+			description:
+				"Handle complex form actions with ease, paired with robust Zod validation.",
 		},
 	];
 </script>

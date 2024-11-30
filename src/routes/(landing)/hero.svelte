@@ -27,11 +27,13 @@
 		<div class="flex flex-col items-center lg:flex-row">
 			<div class="mb-10 lg:mb-0 lg:w-1/2">
 				<h1 class="mb-6 text-4xl font-bold lg:text-5xl">
-					Simplify Your Workflow
+					Build, Launch, and Grow Your SaaS in Days – Not Weeks
 				</h1>
 				<p class="mb-8 max-w-2xl text-xl">
-					Streamline your tasks, collaborate seamlessly, and boost
-					productivity with our intuitive platform.
+					Introducing the <b>SvelteKit SaaS Starter Kit:</b> the ultimate
+					toolkit for turning your SaaS idea into reality. Whether you're
+					a solo founder or part of a fast-paced startup, our kit has everything
+					you need to get your product off the ground quickly and efficiently.
 				</p>
 				<div class="mb-8 flex items-center">
 					{#each avatars as avatar, index (index)}
@@ -64,10 +66,15 @@
 						</TooltipProvider>
 					{/each}
 					<span class="ml-3 text-sm text-muted-foreground">
-						Join 10,000+ users
+						Join 10,000+ developers
 					</span>
 				</div>
-				<Button size="lg">Get Started</Button>
+				<Button
+					size="lg"
+					href="https://github.com/MrGeniusProgrammer/sveltekit-saas"
+				>
+					Get Started
+				</Button>
 			</div>
 			<div class="lg:w-1/2">
 				<img

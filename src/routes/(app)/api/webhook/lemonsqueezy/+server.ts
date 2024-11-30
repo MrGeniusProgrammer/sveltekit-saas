@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { logger } from "@/helpers/logger";
 import { processPaymentWebhookPayload } from "@/server/use-cases/payment";
 import type { RequestHandler } from "@sveltejs/kit";

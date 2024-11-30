@@ -1,6 +1,6 @@
 import type { PaymentVariantId } from "@/entities/payment";
 import type { UserEmail, UserId, UserName } from "@/entities/user";
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { pipe, RTE } from "@/packages/fp-ts";
 import type { DiscriminatedWebhookPayload } from "lemonsqueezy-webhooks";

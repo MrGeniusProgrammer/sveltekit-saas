@@ -34,6 +34,8 @@
 				speed: props.speed,
 				stopOnMouseEnter: true,
 				playOnInit: true,
+				stopOnInteraction: false,
+				startDelay: 100,
 			}),
 		]}
 		opts={{

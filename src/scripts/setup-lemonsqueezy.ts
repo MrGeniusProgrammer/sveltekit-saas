@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import { effectReaderTaskEither } from "@/helpers/fp-ts";
