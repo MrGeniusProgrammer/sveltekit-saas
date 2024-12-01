@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
-	import {
-		RangeCalendar as RangeCalendarPrimitive,
-		type WithoutChildrenOrChild,
-	} from "bits-ui";
+	import { RangeCalendar as RangeCalendarPrimitive, type WithoutChildrenOrChild } from "bits-ui";
 	import * as RangeCalendar from "./index.js";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -46,10 +43,7 @@
 						{#each month.weeks as weekDates}
 							<RangeCalendar.GridRow class="mt-2 w-full">
 								{#each weekDates as date}
-									<RangeCalendar.Cell
-										{date}
-										month={month.value}
-									>
+									<RangeCalendar.Cell {date} month={month.value}>
 										<RangeCalendar.Day />
 									</RangeCalendar.Cell>
 								{/each}

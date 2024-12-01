@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
 	import { Avatar as AvatarPrimitive } from "bits-ui";
+	import { cn } from "@/utils.js";
 
 	let {
 		class: className,
@@ -11,9 +11,6 @@
 
 <AvatarPrimitive.Fallback
 	bind:ref
-	class={cn(
-		"flex h-full w-full items-center justify-center rounded-full bg-muted",
-		className,
-	)}
+	class={cn("bg-muted flex h-full w-full items-center justify-center rounded-full", className)}
 	{...restProps}
 />

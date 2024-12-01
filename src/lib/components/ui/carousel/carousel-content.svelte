@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
-	import type { WithElementRef } from "bits-ui";
 	import emblaCarouselSvelte from "embla-carousel-svelte";
+	import type { WithElementRef } from "bits-ui";
 	import type { HTMLAttributes } from "svelte/elements";
 	import { getEmblaContext } from "./context.js";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -34,7 +34,7 @@
 		class={cn(
 			"flex",
 			emblaCtx.orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
-			className,
+			className
 		)}
 		data-embla-container=""
 		{...restProps}

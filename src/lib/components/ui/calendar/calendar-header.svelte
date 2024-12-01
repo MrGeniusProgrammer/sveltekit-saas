@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
 	import { Calendar as CalendarPrimitive } from "bits-ui";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -11,9 +11,6 @@
 
 <CalendarPrimitive.Header
 	bind:ref
-	class={cn(
-		"relative flex w-full items-center justify-between pt-1",
-		className,
-	)}
+	class={cn("relative flex w-full items-center justify-between pt-1", className)}
 	{...restProps}
 />

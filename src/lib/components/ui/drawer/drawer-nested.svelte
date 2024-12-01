@@ -9,9 +9,4 @@
 	}: DrawerPrimitive.RootProps = $props();
 </script>
 
-<DrawerPrimitive.NestedRoot
-	{shouldScaleBackground}
-	bind:open
-	bind:activeSnapPoint
-	{...restProps}
-/>
+<DrawerPrimitive.NestedRoot {shouldScaleBackground} bind:open bind:activeSnapPoint {...restProps} />

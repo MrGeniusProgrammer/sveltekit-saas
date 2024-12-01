@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
-	import {
-		ScrollArea as ScrollAreaPrimitive,
-		type WithoutChild,
-	} from "bits-ui";
+	import { ScrollArea as ScrollAreaPrimitive, type WithoutChild } from "bits-ui";
 	import { Scrollbar } from "./index.js";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -21,11 +18,7 @@
 	} = $props();
 </script>
 
-<ScrollAreaPrimitive.Root
-	bind:ref
-	{...restProps}
-	class={cn("relative overflow-hidden", className)}
->
+<ScrollAreaPrimitive.Root bind:ref {...restProps} class={cn("relative overflow-hidden", className)}>
 	<ScrollAreaPrimitive.Viewport class="h-full w-full rounded-[inherit]">
 		{@render children?.()}
 	</ScrollAreaPrimitive.Viewport>

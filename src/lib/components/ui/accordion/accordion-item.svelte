@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
 	import { Accordion as AccordionPrimitive } from "bits-ui";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -9,8 +9,4 @@
 	}: AccordionPrimitive.ItemProps = $props();
 </script>
 
-<AccordionPrimitive.Item
-	bind:ref
-	class={cn("border-b", className)}
-	{...restProps}
-/>
+<AccordionPrimitive.Item bind:ref class={cn("border-b", className)} {...restProps} />

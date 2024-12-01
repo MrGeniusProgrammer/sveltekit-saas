@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
-	import type { WithElementRef } from "bits-ui";
 	import type { HTMLAttributes } from "svelte/elements";
+	import type { WithElementRef } from "bits-ui";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -11,10 +11,6 @@
 	}: WithElementRef<HTMLAttributes<HTMLElement>> = $props();
 </script>
 
-<caption
-	bind:this={ref}
-	class={cn("mt-4 text-sm text-muted-foreground", className)}
-	{...restProps}
->
+<caption bind:this={ref} class={cn("text-muted-foreground mt-4 text-sm", className)} {...restProps}>
 	{@render children?.()}
 </caption>

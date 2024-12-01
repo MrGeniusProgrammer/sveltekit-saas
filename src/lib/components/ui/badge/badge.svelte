@@ -1,6 +1,5 @@
 <script lang="ts" module>
-	import { tv, type VariantProps } from "tailwind-variants";
-
+	import { type VariantProps, tv } from "tailwind-variants";
 	export const badgeVariants = tv({
 		base: "focus:ring-ring inline-flex select-none items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
 		variants: {
@@ -23,9 +22,9 @@
 </script>
 
 <script lang="ts">
-	import { cn } from "@/utils.js";
 	import type { WithElementRef } from "bits-ui";
 	import type { HTMLAnchorAttributes } from "svelte/elements";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),

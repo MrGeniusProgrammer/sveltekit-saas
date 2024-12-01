@@ -102,10 +102,10 @@ const config: Config = {
 	},
 	plugins: [
 		tailwindcssAnimate,
-		tailwindcssForms(),
-		tailwindcssContainerQueries,
 		tailwindcssTypography(),
+		tailwindcssForms(),
 		tailwindcssAspectRatio,
+		tailwindcssContainerQueries,
 	],
 };
 

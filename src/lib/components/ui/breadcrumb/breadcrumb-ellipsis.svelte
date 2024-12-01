@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
+	import Ellipsis from "lucide-svelte/icons/ellipsis";
 	import type { WithElementRef, WithoutChildren } from "bits-ui";
-	import DotsHorizontal from "svelte-radix/DotsHorizontal.svelte";
 	import type { HTMLAttributes } from "svelte/elements";
+	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
 		class: className,
 		...restProps
-	}: WithoutChildren<
-		WithElementRef<HTMLAttributes<HTMLSpanElement>>
-	> = $props();
+	}: WithoutChildren<WithElementRef<HTMLAttributes<HTMLSpanElement>>> = $props();
 </script>
 
 <span
@@ -20,6 +18,6 @@
 	class={cn("flex size-9 items-center justify-center", className)}
 	{...restProps}
 >
-	<DotsHorizontal class="size-4 outline-none" tabindex={-1} />
+	<Ellipsis class="size-4" />
 	<span class="sr-only">More</span>
 </span>

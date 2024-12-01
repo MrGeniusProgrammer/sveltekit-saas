@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from "@/utils.js";
 	import { Command as CommandPrimitive } from "bits-ui";
+	import { cn } from "@/utils.js";
 
 	let {
 		value = $bindable(""),
@@ -12,8 +12,8 @@
 
 <CommandPrimitive.Root
 	class={cn(
-		"flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
-		className,
+		"bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md",
+		className
 	)}
 	bind:ref
 	bind:value

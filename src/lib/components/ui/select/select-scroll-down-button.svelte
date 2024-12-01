@@ -1,10 +1,7 @@
 <script lang="ts">
+	import ChevronDown from "lucide-svelte/icons/chevron-down";
+	import { Select as SelectPrimitive, type WithoutChildrenOrChild } from "bits-ui";
 	import { cn } from "@/utils.js";
-	import {
-		Select as SelectPrimitive,
-		type WithoutChildrenOrChild,
-	} from "bits-ui";
-	import ChevronDown from "svelte-radix/ChevronDown.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -15,10 +12,7 @@
 
 <SelectPrimitive.ScrollDownButton
 	bind:ref
-	class={cn(
-		"flex cursor-default items-center justify-center py-1",
-		className,
-	)}
+	class={cn("flex cursor-default items-center justify-center py-1", className)}
 	{...restProps}
 >
 	<ChevronDown class="size-4" />

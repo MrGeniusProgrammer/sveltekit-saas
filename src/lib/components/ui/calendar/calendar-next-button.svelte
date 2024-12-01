@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { Calendar as CalendarPrimitive } from "bits-ui";
+	import ChevronRight from "lucide-svelte/icons/chevron-right";
 	import { buttonVariants } from "@/components/ui/button/index.js";
 	import { cn } from "@/utils.js";
-	import { Calendar as CalendarPrimitive } from "bits-ui";
-	import ChevronRight from "svelte-radix/ChevronRight.svelte";
 
 	let {
 		ref = $bindable(null),
@@ -13,7 +13,7 @@
 </script>
 
 {#snippet Fallback()}
-	<ChevronRight class="size-4" />
+	<ChevronRight />
 {/snippet}
 
 <CalendarPrimitive.NextButton
@@ -21,7 +21,7 @@
 	class={cn(
 		buttonVariants({ variant: "outline" }),
 		"size-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-		className,
+		className
 	)}
 	{...restProps}
 	children={children || Fallback}
