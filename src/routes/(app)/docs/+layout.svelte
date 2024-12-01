@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { IconLogo } from "@/components/icon";
-	import { Button } from "@/components/ui/button";
 	import {
 		Collapsible,
 		CollapsibleContent,
@@ -11,18 +10,20 @@
 		Sidebar,
 		SidebarContent,
 		SidebarGroup,
-		SidebarGroupContent,
 		SidebarHeader,
 		SidebarMenu,
+		SidebarMenuAction,
 		SidebarMenuButton,
 		SidebarMenuItem,
 		SidebarMenuSub,
-		SidebarMenuSubButton,
-		SidebarMenuSubItem,
 		SidebarProvider,
-		SidebarRail,
 	} from "@/components/ui/sidebar";
-	import { ChevronRight, GalleryVerticalEnd } from "lucide-svelte";
+	import {
+		BookOpen,
+		ChevronRight,
+		LibraryBig,
+		TerminalSquare,
+	} from "lucide-svelte";
 	import type { Snippet } from "svelte";
 
 	let { children }: { children: Snippet } = $props();
@@ -169,10 +170,10 @@
 	};
 </script>
 
-<div class="flex h-screen w-screen flex-col">
+<div class="flex h-screen w-screen flex-col overflow-hidden">
 	<nav class="sticky top-0 z-30 w-full">
 		<div
-			class="supports-backdrop-blur:bg-background/60 absolute h-full w-full flex-none border border-b backdrop-blur transition-colors duration-500 dark:bg-transparent"
+			class="supports-backdrop-blur:bg-background/60 absolute h-full w-full flex-none border-b backdrop-blur transition-colors duration-500 dark:bg-transparent"
 		></div>
 		<div class="h-16">
 			<div
@@ -187,32 +188,41 @@
 			</div>
 		</div>
 	</nav>
-	<div class="mx-auto min-h-screen max-w-[140ch] px-4 lg:px-8">
-		<SidebarProvider>
-			<Sidebar>
+	<div
+		class="mx-auto flex max-h-svh min-h-svh w-full max-w-[140ch] overflow-hidden p-4 lg:px-8"
+	>
+		<SidebarProvider class="min-h-full w-fit">
+			<Sidebar collapsible="none" class="hidden lg:flex">
 				<SidebarHeader>
 					<SidebarMenu>
 						<SidebarMenuItem>
-							<SidebarMenuButton size="lg">
-								{#snippet child({ props })}
-									<a href="#" {...props}>
-										<div
-											class="aspect-square flex size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
-										>
-											<GalleryVerticalEnd
-												class="size-4"
-											/>
-										</div>
-										<div
-											class="flex flex-col gap-0.5 leading-none"
-										>
-											<span class="font-semibold"
-												>Documentation</span
-											>
-											<span class="">v1.0.0</span>
-										</div>
-									</a>
-								{/snippet}
+							<SidebarMenuButton
+								class="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+							>
+								<div class="rounded-lg border p-1">
+									<BookOpen class="size-5" />
+								</div>
+								<span class="font-bold">Documentation</span>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								class="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+							>
+								<div class="rounded-lg border p-1">
+									<TerminalSquare class="size-5" />
+								</div>
+								<span class="font-bold"> API Reference </span>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								class="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+							>
+								<div class="rounded-lg border p-1">
+									<LibraryBig class="size-5" />
+								</div>
+								<span class="font-bold">Knowledge Base</span>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
 					</SidebarMenu>
@@ -227,29 +237,26 @@
 										class="group/collapsible"
 									>
 										<SidebarMenuItem>
-											<SidebarMenuButton
-												class="flex items-center justify-between"
-											>
+											<SidebarMenuButton>
 												<a
 													href={item.url}
 													class="flex-1 font-medium"
 												>
 													{item.title}
 												</a>
-												<CollapsibleTrigger>
-													{#snippet child({ props })}
-														<Button
-															variant="ghost"
-															size="icon"
-															{...props}
-														>
-															<ChevronRight
-																class="transition-transform group-data-[state=open]/collapsible:rotate-90"
-															/>
-														</Button>
-													{/snippet}
-												</CollapsibleTrigger>
 											</SidebarMenuButton>
+											<CollapsibleTrigger>
+												{#snippet child({ props })}
+													<SidebarMenuAction
+														class="aspect-square size-5 "
+														{...props}
+													>
+														<ChevronRight
+															class="transition-transform group-data-[state=open]/collapsible:rotate-90"
+														/>
+													</SidebarMenuAction>
+												{/snippet}
+											</CollapsibleTrigger>
 											<CollapsibleContent>
 												<SidebarMenuSub>
 													{#each item.items as subItem (subItem.title)}
@@ -279,10 +286,9 @@
 						</SidebarGroup>
 					</ScrollArea>
 				</SidebarContent>
-				<SidebarRail />
 			</Sidebar>
 		</SidebarProvider>
-		<div class="h-full w-full">
+		<div class="ml-24 flex-1">
 			{@render children()}
 		</div>
 	</div>
