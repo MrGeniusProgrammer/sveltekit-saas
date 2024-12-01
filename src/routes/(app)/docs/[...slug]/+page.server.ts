@@ -28,7 +28,7 @@ export const entries: EntryGenerator = () =>
 					const entries: { slug: string }[] = [];
 					for (const path of Object.keys(modules)) {
 						const slug = path
-							.replace("/src/content/", "")
+							.replace("/content/", "")
 							.replace(".md", "")
 							.replace("/index", "");
 						entries.push({ slug });

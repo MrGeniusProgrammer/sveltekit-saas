@@ -1,6 +1,7 @@
 import type { AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import { E, O, pipe, R, RTE } from "@/packages/fp-ts";
+import { assets } from "$app/paths";
 import { processMarkdown } from "./markdown";
 
 type Modules = Record<string, () => Promise<unknown>>;
@@ -20,7 +21,7 @@ export const getAllContentsModules = () =>
 			pipe(
 				RTE.fromEither(
 					E.tryCatch(
-						() => import.meta.glob("/src/content/**/*.md"),
+						() => import.meta.glob(`${assets}/content/**/*.md`),
 						(error) =>
 							createCodeError({
 								code: "importing-content-faild",
