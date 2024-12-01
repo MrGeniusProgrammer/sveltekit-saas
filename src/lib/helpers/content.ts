@@ -21,7 +21,7 @@ export const getAllContentsModules = () =>
 			pipe(
 				RTE.fromEither(
 					E.tryCatch(
-						() => import.meta.glob(`${assets}/content/**/*.md`),
+						() => import.meta.glob("/content/**/*.md"),
 						(error) =>
 							createCodeError({
 								code: "importing-content-faild",
