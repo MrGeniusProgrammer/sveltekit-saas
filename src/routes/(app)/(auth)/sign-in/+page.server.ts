@@ -6,6 +6,8 @@ import { signInWithMagicLink } from "@/server/use-cases/auth";
 import type { Action } from "@sveltejs/kit";
 import { formSchema } from "./schema";
 
+export const prerender = false;
+
 export const actions: Record<string, Action> = {
 	"sign-in": (event) =>
 		pipe(

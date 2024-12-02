@@ -73,19 +73,3 @@ You can contact support by emailing us at support@example.com.
 ## Section 4: Conclusion
 
 Thank you for reading through the documentation. If you have any questions, feel free to reach out.
-
-### **Content Breakdown:**
-
--   **Main Title (`# Welcome to My Documentation`)**: General introduction.
--   **Section 1 (`## Section 1: Getting Started`)**: Covers installation and configuration.
-    -   **Subsection 1.1 (`### Subsection 1.1: Installation`)**: Provides an installation command.
-    -   **Subsection 1.2 (`### Subsection 1.2: Configuration`)**: Example configuration in JSON format.
--   **Section 2 (`## Section 2: Advanced Topics`)**: Covers performance and error handling.
-    -   **Subsection 2.1 (`### Subsection 2.1: Optimizing Performance`)**: Example configuration in JavaScript.
-    -   **Subsection 2.2 (`### Subsection 2.2: Error Handling`)**: JavaScript error handling code.
--   **Section 3 (`## Section 3: FAQ`)**: Frequently asked questions.
-    -   **Subsection 3.1 (`### Subsection 3.1: How do I reset the app?`)**: Reset command.
-    -   **Subsection 3.2 (`### Subsection 3.2: How do I contact support?`)**: Support contact info.
--   **Section 4 (`## Section 4: Conclusion`)**: Closing remarks.
-
-Feel free to use this markdown content for testing your table of contents or other processing tasks!

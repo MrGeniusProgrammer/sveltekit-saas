@@ -11,6 +11,8 @@ import { error, fail } from "@sveltejs/kit";
 import type { Action, PageServerLoad } from "./$types";
 import { formSchema } from "./schema";
 
+export const prerender = false;
+
 export const load: PageServerLoad = (event) =>
 	pipe(
 		verifyMagicLinkToken({ token: event.params.token }),

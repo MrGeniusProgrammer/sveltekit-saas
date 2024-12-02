@@ -33,22 +33,10 @@
 		type: "website",
 		images: [
 			{
-				url: `${$page.url.origin}/images/saas-dashboard.jpg`,
+				url: `${$page.url.origin}/logo.svg`,
 				width: 1200,
 				height: 630,
-				alt: "SaaS Dashboard",
-			},
-			{
-				url: `${$page.url.origin}/images/saas-payments.jpg`,
-				width: 1200,
-				height: 630,
-				alt: "Payment Integration",
-			},
-			{
-				url: `${$page.url.origin}/images/saas-auth.jpg`,
-				width: 1200,
-				height: 630,
-				alt: "Authentication Flow",
+				alt: "SaaS Kit",
 			},
 		],
 		site_name: "SvelteKit SaaS Starter Kit",
@@ -59,7 +47,7 @@
 		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
 		description:
 			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
-		image: `${$page.url.origin}/images/saas-dashboard.jpg`,
+		image: `${$page.url.origin}/logo.svg`,
 	}}
 >
 	<meta
