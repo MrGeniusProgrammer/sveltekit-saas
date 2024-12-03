@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { Button } from "@/components/ui/button";
 	import {
 		SidebarMenuSub,
 		SidebarMenuSubItem,
 	} from "@/components/ui/sidebar";
-	import type { TocItem } from "@/helpers/rehype-toc-json";
+	import type { Toc } from "@/entities/toc";
 	import Self from "./toc.svelte";
 
-	let { items }: { items: TocItem[] } = $props();
+	let { items }: { items: Toc } = $props();
 </script>
 
 {#each items as item (item.id)}

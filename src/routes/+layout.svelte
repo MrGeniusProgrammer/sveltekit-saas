@@ -6,6 +6,7 @@
 	import { QueryClientProvider } from "@tanstack/svelte-query";
 	import { base } from "$app/paths";
 	import { page } from "$app/stores";
+	import { PUBLIC_BASE_URL } from "$env/static/public";
 	import { ModeWatcher } from "mode-watcher";
 	import type { Snippet } from "svelte";
 	import { MetaTags } from "svelte-meta-tags";
@@ -24,7 +25,7 @@
 <MetaTags
 	title="SvelteKit SaaS Starter Kit | Build and Launch Faster"
 	description="Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks."
-	canonical="/"
+	canonical={PUBLIC_BASE_URL}
 	keywords={[
 		"SvelteKit SaaS",
 		"SaaS starter kit",
@@ -42,7 +43,7 @@
 		type: "website",
 		images: [
 			{
-				url: "/org_image.png",
+				url: `${PUBLIC_BASE_URL}/org_image.png`,
 				width: 1200,
 				height: 630,
 				alt: "SaaS Kit",
@@ -57,7 +58,7 @@
 		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
 		description:
 			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
-		image: "/org_image.png",
+		image: `${PUBLIC_BASE_URL}/org_image.png`,
 		imageAlt: "Org Image",
 	}}
 	additionalMetaTags={[
