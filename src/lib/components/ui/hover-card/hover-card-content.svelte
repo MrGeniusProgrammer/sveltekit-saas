@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { LinkPreview as HoverCardPrimitive } from "bits-ui";
 	import { cn } from "@/utils.js";
+	import { LinkPreview as HoverCardPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -20,8 +20,8 @@
 		{sideOffset}
 		{align}
 		class={cn(
-			"bg-popover text-popover-foreground z-50 w-64 rounded-md border p-4 shadow-md outline-none",
-			className
+			"z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none",
+			className,
 		)}
 		{...restProps}
 	/>

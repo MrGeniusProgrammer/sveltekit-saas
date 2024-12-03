@@ -1,10 +1,10 @@
 import { PaymentCheckoutUrl, PaymentVariantId } from "@/entities/payment";
 import type { UserEmail, UserId, UserName } from "@/entities/user";
-import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import { zodValidate } from "@/helpers/schema";
 import { pipe, RTE, TE } from "@/packages/fp-ts";
+import { env } from "@/server/env";
 import { createCheckout } from "@lemonsqueezy/lemonsqueezy.js";
 import { configureLemonSqueezy } from "../lemonsqueezy";
 import {

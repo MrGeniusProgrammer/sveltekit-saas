@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Menubar as MenubarPrimitive } from "bits-ui";
 	import { cn } from "@/utils.js";
+	import { Menubar as MenubarPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -24,8 +24,8 @@
 		{alignOffset}
 		{side}
 		class={cn(
-			"bg-popover text-popover-foreground z-50 min-w-[12rem] rounded-md border p-1 shadow-md focus:outline-none",
-			className
+			"z-50 min-w-[12rem] rounded-md border bg-popover p-1 text-popover-foreground shadow-md focus:outline-none",
+			className,
 		)}
 		{...restProps}
 	/>

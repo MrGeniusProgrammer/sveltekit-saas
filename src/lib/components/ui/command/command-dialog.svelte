@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as Dialog from "@/components/ui/dialog/index.js";
 	import {
 		Command as CommandPrimitive,
 		Dialog as DialogPrimitive,
@@ -6,7 +7,6 @@
 	} from "bits-ui";
 	import type { Snippet } from "svelte";
 	import Command from "./command.svelte";
-	import * as Dialog from "@/components/ui/dialog/index.js";
 
 	let {
 		open = $bindable(false),

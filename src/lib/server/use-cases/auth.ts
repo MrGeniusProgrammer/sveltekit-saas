@@ -1,6 +1,5 @@
 import { AccountProvider, AccountProviderId } from "@/entities/account";
 import { UserEmail, UserId, UserImage, UserName } from "@/entities/user";
-import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
 import {
@@ -11,6 +10,7 @@ import {
 import { getLogErrorMessage, getLogSuccessMessage } from "@/helpers/logger";
 import { zodValidate } from "@/helpers/schema";
 import { E, O, pipe, RT, RTE, TE, type Option } from "@/packages/fp-ts";
+import { env } from "@/server/env";
 import {
 	decodeIdToken,
 	generateCodeVerifier,

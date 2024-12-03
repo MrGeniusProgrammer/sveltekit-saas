@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { Pagination as PaginationPrimitive, type WithoutChild } from "bits-ui";
 	import {
-		type Props as ButtonProps,
 		buttonVariants,
+		type Props as ButtonProps,
 	} from "@/components/ui/button/index.js";
 	import { cn } from "@/utils.js";
+	import {
+		Pagination as PaginationPrimitive,
+		type WithoutChild,
+	} from "bits-ui";
 
 	type Props = WithoutChild<PaginationPrimitive.PageProps> &
 		ButtonProps & {
@@ -34,7 +37,7 @@
 			variant: isActive ? "outline" : "ghost",
 			size,
 		}),
-		className
+		className,
 	)}
 	{...restProps}
 	children={children || Fallback}

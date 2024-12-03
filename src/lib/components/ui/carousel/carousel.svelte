@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { cn } from "@/utils.js";
 	import {
+		setEmblaContext,
 		type CarouselAPI,
 		type CarouselProps,
 		type EmblaContext,
-		setEmblaContext,
 	} from "./context.js";
-	import { cn } from "@/utils.js";
 
 	let {
 		opts = {},
@@ -87,6 +87,11 @@
 	});
 </script>
 
-<div class={cn("relative", className)} role="region" aria-roledescription="carousel" {...restProps}>
+<div
+	class={cn("relative", className)}
+	role="region"
+	aria-roledescription="carousel"
+	{...restProps}
+>
 	{@render children?.()}
 </div>

@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { cn } from "@/utils.js";
 	import type { WithElementRef } from "bits-ui";
 	import type { HTMLAttributes } from "svelte/elements";
 	import { getEmblaContext } from "./context.js";
-	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -21,7 +21,7 @@
 	class={cn(
 		"min-w-0 shrink-0 grow-0 basis-full",
 		emblaCtx.orientation === "horizontal" ? "pl-4" : "pt-4",
-		className
+		className,
 	)}
 	data-embla-slide=""
 	{...restProps}

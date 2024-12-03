@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { Accordion as AccordionPrimitive, type WithoutChild } from "bits-ui";
 	import { cn } from "@/utils.js";
+	import {
+		Accordion as AccordionPrimitive,
+		type WithoutChild,
+	} from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -13,8 +16,8 @@
 <AccordionPrimitive.Content
 	bind:ref
 	class={cn(
-		"data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm",
-		className
+		"overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+		className,
 	)}
 	{...restProps}
 >

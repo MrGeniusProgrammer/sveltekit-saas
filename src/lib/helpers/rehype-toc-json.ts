@@ -54,7 +54,7 @@ const rehypeTocJson: Plugin<[], Root> = () => {
 
 				// Add to the ToC array if valid
 				if (id && text) {
-					toc.push({ depth, text, id });
+					toc.push({ depth, text, id, items: [] });
 				}
 			}
 		});
