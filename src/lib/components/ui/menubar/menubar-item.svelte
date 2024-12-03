@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Menubar as MenubarPrimitive } from "bits-ui";
 	import { cn } from "@/utils.js";
+	import { Menubar as MenubarPrimitive } from "bits-ui";
 
 	let {
 		ref = $bindable(null),
@@ -15,9 +15,9 @@
 <MenubarPrimitive.Item
 	bind:ref
 	class={cn(
-		"data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+		"relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50",
 		inset && "pl-8",
-		className
+		className,
 	)}
 	{...restProps}
 />

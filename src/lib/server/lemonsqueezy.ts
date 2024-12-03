@@ -1,5 +1,5 @@
-import { env } from "@/server/env";
 import { logger } from "@/helpers/logger";
+import { env } from "@/server/env";
 import { lemonSqueezySetup } from "@lemonsqueezy/lemonsqueezy.js";
 
 export const configureLemonSqueezy = () => {

@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { cn } from "@/utils.js";
 	import { Menubar as MenubarPrimitive, type WithoutChild } from "bits-ui";
 	import Circle from "lucide-svelte/icons/circle";
-	import { cn } from "@/utils.js";
 
 	let {
 		ref = $bindable(null),
@@ -14,8 +14,8 @@
 <MenubarPrimitive.RadioItem
 	bind:ref
 	class={cn(
-		"data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-		className
+		"relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50",
+		className,
 	)}
 	{...restProps}
 >

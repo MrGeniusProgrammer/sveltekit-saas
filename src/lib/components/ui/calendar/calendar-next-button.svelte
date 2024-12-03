@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Calendar as CalendarPrimitive } from "bits-ui";
-	import ChevronRight from "lucide-svelte/icons/chevron-right";
 	import { buttonVariants } from "@/components/ui/button/index.js";
 	import { cn } from "@/utils.js";
+	import { Calendar as CalendarPrimitive } from "bits-ui";
+	import ChevronRight from "lucide-svelte/icons/chevron-right";
 
 	let {
 		ref = $bindable(null),
@@ -21,7 +21,7 @@
 	class={cn(
 		buttonVariants({ variant: "outline" }),
 		"size-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-		className
+		className,
 	)}
 	{...restProps}
 	children={children || Fallback}

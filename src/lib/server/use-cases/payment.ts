@@ -1,8 +1,8 @@
 import type { PaymentVariantId } from "@/entities/payment";
 import type { UserEmail, UserId, UserName } from "@/entities/user";
-import { env } from "@/server/env";
 import { type AppLoggerContext } from "@/helpers/app";
 import { pipe, RTE } from "@/packages/fp-ts";
+import { env } from "@/server/env";
 import type { DiscriminatedWebhookPayload } from "lemonsqueezy-webhooks";
 import { createPaymentCheckoutUrl } from "../data-access/payment";
 import { configureLemonSqueezy } from "../lemonsqueezy";
