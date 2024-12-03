@@ -1,7 +1,7 @@
 import type { AppLoggerContext } from "@/helpers/app";
 import {
-	getAllContentsModules,
-	getContent,
+	getAllContentsPath,
+	getContentFromSlug,
 	slugFromPath,
 } from "@/helpers/content";
 import { runEither } from "@/helpers/fp-ts";
@@ -17,7 +17,7 @@ export const load: PageServerLoad = (event) =>
 		RTE.ask<AppLoggerContext>(),
 		RTE.chainW((context) =>
 			pipe(
-				getContent({ slug: event.params.slug }),
+				getContentFromSlug({ slug: event.params.slug }),
 				RTE.mapError(() => error(500)),
 			),
 		),
@@ -28,9 +28,9 @@ export const entries: EntryGenerator = () =>
 		RTE.ask<AppLoggerContext>(),
 		RTE.chainW(() =>
 			pipe(
-				getAllContentsModules(),
-				RTE.map((modules) =>
-					Object.keys(modules).map((path) => ({
+				getAllContentsPath(),
+				RTE.map((paths) =>
+					paths.map((path) => ({
 						slug: slugFromPath(path),
 					})),
 				),

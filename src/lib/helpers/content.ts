@@ -1,9 +1,9 @@
 import fs from "fs/promises";
 import type { AppLoggerContext } from "@/helpers/app";
 import { createCodeError } from "@/helpers/error";
-import { E, O, pipe, R, RTE, TE } from "@/packages/fp-ts";
+import { E, O, pipe, R, RA, RTE, sequenceT, TE } from "@/packages/fp-ts";
 import rehypeShiki from "@shikijs/rehype";
-import { read } from "$app/server";
+import Flexsearch from "flexsearch";
 import matter from "gray-matter";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeFormat from "rehype-format";
@@ -33,7 +33,7 @@ export type Metadata = {
 export const slugFromPath = (path: string) =>
 	path.replace("/static/content/", "").replace(".md", "");
 
-export const getAllContentsModules = () =>
+export const getAllContentsPath = () =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
 		RTE.chainW((context) =>
@@ -48,12 +48,13 @@ export const getAllContentsModules = () =>
 							}),
 					),
 				),
+				RTE.map((modules) => Object.keys(modules)),
 			),
 		),
 	);
 
 interface FindMatchParams {
-	modules: Modules;
+	paths: string[];
 	slug: string;
 }
 
@@ -62,37 +63,35 @@ export const findMatch = (params: FindMatchParams) =>
 		R.ask<AppLoggerContext>(),
 		R.map(() =>
 			O.fromNullable(
-				Object.keys(params.modules).find(
-					(path) => slugFromPath(path) === params.slug,
-				),
+				params.paths.find((path) => slugFromPath(path) === params.slug),
 			),
 		),
 	);
 
-interface GetContentParams {
+interface GetContentFromSlugParams {
 	slug: string;
 }
 
-export const getContent = (params: GetContentParams) =>
+export const getContentFromSlug = (params: GetContentFromSlugParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
 		RTE.chainW((context) =>
 			pipe(
-				getAllContentsModules(),
+				getAllContentsPath(),
 				effectReaderTaskEitherBoth(
 					(error) =>
 						context.logger.error(
 							error,
-							getLogErrorMessage("Getting all content modules"),
+							getLogErrorMessage("Getting all content paths"),
 						),
 					(value) =>
 						context.logger.info(
 							value,
-							getLogSuccessMessage("Getting all content modules"),
+							getLogSuccessMessage("Getting all content paths"),
 						),
 				),
-				RTE.chainReaderKW((modules) =>
-					findMatch({ slug: params.slug, modules }),
+				RTE.chainReaderKW((paths) =>
+					findMatch({ slug: params.slug, paths }),
 				),
 				RTE.chainW((optionalPath) =>
 					pipe(
@@ -119,57 +118,7 @@ export const getContent = (params: GetContentParams) =>
 											"Found a matched content path",
 										),
 									),
-									RTE.chainTaskEitherKW(() =>
-										TE.tryCatch(
-											() =>
-												fs.readFile(
-													path.slice(1),
-													"utf-8",
-												),
-											(error) =>
-												createCodeError({
-													code: "reading-content-failed",
-													cause: error,
-												}),
-										),
-									),
-									effectReaderTaskEitherBoth(
-										(error) =>
-											context.logger.error(
-												error,
-												getLogErrorMessage(
-													"Reading content file",
-												),
-											),
-										(value) =>
-											context.logger.info(
-												value,
-												getLogSuccessMessage(
-													"Reading content file",
-												),
-											),
-									),
-									RTE.chainW((content) =>
-										pipe(
-											processContent({ content }),
-											effectReaderTaskEitherBoth(
-												(error) =>
-													context.logger.error(
-														error,
-														getLogErrorMessage(
-															"Processing content",
-														),
-													),
-												(value) =>
-													context.logger.info(
-														value,
-														getLogSuccessMessage(
-															"Processing content",
-														),
-													),
-											),
-										),
-									),
+									RTE.chainW(() => getContent({ path })),
 								),
 						),
 					),
@@ -240,10 +189,133 @@ export const processContent = (params: ProcessContentParams) =>
 		),
 	);
 
-interface GenerateSearchIndexesParams {
-	contents: Content[];
+interface GetContentParams {
+	path: string;
 }
 
-export const generateSearchIndexes = (
-	params: GenerateSearchIndexesParams,
-) => {};
+export const getContent = (params: GetContentParams) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainW((context) =>
+			pipe(
+				RTE.fromTaskEither(
+					TE.tryCatch(
+						() => fs.readFile(params.path.slice(1), "utf-8"),
+						(error) =>
+							createCodeError({
+								code: "reading-content-failed",
+								cause: error,
+							}),
+					),
+				),
+
+				effectReaderTaskEitherBoth(
+					(error) =>
+						context.logger.error(
+							error,
+							getLogErrorMessage("Reading content file"),
+						),
+					() =>
+						context.logger.info(
+							getLogSuccessMessage("Reading content file"),
+						),
+				),
+
+				RTE.chainW((content) =>
+					pipe(
+						processContent({ content }),
+						effectReaderTaskEitherBoth(
+							(error) =>
+								context.logger.error(
+									error,
+									getLogErrorMessage("Processing content"),
+								),
+							() =>
+								context.logger.info(
+									getLogSuccessMessage("Processing content"),
+								),
+						),
+					),
+				),
+			),
+		),
+	);
+
+export const getAllContents = () =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainW((context) =>
+			pipe(
+				getAllContentsPath(),
+				RTE.chainW((paths) =>
+					pipe(
+						RTE.sequenceArray(
+							paths.map((path) => getContent({ path })),
+						),
+					),
+				),
+			),
+		),
+	);
+
+interface GenerateSearchIndexParams {
+	readonly contents: Content[];
+}
+
+export const generateSearchIndex = (params: GenerateSearchIndexParams) =>
+	pipe(
+		RTE.ask<AppLoggerContext>(),
+		RTE.chainW((context) =>
+			pipe(
+				RTE.of(
+					new Flexsearch.Document({
+						tokenize: "strict",
+						optimize: true,
+						resolution: 9,
+						document: {
+							id: "id",
+							index: [
+								{
+									field: "title",
+									tokenize: "forward",
+								},
+								{
+									field: "description",
+									context: {
+										depth: 1,
+										resolution: 3,
+									},
+								},
+							], // Index ToC text as well
+							store: ["metadata", "html", "markdown", "toc"],
+						},
+					}),
+				),
+				effectReaderTaskEither((index) =>
+					params.contents.forEach((content, contentId) => {
+						index.add({
+							id: contentId.toString(),
+							title: content.metadata.title,
+							description: content.metadata.description,
+							...content,
+						});
+
+						let tocItems = [...content.toc];
+
+						while (tocItems.length > 0) {
+							const tocItem = tocItems.pop()!;
+
+							index.add({
+								id: `${contentId}-${tocItem.id}`,
+								title: tocItem.text,
+								description: content.metadata.description,
+								...content,
+							});
+
+							tocItems = tocItems.concat(tocItem.items);
+						}
+					}),
+				),
+			),
+		),
+	);

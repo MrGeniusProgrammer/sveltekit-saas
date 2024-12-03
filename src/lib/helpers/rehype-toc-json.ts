@@ -6,7 +6,7 @@ export interface TocItem {
 	depth: number; // Heading level (e.g., 1 for h1, 2 for h2, etc.)
 	text: string; // Visible text of the heading
 	id: string; // Slug/id of the heading
-	items?: TocItem[]; // Nested children for nested headings
+	items: TocItem[]; // Nested children for nested headings
 }
 
 // Helper function to build a tree
