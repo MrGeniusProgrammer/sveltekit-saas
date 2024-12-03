@@ -39,7 +39,7 @@
 		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
 		description:
 			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
-		url: "/",
+		url: PUBLIC_BASE_URL,
 		type: "website",
 		images: [
 			{
