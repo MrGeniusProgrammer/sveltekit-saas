@@ -1,16 +1,17 @@
 import type { AppLoggerContext } from "@/helpers/app";
+import { effectReaderTaskEitherBoth, runEither } from "@/helpers/fp-ts";
 import {
-	getAllContentsPath,
-	getContentFromSlug,
-	slugFromPath,
-} from "@/helpers/content";
-import { runEither } from "@/helpers/fp-ts";
-import { logger } from "@/helpers/logger";
+	getLogErrorMessage,
+	getLogSuccessMessage,
+	logger,
+} from "@/helpers/logger";
 import { pipe, RTE } from "@/packages/fp-ts";
+import {
+	getAllContentsEntries,
+	getContentFromSlug,
+} from "@/server/data-access/content";
 import { error } from "@sveltejs/kit";
 import type { EntryGenerator, PageServerLoad } from "./$types";
-
-export const prerender = true;
 
 export const load: PageServerLoad = (event) =>
 	pipe(
@@ -18,23 +19,29 @@ export const load: PageServerLoad = (event) =>
 		RTE.chainW((context) =>
 			pipe(
 				getContentFromSlug({ slug: event.params.slug }),
+				effectReaderTaskEitherBoth(
+					(error) =>
+						context.logger.error(
+							error,
+							getLogErrorMessage("Getting content from slug"),
+						),
+					() =>
+						context.logger.info(
+							getLogSuccessMessage("Getting content from slug"),
+						),
+				),
 				RTE.mapError(() => error(500)),
 			),
 		),
-	)({ logger: logger })().then(runEither);
+	)({ logger: logger, dir: `static/content` })().then(runEither);
 
 export const entries: EntryGenerator = () =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
 		RTE.chainW(() =>
 			pipe(
-				getAllContentsPath(),
-				RTE.map((paths) =>
-					paths.map((path) => ({
-						slug: slugFromPath(path),
-					})),
-				),
+				getAllContentsEntries(),
 				RTE.mapError(() => error(500)),
 			),
 		),
-	)({ logger: logger })().then(runEither);
+	)({ logger: logger, dir: "static/content" })().then(runEither);

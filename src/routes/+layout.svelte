@@ -4,6 +4,7 @@
 	import { Toaster } from "@/components/ui/sonner";
 	import { setApiClient } from "@/helpers/trpc";
 	import { QueryClientProvider } from "@tanstack/svelte-query";
+	import { base } from "$app/paths";
 	import { page } from "$app/stores";
 	import { ModeWatcher } from "mode-watcher";
 	import type { Snippet } from "svelte";
@@ -23,7 +24,7 @@
 <MetaTags
 	title="SvelteKit SaaS Starter Kit | Build and Launch Faster"
 	description="Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks."
-	canonical={$page.url.origin}
+	canonical="/"
 	keywords={[
 		"SvelteKit SaaS",
 		"SaaS starter kit",
@@ -37,11 +38,11 @@
 		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
 		description:
 			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
-		url: $page.url.origin,
+		url: "/",
 		type: "website",
 		images: [
 			{
-				url: `${$page.url.origin}/org_image.png`,
+				url: "/org_image.png",
 				width: 1200,
 				height: 630,
 				alt: "SaaS Kit",
@@ -56,7 +57,7 @@
 		title: "SvelteKit SaaS Starter Kit | Build and Launch Faster",
 		description:
 			"Kickstart your SaaS with the SvelteKit Starter Kit – pre-built authentication, payments, email, APIs, and UI tools to ship in days, not weeks.",
-		image: `${$page.url.origin}/org_image.png`,
+		image: "/org_image.png",
 		imageAlt: "Org Image",
 	}}
 	additionalMetaTags={[
