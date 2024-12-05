@@ -15,7 +15,7 @@ const hasWebhook = (webhookUrl: string) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
 		effectReaderTaskEither(() => configureLemonSqueezy()),
-		RTE.chainW((context) =>
+		RTE.chainW(() =>
 			pipe(
 				RTE.fromTaskEither(
 					TE.tryCatch(
@@ -62,7 +62,7 @@ const setupWebhook = (webhookUrl: string) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
 		effectReaderTaskEither(() => configureLemonSqueezy()),
-		RTE.chainW((context) =>
+		RTE.chainW(() =>
 			pipe(
 				hasWebhook(webhookUrl),
 				RTE.chainW((optionalWebhook) =>

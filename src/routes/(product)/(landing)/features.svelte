@@ -41,7 +41,7 @@
 
 			<b class="text-green-500">Time Saved: 8 hours</b>
 		</div>
-		<img src="/placeholder.svg" class="size-96" />
+		<img src="/placeholder.svg" alt="placeholder" class="size-96" />
 	</div>
 
 	<div
@@ -78,7 +78,7 @@
 
 			<b class="text-green-500">Time Saved: 12 hours</b>
 		</div>
-		<img src="/placeholder.svg" class="size-96" />
+		<img src="/placeholder.svg" alt="placeholder" class="size-96" />
 	</div>
 
 	<div
@@ -116,7 +116,7 @@
 
 			<b class="text-green-500">Time Saved: 10 hours</b>
 		</div>
-		<img src="/placeholder.svg" class="size-96" />
+		<img src="/placeholder.svg" alt="placeholder" class="size-96" />
 	</div>
 
 	<div
@@ -160,7 +160,7 @@
 
 			<b class="text-green-500">Time Saved: 6 hours</b>
 		</div>
-		<img src="/placeholder.svg" class="size-96" />
+		<img src="/placeholder.svg" alt="placeholder" class="size-96" />
 	</div>
 	<div
 		class="sticky top-0 flex min-h-screen w-full justify-evenly gap-4 border-y border-muted bg-background px-6 py-20"

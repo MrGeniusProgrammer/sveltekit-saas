@@ -21,7 +21,7 @@ export const getWelcomeUserEmail = (params: GetWelcomeUserEmailParams) =>
 				"GET WELCOME USER EMAIL HTML",
 			),
 		})),
-		RTE.chainEitherKW((context) =>
+		RTE.chainEitherKW(() =>
 			pipe(
 				E.tryCatch(
 					() => renderEmail(WelcomeUser, params),
@@ -46,7 +46,7 @@ interface GetMagicLinkCodeEmailParams {
 export const getMagicLinkCodeEmail = (params: GetMagicLinkCodeEmailParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.chainEitherKW((context) =>
+		RTE.chainEitherKW(() =>
 			pipe(
 				E.tryCatch(
 					() => renderEmail(MagicLinkCode, params),
@@ -73,7 +73,7 @@ export const getSignUpWithMagicLinkEmail = (
 ) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.chainEitherKW((context) =>
+		RTE.chainEitherKW(() =>
 			pipe(
 				E.tryCatch(
 					() => renderEmail(SignUpWithMagicLink, params),

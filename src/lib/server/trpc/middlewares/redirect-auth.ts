@@ -7,9 +7,9 @@ export const redirectAuthMiddleware = authMiddleware.use((opts) => {
 		throw new TRPCError({ code: "BAD_REQUEST" });
 	}
 
-	const { user, session, ...ctxWihtoutAuth } = opts.ctx;
+	const { user, session, ...ctxWithoutAuth } = opts.ctx;
 
 	return opts.next({
-		ctx: ctxWihtoutAuth,
+		ctx: ctxWithoutAuth,
 	});
 });

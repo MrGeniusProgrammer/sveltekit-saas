@@ -22,7 +22,7 @@
 		},
 	);
 
-	let { form: formData, enhance, delayed, timeout } = form;
+	let { form: formData, enhance, delayed } = form;
 </script>
 
 <div class="flex h-screen w-screen items-center justify-center">

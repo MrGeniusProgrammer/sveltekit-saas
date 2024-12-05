@@ -1,9 +1,8 @@
 <script>
 	import {
-		SiFacebook,
-		SiInstagram,
-		SiLinkedin,
-		SiTwitter,
+		SiGithub,
+		SiProducthunt,
+		SiX,
 	} from "@icons-pack/svelte-simple-icons";
 </script>
 
@@ -108,21 +107,26 @@
 				&copy; {new Date().getFullYear()} SveltekitSaaS. All rights reserved.
 			</p>
 			<div class="mt-4 flex space-x-4 md:mt-0">
-				<a href="#" class="text-muted-foreground hover:text-foreground">
-					<SiFacebook size={24} />
-					<span class="sr-only">Facebook</span>
+				<a
+					href="https://github.com/MrGeniusProgrammer/sveltekit-saas"
+					class="text-muted-foreground hover:text-foreground"
+				>
+					<SiGithub size={24} />
+					<span class="sr-only">Github</span>
 				</a>
-				<a href="#" class="text-muted-foreground hover:text-foreground">
-					<SiTwitter size={24} />
-					<span class="sr-only">Twitter</span>
+				<a
+					href="https://www.producthunt.com/posts/sveltekit-saas-starter-kit"
+					class="text-muted-foreground hover:text-foreground"
+				>
+					<SiProducthunt size={24} />
+					<span class="sr-only">Product Hunt</span>
 				</a>
-				<a href="#" class="text-muted-foreground hover:text-foreground">
-					<SiInstagram size={24} />
-					<span class="sr-only">Instagram</span>
-				</a>
-				<a href="#" class="text-muted-foreground hover:text-foreground">
-					<SiLinkedin size={24} />
-					<span class="sr-only">LinkedIn</span>
+				<a
+					href="https://x.com/MrGeniusCoder"
+					class="text-muted-foreground hover:text-foreground"
+				>
+					<SiX size={24} />
+					<span class="sr-only">X</span>
 				</a>
 			</div>
 		</div>

@@ -58,14 +58,14 @@
 
 	const createCheckoutUrlResult =
 		api.payment.createCheckoutUrl.createMutation({
-			onSettled(data, error, variables, context) {
+			onSettled() {
 				apiUtils.auth.validateRequest.refetch();
 			},
-			onSuccess(data, variables, context) {
+			onSuccess(data) {
 				toast.success("Succesfully created a checkout url");
 				window.location.href = data;
 			},
-			onError(error, variables, context) {
+			onError(error) {
 				toast.error(error.message);
 			},
 		});

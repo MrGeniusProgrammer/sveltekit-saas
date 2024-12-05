@@ -4,8 +4,6 @@
 	import { Toaster } from "@/components/ui/sonner";
 	import { setApiClient } from "@/helpers/trpc";
 	import { QueryClientProvider } from "@tanstack/svelte-query";
-	import { base } from "$app/paths";
-	import { page } from "$app/stores";
 	import { PUBLIC_BASE_URL } from "$env/static/public";
 	import { ModeWatcher } from "mode-watcher";
 	import type { Snippet } from "svelte";

@@ -25,10 +25,10 @@
 
 	const signInWithProviderResult =
 		api.auth.signInWithAccountProvider.createMutation({
-			onSettled(data, variables, context) {
+			onSettled() {
 				apiUtils.auth.validateRequest.refetch();
 			},
-			onSuccess(data, variables, context) {
+			onSuccess(data, variables) {
 				toast.success(
 					getLogSuccessMessage(
 						`User signing with provider ${variables.accountProvider[0].toUpperCase()}${variables.accountProvider.slice(1)}`,
@@ -36,7 +36,7 @@
 				);
 				window.location.href = data;
 			},
-			onError(error, variables, context) {
+			onError(error, variables) {
 				toast.error(
 					getLogErrorMessage(
 						`User signing with provider ${variables.accountProvider[0].toUpperCase()}${variables.accountProvider.slice(1)}`,
@@ -127,7 +127,7 @@
 			</form>
 			<div class="relative">
 				<div class="absolute inset-0 flex items-center">
-					<span class="w-full border-t" />
+					<span class="w-full border-t"></span>
 				</div>
 				<div class="relative flex justify-center text-xs uppercase">
 					<span class="bg-background px-2 text-muted-foreground">

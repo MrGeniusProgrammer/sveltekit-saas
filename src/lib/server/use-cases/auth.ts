@@ -61,7 +61,7 @@ interface VerifyMagicLinkTokenParams {
 export const verifyMagicLinkToken = (params: VerifyMagicLinkTokenParams) =>
 	pipe(
 		RTE.ask<AppLoggerContext>(),
-		RTE.chainW((context) =>
+		RTE.chainW(() =>
 			pipe(
 				RTE.fromEither(
 					E.tryCatch(

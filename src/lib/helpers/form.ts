@@ -17,7 +17,7 @@ export const setFormErrorsFromZodError = <
 ) => {
 	const flattened = zodError.flatten();
 	for (const [field, fieldError] of Object.entries(flattened)) {
-		setError(form, field, fieldError as any);
+		setError(form, field, fieldError as unknown as Record<string, string>);
 	}
 };
 

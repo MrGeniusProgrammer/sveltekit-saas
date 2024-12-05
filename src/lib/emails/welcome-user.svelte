@@ -16,8 +16,6 @@
 
 	let {
 		userName,
-		userEmail,
-		userImage,
 	}: { userName: UserName; userEmail: UserEmail; userImage: UserImage } =
 		$props();
 </script>

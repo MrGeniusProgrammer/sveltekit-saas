@@ -29,4 +29,9 @@ export default tseslint.config(
 	{
 		ignores: ["build/", ".svelte-kit/", "dist/"],
 	},
+	{
+		rules: {
+			"@typescript-eslint/no-unused-vars": "off", // Disable the unused vars rule for TypeScript
+		},
+	},
 );

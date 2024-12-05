@@ -12,13 +12,14 @@ const renderAsPlainText = (markup: string) => {
 };
 
 export const renderEmail = <
-	Comp extends SvelteComponent<any> | Component<any>,
+	Comp extends SvelteComponent | Component,
 	Props extends ComponentProps<Comp> = ComponentProps<Comp>,
 >(
 	component: Comp,
 	props?: Props,
 ) => {
-	const rendered = render(component as any, {
+	// @ts-expect-error the Component type is not equal to the params type
+	const rendered = render(component, {
 		props,
 	});
 

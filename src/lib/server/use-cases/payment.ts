@@ -21,7 +21,7 @@ export const processPaymentWebhookPayload = (
 
 	switch (params.payload.event_name) {
 		case "order_created": {
-			const userId = params.payload.meta.custom_data.user_id;
+			// const userId = params.payload.meta.custom_data.user_id;
 		}
 	}
 };

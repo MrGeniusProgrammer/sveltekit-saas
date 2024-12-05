@@ -16,12 +16,7 @@ export const createCodeError = <C extends string, M extends string, D, O>(
 		cause: params.cause,
 	}) as CodeError<C, M, D, O>;
 
-export type CodeError<
-	C extends string = any,
-	M extends string = any,
-	D extends unknown = any,
-	O extends unknown = any,
-> = {
+export type CodeError<C extends string, M extends string, D, O> = {
 	code: C;
 	message: M;
 	details: D;
