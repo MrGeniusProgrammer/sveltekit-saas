@@ -21,22 +21,24 @@
 	>
 		{@html data.html}
 	</ScrollArea>
-	<ScrollArea class="ml-4 h-fit min-h-fit max-w-[30ch]">
-		<SidebarProvider class="h-full min-h-full">
-			<Sidebar collapsible="none" class="h-full w-full">
-				<SidebarContent>
-					<SidebarGroup>
-						<SidebarGroupLabel class="pl-0 text-sm font-bold"
-							>On this page</SidebarGroupLabel
-						>
-						<SidebarGroupContent>
-							<SidebarMenu>
-								<Toc items={data.toc} />
-							</SidebarMenu>
-						</SidebarGroupContent>
-					</SidebarGroup>
-				</SidebarContent>
-			</Sidebar>
-		</SidebarProvider>
-	</ScrollArea>
+	<div class="h-full">
+		<ScrollArea class="ml-4 h-fit min-h-fit max-w-[30ch]">
+			<SidebarProvider class="h-full min-h-full">
+				<Sidebar collapsible="none" class="h-full w-full">
+					<SidebarContent>
+						<SidebarGroup>
+							<SidebarGroupLabel class="pl-0 text-sm font-bold"
+								>On this page</SidebarGroupLabel
+							>
+							<SidebarGroupContent>
+								<SidebarMenu>
+									<Toc items={data.toc} />
+								</SidebarMenu>
+							</SidebarGroupContent>
+						</SidebarGroup>
+					</SidebarContent>
+				</Sidebar>
+			</SidebarProvider>
+		</ScrollArea>
+	</div>
 </div>
